@@ -1,0 +1,101 @@
+.form{
+    text-align: center;
+    width: 400px;
+    margin-left: calc(50% - 200px);
+    border-radius: 10px;
+    background-color: bisque;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.form_1{
+    text-align: left;
+    margin: 30px;
+    margin-bottom: 0px;
+}
+
+.form_1 input{
+    width: 340px;
+    display: block;
+}
+.form_1 label{
+    /* display: block; */
+    margin-top: 10px;
+}
+
+.form_2{
+    text-align: left;
+    margin-left: 30px;
+}
+
+.form_3{
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.form_3 select{
+    width :340px;
+    height: 30px;
+}
+
+.form_4 {
+    text-align: left;
+    margin-left: 30px;
+}
+
+
+.form_4 input{
+    width: 340px;
+}
+
+.form_4  .counter {
+    border: none;
+    background-color: transparent;
+    margin-top: 10px;
+    width: 25px;
+}
+.submit{
+    margin-top: 20px;
+    width: 340px;
+    height: 30px;
+    background-color: #1B2EDA;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.submit:hover{
+    background-color: black;
+    transition-duration: 3s;
+    
+    
+}
+.form_2_down2 , .form_2_down1{
+    display: flex;
+}
+
+.form_2 input{
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.form_2 p{
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.slide_container[type="range"]::-webkit-slider-runnable-track {
+    background-color: #cccccc;
+    height: 4px;  
+}
+
+.slide_container[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ffffff;
+}

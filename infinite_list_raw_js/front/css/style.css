@@ -1,0 +1,86 @@
+.input_div{
+    display: flex;
+    width: 600px;
+    background-color: lightgray;
+    height: auto;
+    margin-left: calc(50% - 300px);
+}
+
+.input_div_text{
+    width: 30%;
+    text-align: center;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.input_div_task{
+    width: 60%;
+    border-radius: 10px;
+    border: 1px;
+    background-color: white;
+    margin-top: 20px;
+    margin-left: 5%;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+#item_input_but{
+background-color: green;
+color: white;
+font-size: 15px;
+width: 80%;
+margin-top: 10px;
+border: none;
+border-radius: 5px;
+height: 35px;
+}
+#item_input_but:hover {
+    background-color: black;
+    transition-duration: 3s;
+}
+.input_div_task_form{
+    width: 86%;
+    margin-left: 7%;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+#item_input{
+    margin-top: 20px;
+    width: 80%;
+}
+
+#items{
+    width: 100%;
+}
+#items div{
+    margin-top: 30px;
+    width: 80%;
+    margin-left: 10%;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 13px;
+    padding: 10px;
+}
+
+#items button{
+    background-color: red;
+    border-radius: 7px;
+    font-size: 15px;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border: none;
+    margin-left: 20px;
+}
+
+#items p {
+    margin-left: 10px;
+    width: 200px;
+}

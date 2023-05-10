@@ -1,0 +1,41 @@
+.main{
+  text-align: center;
+}
+.img_holder{
+ width: 200px;
+ margin-left: calc(50% - 100px);
+ border-radius: 300px;
+ height: 200px;
+ overflow: hidden;
+ text-align: center;
+}
+.img{
+width: 300px;
+}
+.name{
+  font-size: 30px;
+}
+.job{
+  color: lightskyblue;
+  font-size: 25px;
+}
+
+.text{
+  width: 400px;
+  padding-left: calc(50% - 200px);
+  color: gray;
+}
+
+.prev,.next{
+  color: lightskyblue;
+  border: none;
+  font-size: 30px;
+  background-color: transparent;
+}
+.rand{
+  background-color: lightcyan;
+  color: lightskyblue;
+  border: none;
+  padding: 10px;
+  font-size: 15px;
+}

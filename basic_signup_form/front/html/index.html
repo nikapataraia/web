@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../javascript/main.js"></script>
+</head>
+<body>
+    <div class="form">
+        <p class="form_txt" style="font-size:20px;">Form</p>
+        <div class="form_1">
+        <label>Name:</label><br>
+        <input id="name" type="text"><br>
+        <label >Email:</label><br>
+        <input id="email"  type="text"><br>
+        <label >Password:</label><br>
+        <input  id="pass" type="text"><br>
+        <label >confirm password:</label><br>
+        <input id="pass_conf"><br>
+        </div>
+
+        <div class="form_2">
+            <a>Gender:</a>
+            <form>
+                <label>
+                    <input type="radio" name="Gender" value="Male">
+                  
+                </label>
+                <label>
+                    <input type="radio" name="Gender" value="Female">
+                   
+                </label>
+                <label>
+                    <input type="radio" name="Gender" value="other">
+                   
+                </label>
+                <div class="form_2_down1">
+                    <p>Male</p>
+                    <p>Female</p>
+                    <p>other</p>
+                </div>
+            </form>
+
+            
+            <a style="display: block; padding-top: 15px;">Interesets:</a>
+            <form>
+                <label>
+                    <input  type="checkbox">
+                    
+                    
+                </label>
+                <label>
+                    <input style="margin-left: 40px;" type="checkbox">
+                    
+                
+                </label>
+                <label>
+                    <input style="margin-left: 35px;" type="checkbox">
+                    
+
+                </label>
+                <div class="form_2_down2">
+                <p>sports</p>
+                <p>music</p>
+                <p>travel</p>
+                </div>
+            </form>
+            
+        </div>
+        <div class="form_3">
+            <p>Country:</p>
+            <select>
+            <optgroup label="country">
+                <option>Usa</option>
+                <option>Geo</option>
+                <option>Ger</option>
+            </optgroup>
+            </select>
+    </div>
+    <div class="form_4">
+        <p>Choose a value:</p>
+        <div>
+            <input class = " slide_container" style="color:blue;" id="rangeInput" oninput="amount.value=rangeInput.value" type="range" min="1" max="100" value="50">
+            <input readonly id="amount" oninput="rangeInput.value=amount.value" value="50" class="counter"></input>
+            
+        </div>
+    </div>
+    <button onclick="check()" class="submit" id="submit">Submit</button>
+    <p>you can see if it passed the test in console log - "GJ" is passed, "u failed!!!" is failed</p>
+</body>
+</html>

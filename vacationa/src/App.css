@@ -1,0 +1,35 @@
+.title_t {
+  width :300px;
+  font-size: 30px;
+  text-align: center;
+  margin-left: calc(50% - 150px);
+  margin-top: 20px;
+}
+
+.underline{
+  width: 60px;
+  margin-left: calc(50% - 30px);
+  height: 5px;
+  border: none;
+  background-color: blue;
+  margin-bottom: 30px;
+}
+
+.tour_container{
+  width: 600px;
+  margin-left: calc(50% - 300px);
+}
+.tour_gen {
+  width: 600px;
+  background-color: gray;
+  margin-top: 20px;
+}
+
+.tour_gen img{
+  width: 100%;;
+}
+.img_container{
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
