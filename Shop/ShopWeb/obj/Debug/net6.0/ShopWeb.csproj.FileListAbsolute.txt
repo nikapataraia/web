@@ -28,3 +28,12 @@ D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\refint\ShopWeb.dll
 D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\ShopWeb.pdb
 D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\ShopWeb.genruntimeconfig.cache
 D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\ref\ShopWeb.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\Npgsql.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\System.Text.Json.dll
+D:\git_rep\web\Shop\ShopWeb\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\ShopWeb.csproj.AssemblyReference.cache
+D:\git_rep\web\Shop\ShopWeb\obj\Debug\net6.0\ShopWeb.csproj.CopyComplete
