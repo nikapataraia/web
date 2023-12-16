@@ -7,9 +7,7 @@ namespace ShopWeb.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [ForeignKey(nameof(Account))]
-
-        public int BelongsTo { get; set; }
+        [Required]
+        public string name { get;set; }
     }
 }
