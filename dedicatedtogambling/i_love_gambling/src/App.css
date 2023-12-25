@@ -1,0 +1,465 @@
+p{
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.App {
+  text-align: center;
+  width: 960px;
+  background-image: radial-gradient(80% 100% at center 100%, rgba(107, 184, 0, 0.85), #295120);
+  margin-left: calc(50% - 480px);
+  margin-top: 60px;
+  border-radius: 15px;
+  padding-bottom: 40px;
+}
+
+
+
+
+/* HEADER */
+
+.App-header{
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: 39px;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.App-header .left,.right,.mid{
+  display: flex;
+  height: 39px;
+  align-items: center;
+}
+
+.App-header .left .goal,.fair {
+  display: flex;
+}
+
+
+.App-header .left .goal p{
+  color: white;
+  margin-left: 5px;
+  font-weight: 600;
+}
+.App-header .left{
+  margin-left: 10px;
+}
+
+.App-header img{
+  width: 24px;
+  height: 24px;
+}
+
+.App-header .fair{
+  justify-content: center;
+    align-items: center;
+    background-color: #617a5a;
+    border-radius: 10px;
+    padding: 3px 6px;
+    margin-left: 5px;
+    transition-duration: 1s;
+}
+
+.App-header .fair:hover{
+  background-color: #51664c;
+  cursor: pointer;
+}
+
+.App-header .fair img{
+  width: 18px;
+  height: 18px;
+}
+
+.App-header .fair p{
+  margin: 0px;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.App-header .right {
+  margin-left: auto;
+  float: right;
+  margin-right: 5px;
+}
+
+
+.App-header .right .helper_text{
+  height: 24px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.App-header .right .helper_text:hover{
+  color: #bac5b7;
+  cursor: pointer;
+  transition-duration: 1s;
+}
+
+.App-header .right .helper_icon:hover{
+  color: #bac5b7;
+  cursor: pointer;
+  transition-duration: 1s;
+  opacity: 70%;
+}
+
+.App-header .mid {
+  text-align: center;
+  margin-left: calc(50% - 239px);
+  
+}
+
+.App-header .mid p{
+  color: white;
+  font-size: 16px;
+}
+
+.App-header .mid .credit_score{
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.App-header .mid .credit_currency{
+  color: #36c308;
+    font-weight: bold;
+}
+
+/* Game body */
+
+
+.Game-container {
+  padding-top: 40px;
+  text-align: center;
+  display: flex;
+}
+
+.game-settings{
+  width: 40%;
+}
+
+.game-map{
+  width: 60%;
+  background-color: aliceblue;
+}
+
+
+
+/* TYPES */
+
+.game-type{
+  display: flex;
+  flex-wrap: wrap;
+  border: 2px solid #244413;
+  border-radius: 6px;
+  background-color: #244413!important;
+  width: 176px;
+  overflow: hidden;
+  height: 26px;
+  text-align: center;
+  align-items: center;
+  margin-left: calc(50% - 88px);
+}
+
+.game-type div{
+  background-color: #376819;
+  width: 48%;
+  user-select: none;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  height: 26px;
+  padding-top: 4px;
+  transition-duration: 0.2s;
+}
+.auto{
+  margin-left: 4%;
+}
+ 
+.active-type{
+  background-color: #244413!important;
+}
+
+.manual:hover:not(.active-type) {
+  /* Hover styles for manual when ismanual is true */
+  background-color: #479120;
+}
+
+.auto:hover:not(.active-type) {
+  /* Hover styles for auto when ismanual is false */
+  background-color: #479120;
+}
+
+/* BETS */
+
+.game-bet{
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 330px;
+  height: 80px;
+  background-color: #244413;
+  border-radius: 5px;
+  margin-left: calc(50% - 165px);
+}
+
+.game-bet-left{
+  padding-top: 10px;
+  width: 50%;
+}
+
+.bet-container{
+  margin-top: 10px;
+  width: 125px;
+  margin-left: calc(50% - 62px);
+  background-color: #182d0a;
+  border-radius: 5px;
+  display: flex;
+  padding: 5px;
+  padding-right: 5px;
+  margin-right: 0px;
+}
+
+.bet-container button{
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.bet-container button:hover{
+  cursor: pointer;
+}
+
+.bet-container input{
+  cursor: text;
+  background-color: transparent;
+  border: none;
+  width: 80px;
+  font-size: 120%;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  padding-bottom: 2px;
+}
+
+.bet-container input:focus {
+  outline: none;
+}
+
+
+.game-bet-right{
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+  margin-left: 10%;
+}
+
+.game-bet-right div{
+  width:calc(36% - 2px);
+  margin-left: 4%;
+  margin-right: 4%;
+  border: 1px solid white;
+  color: white;
+  background-color: transparent;
+  margin-top: 10px;
+  height: 20px;
+  border-radius: 15px;
+  transition-duration: 0.5s;
+  font-size: 13px;
+  user-select: none;
+}
+
+
+.game-bet-right div:hover{
+  background-color: #36831f;
+}
+
+/* FIELD SELECT */
+
+.field-select{
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  width: 330px;
+  background-color: #244413;
+  border-radius: 5px;
+  margin-left: calc(50% - 165px);
+  font-size: 13px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.field-select p{
+  opacity: 0.5;
+}
+
+.field-select .field-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.field-select div div{
+  display: flex;
+  width: 30%;
+  height: 26px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  margin-left: 2%;
+  user-select: none;
+}
+.field-select div .active-field{
+  background-color: #63804d;
+}
+
+.field-select div div:hover{
+  background-color: #63804d;
+}
+
+/* BET BUTTON*/
+
+.game-manualbet{
+  background-image: linear-gradient(to right, #97d913, #6fc10a, #97d913, #6fc10a);
+    box-shadow: 0 2px 0 0 #2e4c03;
+    color: #223c06;
+    transition: background-position 400ms ease-in-out;
+    width: 330px;
+    border: none;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 45px;
+    margin-left: calc(50% - 195px);
+    margin-top: 30px;
+}
+
+/* auto settings css */
+.game-onwin , .game-onloss{
+  width: 320px;
+  height: 75px;
+  margin-left: calc(50% - 165px);
+  background-color: #244413;
+  border-radius: 6px;
+  color: white;
+  padding: 5px;
+  margin-top: 10px;
+  font-size: 13px;
+  user-select: none;
+}
+
+.auto-opasitychanger{
+  opacity: 0.5;
+}
+
+.autosettings-innerdiv{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.autosettings-innerdiv div{
+  width: 100px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  margin-left: 3px;
+  padding-bottom: 5px;
+}
+
+.autosettings-innerdiv div div{
+  display: flex;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.autosettings-innerdiv div input{
+  cursor: text;
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  font-size: 120%;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  padding-bottom: 2px;
+  background-color: #182d0a;
+  border-radius: 5px;
+  margin-left: 26px;
+}
+.autosettings-innerdiv div input:focus{
+  outline: none;
+}
+
+.making-my-life-harder{
+  padding-top: 15px;
+}
+
+.auto-dovhovers:hover{
+  background-color: #63804d;
+}
+
+.auto-settings-clickedon{
+  background-color: #63804d!important;
+}
+
+.game-random{
+  border: 2px solid white;
+  color: white;
+  border-radius: 6px;
+  text-align: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  width: 330px;
+  margin-left: calc(50% - 195px);
+  background-color: transparent;
+  height: 40px;
+  margin-top: 40px;
+}
+
+.game-random{
+  cursor: pointer;
+}
+
+.game-autostart{
+  background-image: linear-gradient(to right, #97d913, #6fc10a, #97d913, #6fc10a);
+    box-shadow: 0 2px 0 0 #2e4c03;
+    color: #223c06;
+    background-size: 300% 100%;
+    border: none;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: 600;
+    height: 45px;
+    width: 330px;
+    margin-top: 20px;
+    margin-left: calc(50% - 195px);
+}
+
+.game-autostart-ready{
+  cursor: pointer;
+  transition: background-image 1.5s ease-in-out!important;
+}
+
+.game-autostart-ready:hover{
+  background-image: linear-gradient(to left, #97d913, #6fc10a, #97d913, #6fc10a);
+}
