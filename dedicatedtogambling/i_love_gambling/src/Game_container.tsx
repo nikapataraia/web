@@ -1,15 +1,34 @@
-import React, { ReactNode, Dispatch, SetStateAction, useState } from 'react';
+import React, { ReactNode, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import data from './data/data';
 import AutoSettings from './Auto_settings';
 import Gamemap from './Game_map';
 import GameBet from './Game_bet';
+import GameFieldselect from './Game_fieldselect'
+import Sidemenu from './Sidemenu';
+import maps from './data/maps';
+import audios from './assets/Audiomanager';
 
 export interface GameProps {
   addtocredit: Function;
   subfromcredit: Function;
+  sidemenuactive : boolean;
+  Credit:number;
+  indebt : boolean;
+  volumeon : boolean;
+  setvolumeon : React.Dispatch<React.SetStateAction<boolean>>;
+  popmodul : Function
 }
 
-export default function Game_container({ addtocredit, subfromcredit, children }: React.PropsWithChildren<GameProps>) {
+export default function Game_container({ 
+  addtocredit, 
+  subfromcredit,
+  sidemenuactive,
+  Credit, 
+  indebt,
+  volumeon,
+  setvolumeon,
+  popmodul,
+  children }: React.PropsWithChildren<GameProps>) {
   const [ismanual, setismanual] = React.useState(true);
   const [betamount,setbetamount] = useState<number>(2.00);
   const [activefield,setactivefield] = useState<string>('Medium');
@@ -19,110 +38,139 @@ export default function Game_container({ addtocredit, subfromcredit, children }:
   const [lossincrease , setlossincrease] = useState<number>(100);
   const [lossdecrease,setlossdecrease] = useState<number>(50);
 
+  const [gamestarted,setgamestarted] = useState<boolean>(false);
+  const [selectionphase,setselectionphase] = useState<boolean>(false)
+
+  const [buttonispressed, setbuttonispressed] = useState<number>(-1)
+
+// additional consts for auto gameplay
+  const [selectrandomlypressed, setselectrandomlypressed] = useState<boolean>(false)
+  const [canstartgame , setcanstartgame] = useState<boolean>(false)
+  const [onwinselected,setonwinselected] = useState<string>("base")
+  const [onwinchange,setonwinchange] = useState<number>(0)
+  const [onlossselected,setonlossselected] = useState<string>("base")
+  const [onlosschange,setonlosschange] = useState<number>(0)
+  const [roundstarted,setroundstarted] = useState<boolean>(false)
+
+  React.useEffect(() => {
+    const updateBodyStyles = () => {
+      document.body.style.height = ismanual ? '100%' : 'auto';
+      if (window.innerWidth <= 960) {
+      } else {
+      }
+    };
+    updateBodyStyles();
+    window.addEventListener('resize', updateBodyStyles);
+    return () => {
+      window.removeEventListener('resize', updateBodyStyles);
+      document.body.style.height = 'auto';
+    };
+  }, [ismanual]);
+
+
+  const geteverythingtodefault1 = () => {
+    setbuttonispressed(-1)
+    setcanstartgame(false)
+    setselectrandomlypressed(false)
+    setgamestarted(false)
+    setselectionphase(false)
+    clearmap()
+  }
+
+  const clearblock = (index: number, columnindex: number) => {
+    const gridContainer = document.querySelector('.map-gridcontainer');
+  if (gridContainer) {
+    const columnElements = gridContainer.children;
+    if (columnElements[columnindex]) {
+      const blockElement = columnElements[columnindex].children[index] as HTMLDivElement | undefined;
+      if(blockElement){
+        const imageElement = blockElement.children[0] as HTMLImageElement | undefined;
+      if (imageElement) {
+        imageElement.remove();
+      }
+      }
+    }
+  }
+  }
+
+  const clearmap = () => {
+    for(let i = 0; i < maps[activefield].columns ; i++){
+      for(let j = 0; j < maps[activefield].rows ; j++){
+        clearblock(j,i)
+      }
+    }
+  }
+
+  useEffect(() => {
+    geteverythingtodefault1()
+  }, [ismanual,activefield]);
+
+
+  const selectrandomly = () => {
+    setselectrandomlypressed(!selectrandomlypressed)
+  }
+
+  const disablesettings = () => {
+    const leftside = document.querySelector('.game-settings') as HTMLElement | null;
+    if (leftside) {
+      leftside.style.pointerEvents = 'none';
+      leftside.style.opacity = '0.5';
+    }
+  };
   
+  const enablesettings = () => {
+    const leftside = document.querySelector('.game-settings') as HTMLElement | null;
+    if (leftside) {
+      leftside.style.pointerEvents = 'auto';
+      leftside.style.opacity = '1';
+    }
+  };
 
-  
-  // BET CHANGING
-//   const addtobet = (num : number) => {
-//     let newBetAmount = betamount + num;
-//   if (newBetAmount > data.max_bet) {
-//     newBetAmount = data.max_bet;
-//   }
-//   setbetamount(newBetAmount);
-//   const inputElement = document.getElementById('bet-input') as HTMLInputElement;
-//   inputElement.value = newBetAmount.toFixed(2);
-//   }
+  const checkifenoughmoney = () => {
+    if(Credit <= 0){
+     alert("pay us back first")
+     setbetamount(0) 
+     return
+    }
+    if(betamount > Credit){
+        alert("not enough Credits")
+        setbetamount(Credit)
+        return
+      }
+    
+  }
 
-//   const subfrombet = (num : number) => {
-//     let newBetAmount = betamount - num;
-//   if (newBetAmount < data.min_bet) {
-//     newBetAmount = data.min_bet;
-//   }
-//   setbetamount(newBetAmount);
-//   const inputElement = document.getElementById('bet-input') as HTMLInputElement;
-//   inputElement.value = newBetAmount.toFixed(2);
-//   }
+  const makeclicksound = () => {
+    const clickAudio = new Audio(audios.Click_audio);
+    clickAudio.play();
+  }
 
-//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const newValue = parseFloat(e.target.value);
-//     let newBetAmount = (isNaN(newValue) ? data.min_bet : (newValue > data.max_bet ? data.max_bet : (newValue < data.min_bet ? data.min_bet : newValue)));
-//     setbetamount(newBetAmount)
-//     const inputElement = document.getElementById('bet-input') as HTMLInputElement;
-//     inputElement.value = newBetAmount.toFixed(2);
-//   };
-
-//   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-//   const charCode = e.charCode;
-
-//   if ((charCode < 48 || charCode > 57) && charCode !== 46) {
-//     e.preventDefault();
-//   }
-// };
-
-// Field changing
-
-const handleFieldClick = (newfield : string) => {
-  setactivefield(newfield)
-}
-
-
+  const makebetsound = () => {
+    const clickAudio = new Audio(audios.Bet_audio);
+    clickAudio.play();
+  }
+  const [gameended,setgameended] = useState(false)
+  useEffect(() => {
+    setgameended(!gamestarted)
+  },[gamestarted])
+  useEffect(() => {
+    setgameended(roundstarted)
+  },[roundstarted])
 
   return (
     <div className="Game-container">
         {/* leftside */}
-      <div className="game-settings">
+      <div className={`game-settings 
+      ${(!ismanual && roundstarted) || (ismanual && gamestarted) ? 'disable-settings': ''}`}>
+        {/* game type */}
         <div className='game-type'>
-            <div className={`manual ${ismanual ? 'active-type' : ''}`} onClick={() => setismanual(true)}>Manual</div>
-            <div className={`auto ${!ismanual ? 'active-type' : ''}`} onClick={() => setismanual(false)}>Auto</div>
+            <div className={`manual ${ismanual ? 'active-type' : ''}`} onClick={() => {setismanual(true);makeclicksound()}}>Manual</div>
+            <div className={`auto ${!ismanual ? 'active-type' : ''}`} onClick={() => {setismanual(false);makeclicksound()}}>Auto</div>
         </div> 
 
-        {/* <div className='game-bet'>
-            <div className='game-bet-left'>
-                <p>Bet amount $</p>
-                <div className='bet-container'>
-                    <button onClick={() => subfrombet(0.1)}>-</button>
-                    <input 
-                    id='bet-input'
-                    type="text" 
-                    maxLength={6} 
-                    defaultValue={betamount.toFixed(2).toString()} 
-                    onBlur={handleInputChange}
-                    onKeyPress={handleKeyPress}
-                    pattern="[0-9]*"
-                    ></input>
-                    <button onClick={() => addtobet(0.1)}>+</button>
-                </div>
-            </div>
-            <div className='game-bet-right'>
-                <div onClick={() => addtobet(1)}>1 $</div>
-                <div onClick={() => addtobet(3)}>3 $</div>
-                <div onClick={() => addtobet(5)}>5 $</div>
-                <div onClick={() => addtobet(10)}>10 $</div>
-            </div>
-        </div> */}
         <GameBet setbetamount={setbetamount} betamount={betamount}></GameBet>
-
-
         {/* FIELD SELECT */}
-        <div className='field-select'>
-          <p>Field size</p>
-          <div className='field-container'>
-            <div 
-            onClick={() => handleFieldClick('Small')}
-            className={`field-option ${activefield === 'Small' ? 'active-field' : ''}`}
-            >Small</div>
-
-            <div 
-            onClick={() => handleFieldClick('Medium')}
-            className={`field-option ${activefield === 'Medium' ? 'active-field' : ''}`}
-            >Medium</div>
-
-            <div 
-            onClick={() => handleFieldClick('Big')}
-            className={`field-option ${activefield === 'Big' ? 'active-field' : ''}`}
-            >Big</div>
-          </div>
-        </div>
+        <GameFieldselect setactivefield = {setactivefield} activefield = {activefield}></GameFieldselect>
 
 
 {/* additional settings/buttons when playing auto */}
@@ -135,18 +183,64 @@ const handleFieldClick = (newfield : string) => {
           setwindecrease={setwindecrease}
           setlossincrease={setlossincrease}
           setlossdecrease={setlossdecrease}
+          selectrandomly={selectrandomly}
+          canstartgame = {canstartgame}
+          gamestarted = {gamestarted}
+          setgamestarted={setgamestarted}
+          onwinselected ={onwinselected}
+          setonwinselected = {setonwinselected}
+          onlossselected = {onlossselected}
+          setonlossselected={setonlossselected}
+          setonwinchange={setonwinchange}
+          setonlosschange={setonlosschange}
+          roundstarted = {roundstarted}
         />: null}
 
 {/* additional settings/buttons when playing manual */}
-        {ismanual ? <button className='game-manualbet'>BET</button> : null}
+
+        {ismanual ? <button onClick={() => {setgamestarted(true);
+          disablesettings();
+          checkifenoughmoney();
+          setbuttonispressed(buttonispressed + 1);
+           makebetsound()}} className='game-manualbet'>BET</button> : null}
       </div>
+
+
+
 
       {/* rightside */}
-
-
       <div className="game-map">
-        <Gamemap map_size={activefield}></Gamemap>
+        
+        <Gamemap 
+        map_size={activefield} 
+        ismanual = {ismanual} 
+        gamestarted = {gamestarted} 
+        setgamestarted = {setgamestarted}
+        selectionphase = {selectionphase}
+        setselectionphase = {setselectionphase}
+        addtocredit={addtocredit}
+        subfromcredit={subfromcredit}
+        betamount = {betamount}
+        enablesettings = {enablesettings}
+        buttonispressed = {buttonispressed}
+        selectrandomlypressed = {selectrandomlypressed}
+        setselectrandomlypressed = {setselectrandomlypressed}
+        selectrandomly = {selectrandomly}
+        canstartgame = {canstartgame}
+        setcanstartgame = {setcanstartgame}
+        onwinchange = {onwinchange}
+        onlosschange = {onlosschange}
+        setbetamount = {setbetamount}
+        setroundended = {setroundstarted}
+        ></Gamemap>
       </div>
+ 
+      <Sidemenu 
+      sidemenuactive = {sidemenuactive}
+      volumeon = {volumeon}
+      setvolumeon={setvolumeon}
+      popmodul={popmodul}
+      ></Sidemenu>
 
       {children}
     </div>

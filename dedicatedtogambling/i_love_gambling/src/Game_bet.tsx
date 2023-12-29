@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import data from "./data/data";
+import audios from "./assets/Audiomanager";
 
 interface GameBetProps {
     betamount: number;
@@ -11,7 +12,7 @@ interface GameBetProps {
     setbetamount,
   }) => {
     const addtobet = (num : number) => {
-        let newBetAmount = betamount + num;
+      let newBetAmount = betamount + num;
       if (newBetAmount > data.max_bet) {
         newBetAmount = data.max_bet;
       }
@@ -46,13 +47,25 @@ interface GameBetProps {
       }
     };
 
+    const makeclicksound = () => {
+      const clickAudio = new Audio(audios.Click_audio);
+      clickAudio.play();
+    }
+
+
+    const setbetamountto = (num : number) => {
+      setbetamount(num);
+      const inputElement = document.getElementById('bet-input') as HTMLInputElement;
+      inputElement.value = num.toFixed(2);
+    }
+  
 
     return (
       <div className='game-bet'>
         <div className='game-bet-left'>
           <p>Bet amount $</p>
           <div className='bet-container'>
-            <button onClick={() => subfrombet(0.1)}>-</button>
+            <button onClick={() => {subfrombet(0.1);makeclicksound()}}>-</button>
             <input
               id='bet-input'
               type='text'
@@ -62,14 +75,14 @@ interface GameBetProps {
               onKeyPress={handleKeyPress}
               pattern="[0-9]*"
             ></input>
-            <button onClick={() => addtobet(0.1)}>+</button>
+            <button onClick={() => {addtobet(0.1) ; makeclicksound()}}>+</button>
           </div>
         </div>
         <div className='game-bet-right'>
-          <div onClick={() => addtobet(1)}>1 $</div>
-          <div onClick={() => addtobet(3)}>3 $</div>
-          <div onClick={() => addtobet(5)}>5 $</div>
-          <div onClick={() => addtobet(10)}>10 $</div>
+          <div onClick={() => {setbetamountto(1);makeclicksound()}}>1 $</div>
+          <div onClick={() => {setbetamountto(3);makeclicksound()}}>3 $</div>
+          <div onClick={() => {setbetamountto(5);makeclicksound()}}>5 $</div>
+          <div onClick={() => {setbetamountto(10);makeclicksound()}}>10 $</div>
         </div>
       </div>
     );

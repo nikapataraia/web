@@ -1,0 +1,80 @@
+@media screen and (max-width: 960px) {
+
+    #root{
+        height: 100%;
+    }
+    body{
+        height: 100%;
+    }
+    html{
+        height: 100%;
+    }
+    .App {
+      width: 100%!important;
+      margin-left: 0px!important;
+      margin-top: 0px!important;
+      padding-bottom: 30px;
+      height: 100%;
+    }
+
+    .Game-container{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        height: calc(100% - 82px);
+        padding-bottom: 0px!important;
+    }
+
+    .game-settings {
+        order: 2;
+        margin-top: 30px;
+        width: 330px!important;
+    }
+
+    .game-map{
+        order: 1;
+        width: 100%!important;
+    }
+
+    .map-gridcontainer{
+        width: 450px!important;
+    }
+
+    .Arrowcontainer{
+        width: 450px!important;
+    }
+
+    .game-manualbet{
+        width: 100%!important;
+        margin: 0px!important;
+        margin-top: 20px!important;
+    }
+
+    .game-random{
+            margin-left: 0px!important;
+         }
+
+    .game-autostart {
+        margin-left: 0px!important;
+    }
+        
+        
+        
+
+  }
+
+
+  @media screen and (max-width: 520px) {
+    .fair p {
+        display: none;
+    }
+
+    .helper_text{
+        display: none;
+    }
+
+    .mid{
+        margin-left: calc(50% - 169px)!important;
+    }
+  }

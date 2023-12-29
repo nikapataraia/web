@@ -6,4 +6,12 @@ export default {
     Shield_icon : "https://goal-game.netlify.app/assets/shield-check.svg",
     Star_icon : "https://turbo-next.spribegaming.com/free-bets.5f5e04d1306ecce6540e.svg",
     Volume_icon : "https://turbo-next.spribegaming.com/volume.a53510ebf57ef9b14ed6.svg",
+    Bomb_icon : "https://turbo-next.spribegaming.com/bomb.47bc50b46c96091cf621.svg",
+    Ball_icon : "https://turbo-next.spribegaming.com/ball.7400b4088128521bcd5f.svg",
+    Explosion_icon : "https://turbo-next.spribegaming.com/bomb_detonation.5ff2455899c2d3887067.svg",
+    Flag_icon : "https://turbo-next.spribegaming.com/red_flag.2cbac31c65cadf1d4046.svg",
+    Arrow_icon : "https://goal-game.netlify.app/assets/arrow-down-short.svg",
+    Button_icon_on : "https://goal-game.netlify.app/assets/toggle-off.svg",
+    Button_icon_off : "https://goal-game.netlify.app/assets/toggle-on.svg",
+    Field_icon : "https://turbo-next.spribegaming.com/hint-goal.a84a2446dfda37f18733.svg",
 }
