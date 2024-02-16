@@ -18,12 +18,10 @@ export function GenerateReelContainer(mapWidth: number | undefined, mapHeight: n
 
     let reelwidth = (Reelcontainerwidth - 10) / mapWidth
     let reelHeight = appHeight - 10
-
-
         for(let i = 0; i < mapWidth; i++){
             GenerateReel(reelwidth,reelHeight,mapHeight,i)
         }
-    
+        
 }
 
 
@@ -51,14 +49,21 @@ function GenerateReel(reelwidth : number,reelheight : number,mapheight : number,
 
 
 export function addReeltoright(app : PIXI.Application<PIXI.ICanvas>){
-    let appWidth = app.stage.width
-    let appHeight = app.stage.height
+    if(ReelContainer.children.length == 4){
+        let appWidth = app.view.width
+    let appHeight = app.view.height
 
-    const Reelcontainerwidth = appWidth * (6/10)
-    let reelwidth = (Reelcontainerwidth - 10) / 4
+
+    const Reelcontainerwidth = appWidth * (3/4)
+    let reelwidth = (Reelcontainerwidth - 10) / 5
     let reelHeight = appHeight - 10
-
-    ReelContainer.width = ReelContainer.width + appWidth/5
     GenerateReel(reelwidth,reelHeight,5,4)
-    console.log(ReelContainer)
+
+    ReelContainer.width = Reelcontainerwidth
+    }
+
+    for(let i = 0; i < 5; i++){
+        console.log(ReelContainer.children[i].width)
+    }
+
 }
