@@ -17,6 +17,7 @@ export interface GameProps {
   volumeon : boolean;
   setvolumeon : React.Dispatch<React.SetStateAction<boolean>>;
   popmodul : Function
+  setsidemenuactive :React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Game_container({ 
@@ -28,6 +29,7 @@ export default function Game_container({
   volumeon,
   setvolumeon,
   popmodul,
+  setsidemenuactive,
   children }: React.PropsWithChildren<GameProps>) {
   const [ismanual, setismanual] = React.useState(true);
   const [betamount,setbetamount] = useState<number>(2.00);
@@ -142,12 +144,14 @@ export default function Game_container({
 
   const makeclicksound = () => {
     const clickAudio = new Audio(audios.Click_audio);
-    clickAudio.play();
+    if(volumeon){
+    clickAudio.play();}
   }
 
   const makebetsound = () => {
     const clickAudio = new Audio(audios.Bet_audio);
-    clickAudio.play();
+    if(volumeon){
+    clickAudio.play();}
   }
   const [gameended,setgameended] = useState(false)
   useEffect(() => {
@@ -157,8 +161,14 @@ export default function Game_container({
     setgameended(roundstarted)
   },[roundstarted])
 
+  useEffect(() => {
+    if(indebt){
+      geteverythingtodefault1()
+    }
+  },[indebt])
+
   return (
-    <div className="Game-container">
+    <div className={`Game-container ${indebt ? 'game-container-diactivate' : ''}`}>
         {/* leftside */}
       <div className={`game-settings 
       ${(!ismanual && roundstarted) || (ismanual && gamestarted) ? 'disable-settings': ''}`}>
@@ -168,9 +178,9 @@ export default function Game_container({
             <div className={`auto ${!ismanual ? 'active-type' : ''}`} onClick={() => {setismanual(false);makeclicksound()}}>Auto</div>
         </div> 
 
-        <GameBet setbetamount={setbetamount} betamount={betamount}></GameBet>
+        <GameBet setbetamount={setbetamount} betamount={betamount} volumeon = {volumeon}></GameBet>
         {/* FIELD SELECT */}
-        <GameFieldselect setactivefield = {setactivefield} activefield = {activefield}></GameFieldselect>
+        <GameFieldselect setactivefield = {setactivefield} activefield = {activefield} volumeon ={volumeon}></GameFieldselect>
 
 
 {/* additional settings/buttons when playing auto */}
@@ -194,6 +204,7 @@ export default function Game_container({
           setonwinchange={setonwinchange}
           setonlosschange={setonlosschange}
           roundstarted = {roundstarted}
+          volumeon = {volumeon}
         />: null}
 
 {/* additional settings/buttons when playing manual */}
@@ -232,6 +243,7 @@ export default function Game_container({
         onlosschange = {onlosschange}
         setbetamount = {setbetamount}
         setroundended = {setroundstarted}
+        volumeon = {volumeon}
         ></Gamemap>
       </div>
  
@@ -240,6 +252,7 @@ export default function Game_container({
       volumeon = {volumeon}
       setvolumeon={setvolumeon}
       popmodul={popmodul}
+      setsidemenuactive = {setsidemenuactive}
       ></Sidemenu>
 
       {children}

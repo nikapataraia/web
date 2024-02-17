@@ -3,18 +3,21 @@ import audios from "./assets/Audiomanager";
 interface GameFieldProps {
     setactivefield : React.Dispatch<React.SetStateAction<string>>;
     activefield : string;
+    volumeon : boolean;
   }
 
 const GameFieldselect: React.FC<GameFieldProps> = ({
     setactivefield,
     activefield,
+    volumeon,
   }) => {
     const handleFieldClick = (newfield : string) => {
         setactivefield(newfield)
       }
       const makeclicksound = () => {
         const clickAudio = new Audio(audios.Click_audio);
-        clickAudio.play();
+        if(volumeon){
+        clickAudio.play();}
       }
     return (
         <div className='field-select'>

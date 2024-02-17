@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import images from "./assets/images";
 import data from "./data/data";
 
@@ -6,9 +7,10 @@ interface sidemenuprops {
     volumeon : boolean;
     setvolumeon : React.Dispatch<React.SetStateAction<boolean>>;
     popmodul : Function;
+    setsidemenuactive : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Sidemenu: React.FC<sidemenuprops> = ({sidemenuactive,volumeon,setvolumeon,popmodul}) => {
+const Sidemenu: React.FC<sidemenuprops> = ({sidemenuactive,volumeon,setvolumeon,popmodul,setsidemenuactive}) => {
 
     return (<aside className={`${sidemenuactive?'sidemenuactive' : ''} sidemenu`}>
         <div className={`innersidemenu ${sidemenuactive ? 'inneractive' : ''}`}>

@@ -27,6 +27,7 @@ interface Gamemapinterface {
   onlosschange : number
   setbetamount:React.Dispatch<React.SetStateAction<number>>;
   setroundended:React.Dispatch<React.SetStateAction<boolean>>;
+  volumeon : boolean;
 
 }
 
@@ -48,7 +49,7 @@ const Gamemap: React.FC<Gamemapinterface> = ({ map_size , ismanual , gamestarted
   setgamestarted, selectionphase, setselectionphase , addtocredit, 
   subfromcredit,betamount ,enablesettings,buttonispressed,
   selectrandomlypressed,setselectrandomlypressed,selectrandomly,
-  canstartgame,setcanstartgame,onwinchange,onlosschange,setbetamount,setroundended
+  canstartgame,setcanstartgame,onwinchange,onlosschange,setbetamount,setroundended,volumeon
 }) => {
   const mymap = maps[map_size]
   const [oncolumn,setoncolumn] = useState<number>(0)
@@ -236,6 +237,7 @@ const checkifonbomb = (id : number, columnindex : number) => {
       cashout = {cashout}
       betamount = {betamount}
       takeawaymoney = { takeawaymoney}
+      volumeon = {volumeon}
       ></Gamemap_manual> 
       : 
       <Gamemap_auto mymap={mymap}
@@ -258,6 +260,7 @@ const checkifonbomb = (id : number, columnindex : number) => {
       onlosschange = {onlosschange}
       setbetamount = {setbetamount}
       setroundended={setroundended}
+      volumeon = {volumeon}
       ></Gamemap_auto>}
     </div></div>
   ); 

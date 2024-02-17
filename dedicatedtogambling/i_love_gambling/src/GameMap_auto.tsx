@@ -26,6 +26,7 @@ interface gamemapautoprops {
     onlosschange : number
     setbetamount:React.Dispatch<React.SetStateAction<number>>;
     setroundended:React.Dispatch<React.SetStateAction<boolean>>;
+    volumeon : boolean;
 }
 
 
@@ -51,6 +52,7 @@ const Gamemap_auto: React.FC<gamemapautoprops> = ({
     setbetamount,
     setroundended:
     setroundstarted,
+    volumeon,
   }) => {
 
     const [chosenboxes , setchosenboxes] = useState<number[]>([])
@@ -81,7 +83,8 @@ const Gamemap_auto: React.FC<gamemapautoprops> = ({
 
     const makebetsound = () => {
       const clickAudio = new Audio(audios.Bet_audio);
-      clickAudio.play();
+      if(volumeon){
+      clickAudio.play();}
     }
     
     useEffect(() => {
