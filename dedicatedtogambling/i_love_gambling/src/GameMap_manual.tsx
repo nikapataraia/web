@@ -19,6 +19,7 @@ interface gamemapmanualprops {
     cashout:Function;
     betamount:number;
     takeawaymoney : Function;
+    volumeon : boolean;
 }
 
 const Gamemap_manual: React.FC<gamemapmanualprops> = 
@@ -39,6 +40,7 @@ const Gamemap_manual: React.FC<gamemapmanualprops> =
     cashout,
     betamount,
     takeawaymoney,
+    volumeon,
 }) => {
     const handleblockclicks_manual = (index : number, columnindex : number) => {
         choosebox(index)

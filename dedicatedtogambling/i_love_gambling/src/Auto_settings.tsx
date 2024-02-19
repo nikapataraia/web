@@ -22,6 +22,7 @@ interface AutoSettingsProps {
     setonwinchange: React.Dispatch<React.SetStateAction<number>>;
     setonlosschange: React.Dispatch<React.SetStateAction<number>>;
     roundstarted : boolean;
+    volumeon : boolean;
   }
 
 
@@ -45,6 +46,7 @@ interface AutoSettingsProps {
     setonwinchange,
     setonlosschange,
     roundstarted,
+    volumeon,
   }) => {
 
 
@@ -100,12 +102,14 @@ interface AutoSettingsProps {
 
     const makeclicksound = () => {
       const clickAudio = new Audio(audios.Click_audio);
-      clickAudio.play();
+      if(volumeon){
+      clickAudio.play();}
     }
 
     const makebetsound = () => {
       const clickAudio = new Audio(audios.Bet_audio);
-      clickAudio.play();
+      if(volumeon){
+      clickAudio.play();}
     }
 
 

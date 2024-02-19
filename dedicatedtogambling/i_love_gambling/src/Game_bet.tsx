@@ -5,11 +5,13 @@ import audios from "./assets/Audiomanager";
 interface GameBetProps {
     betamount: number;
     setbetamount : React.Dispatch<React.SetStateAction<number>>;
+    volumeon : boolean;
   }
   
   const GameBet: React.FC<GameBetProps> = ({
     betamount,
     setbetamount,
+    volumeon,
   }) => {
     const addtobet = (num : number) => {
       let newBetAmount = betamount + num;
@@ -48,8 +50,9 @@ interface GameBetProps {
     };
 
     const makeclicksound = () => {
+      if(volumeon){
       const clickAudio = new Audio(audios.Click_audio);
-      clickAudio.play();
+      clickAudio.play();}
     }
 
 

@@ -27,7 +27,8 @@ const [lastprize,setlastprize] = useState<number>(0)
 
 const Addtocredit = (num : number) => {
   const winAudio = new Audio(audios.Cashout_audio);
-  winAudio.play();
+  if(volumeon){
+  winAudio.play();}
   SetCredit(Credit + num)
   setwon(true)
   setTimeout(() => {
@@ -48,7 +49,8 @@ const Subfromcredit = (num : number) => {
     setindebt(true)
   }
   setTimeout(() => {
-    playloseAudio()
+    if(volumeon){
+    playloseAudio()}
   },100)
   SetCredit(Credit - num)
   setwon(false)
@@ -121,7 +123,8 @@ setmodal_showbetlimits(showbetlimits)
       indebt = {indebt}
       volumeon = {volumeon}
       setvolumeon = {setvolumeon}
-      popmodul={pop_modal}>
+      popmodul={pop_modal}
+      setsidemenuactive = {setsidemenuactive}>
       </Game_container> 
 
 
