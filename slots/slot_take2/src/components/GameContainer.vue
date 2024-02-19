@@ -3,20 +3,25 @@
     
     </div>
     <button @click=startgame>start</button>
-    <button @click=openreel>open new reel</button>
+    <button @click=activateleftwingLOCAL>open left wing</button>
+    <button @click=activaterightwingLOCAT>open right wing</button>
 </template>
     
 <script setup lang="ts">
     import * as PIXI from 'pixi.js';
     import { ref, watch } from 'vue';
     import { onMounted } from 'vue';
-    import {GenerateReelContainer, ReelContainer, addReeltoright} from "./ReelContainer"
+    import {GenerateReelContainer, ReelContainer} from "./ReelContainer"
     import {AssetsLoaded, Symbolimages} from '../assets/Data'
+    import { GenerateWingContainer ,activateleftwing,activaterightwing} from './WingContainer';
+
+
+
+
     let app : PIXI.Application<PIXI.ICanvas>;
     let appwidth =  1000
     let appheight = 500
-    let mapWidth = 4
-    let maxmapWidth = 5
+    let mapWidth = 7
     let mapHeight = 5
     let speed = 2500
     const GameContainerRef = ref<HTMLDivElement | null>(null);
@@ -48,7 +53,8 @@
         if(GameContainer){
             GameContainer.appendChild(app.view as unknown as HTMLElement)
         }
-        GenerateReelContainer(mapWidth, mapHeight, app, maxmapWidth, appwidth,appheight)
+        GenerateReelContainer(mapWidth, mapHeight, app, appwidth,appheight)
+        GenerateWingContainer(app,appheight,appwidth)
         GameSkeletonloaded.value = true
     }
     function startgame(){     
@@ -65,8 +71,14 @@
         
     }
 
-    function openreel(){
-        addReeltoright(app)
+    function activateleftwingLOCAL(){
+        activateleftwing(app,appwidth)
     }
+
+    function activaterightwingLOCAT(){
+        activaterightwing(app,appwidth)
+    }
+
+
 
 </script>

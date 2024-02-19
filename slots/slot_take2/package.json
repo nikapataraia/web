@@ -15,6 +15,9 @@
   },
   "dependencies": {
     "pinia": "^2.1.7",
+    "pixi": "^0.3.1",
+    "pixi.js": "^7.4.0",
+    "sass": "^1.71.0",
     "vue": "^3.4.15"
   },
   "devDependencies": {
