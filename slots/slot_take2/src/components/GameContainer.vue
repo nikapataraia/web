@@ -5,6 +5,8 @@
     <button @click=startgame>start</button>
     <button @click=activateleftwingLOCAL>open left wing</button>
     <button @click=activaterightwingLOCAT>open right wing</button>
+    <button @click="wiggleleftwing">wiggle left wing</button>
+    <button @click="wigglerightwing">wiggle right wing</button>
 </template>
     
 <script setup lang="ts">
@@ -13,7 +15,7 @@
     import { onMounted } from 'vue';
     import {GenerateReelContainer, ReelContainer} from "./ReelContainer"
     import {AssetsLoaded, Symbolimages} from '../assets/Data'
-    import { GenerateWingContainer ,activateleftwing,activaterightwing} from './WingContainer';
+    import { GenerateWingContainer ,activateleftwing,activaterightwing, wigglewing , leftwing,rightrwing} from './WingContainer';
 
 
 
@@ -29,6 +31,9 @@
     const gamestarted = ref<boolean>(false)
     const GameSkeletonloaded = ref<boolean>(false)
 
+
+    
+
     onMounted(() => {
         if(AssetsLoaded.value){
             GenerateGameSkeleton()
@@ -43,7 +48,7 @@
     });
 
 
-    function GenerateGameSkeleton(){
+    function GenerateGameSkeleton(){  
         app = new PIXI.Application({
             width : appwidth,
             height : appheight,
@@ -77,6 +82,12 @@
 
     function activaterightwingLOCAT(){
         activaterightwing(app,appwidth)
+    }
+    function wiggleleftwing(){
+        wigglewing(leftwing,true,15,400)
+    }
+    function wigglerightwing(){
+        wigglewing(rightrwing,false,15,400)
     }
 
 

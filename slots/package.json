@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "pixi.js": "^7.4.0"
+    "pixi.js": "^7.4.0",
+    "tween.js": "^16.6.0"
   }
 }
