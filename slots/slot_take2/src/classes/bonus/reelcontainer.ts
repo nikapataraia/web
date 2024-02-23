@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js'
 import * as Tween from '@tweenjs/tween.js';
 import { Reel } from './reel';
-import { generateType, slotTextures } from '@/assets/Data';
 import { eventBus } from '@/assets/eventBus';
 export class ReelContainer {
     container: PIXI.Container;
@@ -34,12 +33,26 @@ export class ReelContainer {
             this.container.addChild(newReel.reel);
         }
 
-        eventBus.on('animatereels' , () => {
-            this.aniamtereels()
+        eventBus.on('openwing', () => {
+            this.activatereel();
+        });
+        eventBus.on('animatereels', () => {
+            this.animatereels();
+        });
+    }
+
+    private animatereels(){
+        this.reels.forEach((reel) => {
+            if(reel.isactive){
+                reel.animatereel(false)
+            }
         })
     }
 
-    private aniamtereels(){
-        
+    private activatereel(){
+        const len = this.reels.length
+        if(len !== 5){
+            (len === 6 ? this.reels[5].isactive = true : (this.reels[6].isactive ? this.reels[0].isactive = true : this.reels[6].isactive = true))
+        }
     }
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { loadassets , slotTextures } from './assets/Data';
+import { generateanimationsets } from './assets/Data_textures';
+import { loadassets , slotTextures } from './assets/Data_textures';
 import GameContainer from './components/GameContainer.vue'
 import * as PIXI from 'pixi.js'
-
 loadassets()
-
+generateanimationsets()
 </script>
 
 <template>
