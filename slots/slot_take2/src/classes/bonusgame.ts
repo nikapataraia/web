@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { BonusController } from './bonuscontrolls'
 import { BonusGameContainer } from './bonusgamecontainer'
-export class BonusGame{
+import { eventBus } from '../assets/eventBus';
+export default class BonusGame{
     bonusgamecontainer : BonusGameContainer
     bonusgamecontroller : BonusController
     bonusgame_app : PIXI.Application<PIXI.ICanvas>
@@ -21,5 +22,16 @@ export class BonusGame{
         })
 
         this.bonusgame_app.stage.addChild(this.bonusgamecontainer.container)
+    }
+
+    openwing() {
+        eventBus.emit('openwing');
+    }
+
+    wigglewing() {
+        eventBus.emit('wigglewing');
+    }
+    animatereels(){
+        eventBus.emit('animatereels')
     }
 }

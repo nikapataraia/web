@@ -14,7 +14,7 @@ export class Wing{
         this.wing.addChild(winggraphics);
     }
 
-    animateWing( newX: number, duration: number) {
+    openWing( newX: number, duration: number) {
         const currentX = { x: this.wing.x };
         const tween = new Tween.Tween(currentX)
             .to({ x: newX}, duration)
@@ -28,7 +28,7 @@ export class Wing{
             ticker.add((delta) => {
                 Tween.update()
             });
-    
+        this.isopen = true
         return tween;
     }
 

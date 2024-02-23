@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "mitt": "^3.0.1",
     "pixi.js": "^7.4.0",
     "tween.js": "^16.6.0"
   }

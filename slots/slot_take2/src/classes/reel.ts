@@ -6,11 +6,15 @@ export class Reel {
     symbols: SlotSymbol[];
     isactive: boolean;
 
-    constructor( isactive: boolean , reelWidth : number, reelHeight : number, mapHeight : number) {
+    constructor( isactive: boolean , reelWidth : number, reelHeight : number, mapHeight : number , reelx : number) {
         this.reel = new PIXI.Container;
+        this.reel.width = reelWidth
+        this.reel.height = reelHeight
+        this.reel.y = 5
         const symbolcontainerheight = reelHeight / mapHeight
         const symbolcontainerwidth = reelWidth
         this.symbols = []
+        this.reel.x = reelx
         for(let i = 0 ;i < mapHeight; i++){
             const newsymbol = new SlotSymbol(generateType(),0,symbolcontainerheight,symbolcontainerwidth,i)
             this.symbols.push(newsymbol)
