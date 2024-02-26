@@ -8,11 +8,10 @@ export class ReelContainer {
 
     constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number) {
         this.container = new PIXI.Container();
-        const containerWidth = appWidth * 0.1 * mapWidth;
+        const containerWidth = appWidth * 0.6
         this.container.width = containerWidth;
         this.container.height = appHeight;
-        this.container.x = appWidth * 0.15 + (mapWidth === 7 ? 0 : appWidth * 0.1);
-        this.container.zIndex = 400;
+        this.container.x = appWidth * 0.2
         
 
         const background = new PIXI.Graphics();
@@ -32,27 +31,16 @@ export class ReelContainer {
             this.reels.push(newReel);
             this.container.addChild(newReel.reel);
         }
-
-        eventBus.on('openwing', () => {
-            this.activatereel();
-        });
         eventBus.on('animatereels', () => {
             this.animatereels();
         });
     }
 
     private animatereels(){
-        this.reels.forEach((reel) => {
-            if(reel.isactive){
-                reel.animatereel(false)
-            }
-        })
-    }
-
-    private activatereel(){
-        const len = this.reels.length
-        if(len !== 5){
-            (len === 6 ? this.reels[5].isactive = true : (this.reels[6].isactive ? this.reels[0].isactive = true : this.reels[6].isactive = true))
-        }
+        this.reels.forEach((reel, index) => {
+            setTimeout(() => {
+                reel.animatereel(false);
+            }, 50 * index);
+        });
     }
 }

@@ -5,24 +5,26 @@ import { generateType } from '@/assets/Data';
 import Symboltexture from './symboltexture'
 export class SlotSymbolContainer {
     symboltypeid: number;
-    value: number;
     SymbolContainer: PIXI.Container;
     location : number
-    Symboltexture : Symboltexture;
+    SymboltextureContainer : Symboltexture;
+    symbolcontainerheight : number;
+    symbolcontainerwidth : number;
 
-    constructor(symboltypeid: number, value: number, symbolcontainerheight : number, symbolcontainerwidth : number , location : number , x : number, y : number) {
+    constructor(symboltypeid: number,  symbolcontainerheight : number, symbolcontainerwidth : number , location : number , x : number, y : number) {
         this.symboltypeid = symboltypeid;
-        this.value = value;
         this.location = location
-  
+
+        this.symbolcontainerheight = symbolcontainerheight
+        this.symbolcontainerwidth = symbolcontainerwidth
 
         this.SymbolContainer = new PIXI.Container;
         this.SymbolContainer.width = symbolcontainerwidth
         this.SymbolContainer.height = symbolcontainerheight
         this.SymbolContainer.y = location * symbolcontainerheight + y * location
         this.SymbolContainer.x = x
-        this.Symboltexture = new Symboltexture(symbolcontainerwidth,symbolcontainerheight,this.symboltypeid)
-        this.SymbolContainer.addChild(this.Symboltexture.symbolTexture)
+        this.SymboltextureContainer = new Symboltexture(symbolcontainerwidth,symbolcontainerheight,this.symboltypeid)
+        this.SymbolContainer.addChild(this.SymboltextureContainer.container)
     }
 
     animateSymbolDrops(quickplayactive : boolean) {
@@ -30,7 +32,8 @@ export class SlotSymbolContainer {
             const newsymbol = generateType()
             const setsonchosensymbol = (quickplayactive ? animationsets_quickplay[newsymbol] : animationsets[newsymbol])
             const animationset = setsonchosensymbol[Math.floor(Math.random() * setsonchosensymbol.length)]
-            
+            this.SymboltextureContainer.animateTexture(animationset)
+            this.symboltypeid = animationset[animationset.length - 2]
         }
     }
 }

@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 export class Reel {
     reel : PIXI.Container;
     symbols: SlotSymbolContainer[];
-    isactive: boolean;
+    // isactive: boolean;
 
     constructor( isactive: boolean , reelWidth : number, reelHeight : number, mapHeight : number , reelx : number) {
         this.reel = new PIXI.Container;
@@ -22,11 +22,11 @@ export class Reel {
         this.symbols = []
         this.reel.x = reelx
         for(let i = 0 ;i < mapHeight; i++){
-            const newsymbol = new SlotSymbolContainer(generateType(),0,symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery)
+            const newsymbol = new SlotSymbolContainer(generateType(),symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery)
             this.symbols.push(newsymbol)
             this.reel.addChild(newsymbol.SymbolContainer)
         }
-        this.isactive = isactive;
+        // this.isactive = isactive;
     }
 
     animatereel( quickplayactive : boolean) {
@@ -34,4 +34,12 @@ export class Reel {
             symbol.animateSymbolDrops(quickplayactive)
         })
     }
+
+    // animatereel(quickplayactive: boolean) {
+    //     this.symbols.forEach((symbol, index) => {
+    //         setTimeout(() => {
+    //             symbol.animateSymbolDrops(quickplayactive);
+    //         }, 50 * index);
+    //     });
+    // }
 }

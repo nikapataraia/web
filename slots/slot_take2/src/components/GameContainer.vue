@@ -3,8 +3,8 @@
     
     </div>
     <button @click=animatereelLocal>role</button>
-    <button @click=oepnwingLocal>open  wing</button>
-    <button @click="wigglewingLocal">wiggle wing</button>
+    <!-- <button @click=oepnwingLocal>open  wing</button>
+    <button @click="wigglewingLocal">wiggle wing</button>  -->
 </template>
     
 <script setup lang="ts">
@@ -15,7 +15,7 @@
     import BonusGame from '../classes/bonus/bonusgame'
     let appwidth =  1000
     let appheight = 600
-    let mapWidth = 7
+    let mapWidth = 6
     let mapHeight = 5
     let speed = 2500
     const GameContainerRef = ref<HTMLDivElement | null>(null);
@@ -39,13 +39,13 @@
     }
 
 
-    function oepnwingLocal(){
-        bonusgame.openwing()
-    }
+    // function oepnwingLocal(){
+    //     bonusgame.openwing()
+    // }
 
-    function wigglewingLocal(){
-        bonusgame.wigglewing()
-    }
+    // function wigglewingLocal(){
+    //     bonusgame.wigglewing()
+    // }
 
     function animatereelLocal(){
         bonusgame.animatereels()
