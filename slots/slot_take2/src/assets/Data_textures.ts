@@ -72,11 +72,11 @@ export function generateanimationsets(){
         const setforconcretekey = []
         for(let i = 0 ; i < 12 - parseInt(key, 10); i++){
             const newset : number[] = []
-        for(let i =0; i < 11 ; i++){
+        for(let i =0; i < 20 ; i++){
             newset.push(generateType())
         }
         newset[1] = 0
-        newset[9] = parseInt(key , 10)
+        newset[18] = parseInt(key , 10)
         setforconcretekey.push(newset)
         }
         animationsets[parseInt(key, 10)] = setforconcretekey

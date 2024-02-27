@@ -1,20 +1,19 @@
 import { animationsets, animationsets_quickplay, slotTextures } from '@/assets/Data_textures';
 import * as PIXI from 'pixi.js'
 import {} from '../../assets/Data_textures'
-import { generateType } from '@/assets/Data';
+import { generateType, generateWeightedNumber } from '@/assets/Data';
 import Symboltexture from './symboltexture'
 export class SlotSymbolContainer {
-    symboltypeid: number;
     SymbolContainer: PIXI.Container;
     location : number
+    oncolumn : number
     SymboltextureContainer : Symboltexture;
     symbolcontainerheight : number;
     symbolcontainerwidth : number;
 
-    constructor(symboltypeid: number,  symbolcontainerheight : number, symbolcontainerwidth : number , location : number , x : number, y : number) {
-        this.symboltypeid = symboltypeid;
+    constructor(symboltypeid: number,  symbolcontainerheight : number, symbolcontainerwidth : number , location : number , x : number, y : number, oncolumn : number) {
         this.location = location
-
+        this.oncolumn = oncolumn
         this.symbolcontainerheight = symbolcontainerheight
         this.symbolcontainerwidth = symbolcontainerwidth
 
@@ -23,17 +22,17 @@ export class SlotSymbolContainer {
         this.SymbolContainer.height = symbolcontainerheight
         this.SymbolContainer.y = location * symbolcontainerheight + y * location
         this.SymbolContainer.x = x
-        this.SymboltextureContainer = new Symboltexture(symbolcontainerwidth,symbolcontainerheight,this.symboltypeid)
+        this.SymboltextureContainer = new Symboltexture(symbolcontainerwidth,symbolcontainerheight,symboltypeid)
         this.SymbolContainer.addChild(this.SymboltextureContainer.container)
     }
 
     animateSymbolDrops(quickplayactive : boolean) {
-        if(this.symboltypeid===0){
+        if(this.SymboltextureContainer.symbolid===0){
             const newsymbol = generateType()
             const setsonchosensymbol = (quickplayactive ? animationsets_quickplay[newsymbol] : animationsets[newsymbol])
             const animationset = setsonchosensymbol[Math.floor(Math.random() * setsonchosensymbol.length)]
-            this.SymboltextureContainer.animateTexture(animationset)
-            this.symboltypeid = animationset[animationset.length - 2]
+            this.SymboltextureContainer.animateTexture(animationset , generateWeightedNumber())
+            this.SymboltextureContainer.symbolid = animationset[animationset.length - 2]
         }
     }
 }

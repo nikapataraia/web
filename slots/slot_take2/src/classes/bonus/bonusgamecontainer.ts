@@ -1,13 +1,13 @@
 
+import InfoContainer from "./infocontainer";
 import { ReelContainer } from "./reelcontainer";
 import * as PIXI from 'pixi.js'
-import { WingContainer } from "./wingcontainer";
 export class BonusGameContainer{
     reelcontainer : ReelContainer
+    infocontainer : InfoContainer;
     container : PIXI.Container;
     gameWidth : number;
     gameHeight : number;
-    // wingcontainer : WingContainer;
 
     constructor(mapWidth : number, mapHeight : number, gameWidth : number, gameHeight : number){
         this.gameHeight = gameHeight
@@ -17,8 +17,9 @@ export class BonusGameContainer{
         this.container.width = gameWidth
         this.container.height = gameHeight
         this.container.addChild(this.reelcontainer.container)
-        // this.wingcontainer = new WingContainer(this.gameWidth,this.gameHeight)
-        // this.container.addChild(this.wingcontainer.wingcontainer)
+
+        this.infocontainer = new InfoContainer(2,gameWidth,gameHeight)
+        this.container.addChild(this.infocontainer.container)
     }
 
 }

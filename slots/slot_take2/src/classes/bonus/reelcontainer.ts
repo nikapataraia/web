@@ -5,8 +5,10 @@ import { eventBus } from '@/assets/eventBus';
 export class ReelContainer {
     container: PIXI.Container;
     reels: Reel[];
+    animationcomplete : boolean;
 
     constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number) {
+        this.animationcomplete = false
         this.container = new PIXI.Container();
         const containerWidth = appWidth * 0.6
         this.container.width = containerWidth;

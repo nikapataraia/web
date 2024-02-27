@@ -3,8 +3,7 @@
     
     </div>
     <button @click=animatereelLocal>role</button>
-    <!-- <button @click=oepnwingLocal>open  wing</button>
-    <button @click="wigglewingLocal">wiggle wing</button>  -->
+    <button @click=changedimensionsLocal>change dim</button>
 </template>
     
 <script setup lang="ts">
@@ -38,17 +37,12 @@
         GameSkeletonloaded.value = true
     }
 
-
-    // function oepnwingLocal(){
-    //     bonusgame.openwing()
-    // }
-
-    // function wigglewingLocal(){
-    //     bonusgame.wigglewing()
-    // }
-
     function animatereelLocal(){
         bonusgame.animatereels()
+    }
+
+    function changedimensionsLocal(){
+        bonusgame.changedimension(400,250)
     }
 
 

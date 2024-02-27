@@ -22,24 +22,17 @@ export class Reel {
         this.symbols = []
         this.reel.x = reelx
         for(let i = 0 ;i < mapHeight; i++){
-            const newsymbol = new SlotSymbolContainer(generateType(),symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery)
+            const newsymbol = new SlotSymbolContainer(generateType(),symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery , i)
             this.symbols.push(newsymbol)
             this.reel.addChild(newsymbol.SymbolContainer)
         }
-        // this.isactive = isactive;
     }
 
-    animatereel( quickplayactive : boolean) {
-        this.symbols.forEach((symbol) => {
-            symbol.animateSymbolDrops(quickplayactive)
-        })
+    animatereel(quickplayactive: boolean) {
+        this.symbols.forEach((symbol, index) => {
+            setTimeout(() => {
+                symbol.animateSymbolDrops(quickplayactive);
+            }, 50 * index * Math.random() * 3);
+        });
     }
-
-    // animatereel(quickplayactive: boolean) {
-    //     this.symbols.forEach((symbol, index) => {
-    //         setTimeout(() => {
-    //             symbol.animateSymbolDrops(quickplayactive);
-    //         }, 50 * index);
-    //     });
-    // }
 }

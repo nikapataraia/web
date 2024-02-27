@@ -8,9 +8,13 @@ export default class SymbolTexture {
     symbolContainerWidth: number;
     symbolContainerHeight: number;
     animationInProgress: boolean = false;
+    symbolid : number
+    value : number;
 
     constructor(symbolContainerWidth: number, symbolContainerHeight: number, textureId: number) {
         const texture = slotTextures[textureId];
+        this.value = 1;
+        this.symbolid = textureId
         this.symbolTexture = new PIXI.Sprite(texture);
         this.symbolTexture.width = symbolContainerWidth;
         this.symbolTexture.height = symbolContainerHeight;
@@ -32,9 +36,13 @@ export default class SymbolTexture {
         PIXI.Ticker.shared.add(() => {
             Tween.update();
         });
+
+        if(textureId !== 0){
+            this.generatevalue()
+        }
     }
 
-    animateTexture(textureSet: number[]) {
+    animateTexture(textureSet: number[] , value : number) {
         if (this.animationInProgress) return;
         this.animationInProgress = true;
     
@@ -44,7 +52,7 @@ export default class SymbolTexture {
     
         const animateRazgon = (sprite_cur: PIXI.Sprite, sprite_bot: PIXI.Sprite, onComplete: () => void) => {
             const tweenCur = new Tween.Tween({ y: sprite_cur.y })
-                .to({ y: sprite_cur.y - this.symbolContainerHeight * 0.1 }, 210)
+                .to({ y: sprite_cur.y - this.symbolContainerHeight * 0.1 }, 150)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     sprite_cur.y = object.y;
@@ -53,7 +61,7 @@ export default class SymbolTexture {
                 .repeat(1);
 
             const tweenBot = new Tween.Tween({ y: sprite_bot.y })
-                .to({ y: sprite_bot.y - this.symbolContainerHeight * 0.1 }, 210)
+                .to({ y: sprite_bot.y - this.symbolContainerHeight * 0.1 }, 150)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     sprite_bot.y = object.y;
@@ -74,7 +82,7 @@ export default class SymbolTexture {
     
         const animateReverse = (sprite_bot: PIXI.Sprite, sprite_top: PIXI.Sprite, onComplete: () => void) => {
             const tweenBot = new Tween.Tween({ y: sprite_bot.y })
-                .to({ y: sprite_bot.y + this.symbolContainerHeight * 0.1 }, 210)
+                .to({ y: sprite_bot.y + this.symbolContainerHeight * 0.2 }, 350)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     sprite_bot.y = object.y;
@@ -83,7 +91,7 @@ export default class SymbolTexture {
                 .repeat(1);
 
             const tweenTop = new Tween.Tween({ y: sprite_top.y })
-                .to({ y: sprite_top.y + this.symbolContainerHeight * 0.1 }, 210)
+                .to({ y: sprite_top.y + this.symbolContainerHeight * 0.2 }, 350)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     sprite_top.y = object.y;
@@ -120,6 +128,10 @@ export default class SymbolTexture {
                     animateReverse(curTexture,toptexture, () => {
                         this.container.removeChild(toptexture)
                         this.animationInProgress = false;
+                        if(this.symbolid !== 0){
+                            this.value = value
+                            this.generatevalue()
+                        }
                     });
                     return;
                 }
@@ -131,7 +143,7 @@ export default class SymbolTexture {
                 this.container.addChild(newTexture);
     
                 new Tween.Tween({ y: newTexture.y })
-                    .to({ y: 0 }, 150)
+                    .to({ y: 0 }, 100)
                     .easing(Tween.Easing.Linear.None)
                     .onUpdate(object => {
                         newTexture.y = object.y;
@@ -139,7 +151,7 @@ export default class SymbolTexture {
                     .start();
 
                 new Tween.Tween({ y: curTexture.y })
-                    .to({ y: this.symbolContainerHeight }, 150)
+                    .to({ y: this.symbolContainerHeight }, 100)
                     .easing(Tween.Easing.Linear.None)
                     .onUpdate(object => {
                         curTexture.y = object.y;
@@ -157,5 +169,19 @@ export default class SymbolTexture {
     
             loopAnimation();
         });
+    }
+
+
+    generatevalue(){
+        const valuetext = new PIXI.Text(`${this.value}x`, {
+            fontFamily: 'Arial', 
+            fontSize: 24, 
+            fill: 'white', 
+            align: 'center' 
+        });
+        valuetext.x = (this.symbolContainerWidth - valuetext.width) / 2;
+        valuetext.y = (this.symbolContainerHeight - valuetext.height) / 2;
+
+        this.container.addChild(valuetext);
     }
 }

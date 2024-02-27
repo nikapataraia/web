@@ -31,3 +31,21 @@ export const generateType= () =>{
     return type;
 }
 
+
+export function generateWeightedNumber(): number {
+    // Generating a random number between 0 (inclusive) and 1 (exclusive)
+    let rand = Math.random();
+    let cumulativeProbability = 0;
+    let probabilityStep = 0.5; // Starting probability for 1
+
+    for (let i = 1; i <= 20; i++) {
+        cumulativeProbability += probabilityStep;
+        if (rand < cumulativeProbability) {
+            return i;
+        }
+        probabilityStep /= 2; // Halve the probability for the next number
+    }
+
+    return 20; // Fallback, though practically unreachable due to the loop logic
+}
+
