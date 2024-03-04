@@ -19,4 +19,8 @@ export default class InfoContainer{
         this.container.addChild(this.winninginfo.container)
         this.container.addChild(this.rollinfo.container)
     }
+
+    decreaseroll(){
+        this.rollinfo.decreaseroll();
+    }
 }

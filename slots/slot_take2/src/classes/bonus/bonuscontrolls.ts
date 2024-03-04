@@ -26,9 +26,10 @@ export class BonusController {
         this.container.height = gameheight;
         this.container.y = containery;
 
-        this.permabotcontainer = new PermaBotContainer(gamewidth,gameheight);
-        this.responsivecontainer = new ResponsiveContainer(gamewidth,gameheight);
+        this.permabotcontainer = new PermaBotContainer(gamewidth,containerheight);
+        this.responsivecontainer = new ResponsiveContainer(gamewidth,containerheight);
 
         this.container.addChild(this.responsivecontainer.container)
+        this.container.addChild(this.permabotcontainer.container)
     }
 }

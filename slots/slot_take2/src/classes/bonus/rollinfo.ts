@@ -7,6 +7,7 @@ export default class RollInfo {
     rollsleft: number;
     container: PIXI.Container;
     container_roll: PIXI.Container;
+    rollsText: PIXI.Text; // Add this line to store the text object
 
     constructor(appwidth: number, appheight: number) {
         this.rollsleft = 3;
@@ -35,16 +36,43 @@ export default class RollInfo {
 
         this.container.addChild(this.container_roll);
 
-        const rollsText = new PIXI.Text(this.rollsleft, {
+        this.rollsText = new PIXI.Text(this.rollsleft.toString(), {
             fontFamily: 'Arial',
             fontSize: 24,
             fill: 0xffffff,
             align: 'center'
         });
 
-        rollsText.x = (containerWidth - rollsText.width) / 2;
-        rollsText.y = (appheight * 0.3 - rollsText.height) / 2;
+        this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
+        this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
 
-        this.container_roll.addChild(rollsText);
+        this.container_roll.addChild(this.rollsText);
+        eventBus.on('decreaseRoll', () => {
+            this.decreaseroll();
+        });
+
+        eventBus.on('increaseRoll', () => {
+            this.increaseroll();
+        });
+    }
+
+    decreaseroll() {
+        if (this.rollsleft > 0) {
+            this.rollsleft -= 1;
+            this.rollsText.text = this.rollsleft.toString();
+            const containerWidth = this.container.width;
+            const appheight = this.container.height;
+            this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
+            this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
+        }
+    }
+
+    increaseroll(){
+        this.rollsleft = 3;
+        this.rollsText.text = this.rollsleft.toString();
+        const containerWidth = this.container.width;
+        const appheight = this.container.height;
+        this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
+        this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
     }
 }

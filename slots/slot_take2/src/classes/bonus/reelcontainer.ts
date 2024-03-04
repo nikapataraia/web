@@ -2,12 +2,13 @@ import * as PIXI from 'pixi.js'
 import * as Tween from '@tweenjs/tween.js';
 import { Reel } from './reel';
 import { eventBus } from '@/assets/eventBus';
+import type { gameinfo } from './gamedimulation/game';
 export class ReelContainer {
     container: PIXI.Container;
     reels: Reel[];
     animationcomplete : boolean;
 
-    constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number) {
+    constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number, startersymbols : gameinfo) {
         this.animationcomplete = false
         this.container = new PIXI.Container();
         const containerWidth = appWidth * 0.6
@@ -29,20 +30,20 @@ export class ReelContainer {
         
         for (let i = 0; i < mapWidth; i++) {
             let isReelActive = !(mapWidth === 6 && i === mapWidth - 1) && !(mapWidth === 7 && (i === 0 || i === mapWidth - 1));
-            const newReel = new Reel(isReelActive, reelWidth, reelHeight, mapHeight, i  *reelWidth);
+            const newReel = new Reel(isReelActive, reelWidth, reelHeight, mapHeight, i  * reelWidth , startersymbols[i]);
             this.reels.push(newReel);
             this.container.addChild(newReel.reel);
         }
-        eventBus.on('animatereels', () => {
-            this.animatereels();
-        });
     }
 
-    private animatereels(){
-        this.reels.forEach((reel, index) => {
-            setTimeout(() => {
-                reel.animatereel(false);
-            }, 50 * index);
-        });
+    animatereels(newreels : gameinfo) {
+        this.animationcomplete = false
+        const reelPromises = this.reels.map((reel, index) => 
+            new Promise<void>(resolve => setTimeout(() => {
+                resolve(reel.animatereel(false , ((newreels && newreels[index]) ? newreels[index] : {})));
+            }, 50 * index))
+        );
+    
+        return Promise.all(reelPromises)
     }
 }
