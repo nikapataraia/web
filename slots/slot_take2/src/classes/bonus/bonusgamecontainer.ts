@@ -1,15 +1,18 @@
 
 import { eventBus } from "@/assets/eventBus";
-import type { gameinfo } from "./gamedimulation/game";
 import InfoContainer from "./infocontainer";
 import { ReelContainer } from "./reelcontainer";
 import * as PIXI from 'pixi.js'
+import type { gameinfo } from "./bonusgame";
+
+
 export class BonusGameContainer{
     reelcontainer : ReelContainer
     infocontainer : InfoContainer;
     container : PIXI.Container;
     gameWidth : number;
     gameHeight : number;
+    fullgameinfo : gameinfo;
 
     constructor(mapWidth : number, mapHeight : number, gameWidth : number, gameHeight : number , startersymbols : gameinfo){
         this.gameHeight = gameHeight
@@ -20,8 +23,9 @@ export class BonusGameContainer{
         this.container.height = gameHeight
         this.container.addChild(this.reelcontainer.container)
 
-        this.infocontainer = new InfoContainer(2,gameWidth,gameHeight)
+        this.infocontainer = new InfoContainer(this.getpoints(),gameWidth,gameHeight)
         this.container.addChild(this.infocontainer.container)
+        this.fullgameinfo = startersymbols
     }
 
     animatereels(newreels: gameinfo) {
@@ -37,6 +41,10 @@ export class BonusGameContainer{
                 eventBus.emit('increaseRoll');
             }
         });
+    }
+
+    getpoints(){
+        return this.reelcontainer.getpoints()
     }
 
 }

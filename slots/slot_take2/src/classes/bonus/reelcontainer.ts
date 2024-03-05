@@ -3,6 +3,7 @@ import * as Tween from '@tweenjs/tween.js';
 import { Reel } from './reel';
 import { eventBus } from '@/assets/eventBus';
 import type { gameinfo } from './gamedimulation/game';
+import PointSymbol from './symbols/pointssymbol';
 export class ReelContainer {
     container: PIXI.Container;
     reels: Reel[];
@@ -45,5 +46,18 @@ export class ReelContainer {
         );
     
         return Promise.all(reelPromises)
+    }
+
+    getpoints(){
+        let points = 0
+        this.reels.forEach(element => {
+            element.symbols.forEach((symbolcontainer) => {
+                const symbol = symbolcontainer.symbolcontainer
+                if(symbol instanceof PointSymbol){
+                    points += symbol.value
+                }
+            })
+        });
+        return points
     }
 }

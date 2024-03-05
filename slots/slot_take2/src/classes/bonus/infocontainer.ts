@@ -9,7 +9,7 @@ export default class InfoContainer{
     rollinfo : RollInfo;
     winninginfo : WinningInfo;
     container : PIXI.Container;
-    constructor(startingwinning : number , appwidth : number, appheight : number){
+    constructor(startingwinning : number , appwidth : number, appheight : number,){
         this.container = new PIXI.Container
         this.rollinfo = new RollInfo(appwidth,appheight)
         this.winninginfo = new WinningInfo(appwidth,appheight,startingwinning)

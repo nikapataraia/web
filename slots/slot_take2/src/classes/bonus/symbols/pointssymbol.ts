@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js'
 import { slotTextures } from '@/assets/Data_textures';
 import * as Tween from '@tweenjs/tween.js';
 import Symbol from './symbol';
+import type { coordinates, gameinfo } from '../bonusgame';
+import type { Reel } from '../reel';
 
 export default class PointSymbol extends Symbol{
     value : number;
@@ -46,5 +48,9 @@ export default class PointSymbol extends Symbol{
         if (!this.container.children.includes(this.valuecontainer)) {
             this.container.addChild(this.valuecontainer);
         }
+    }
+
+    doAction(fullinfo : gameinfo , collectesthese : coordinates, reels : Reel[], quickplayon : boolean){
+        return
     }
 }

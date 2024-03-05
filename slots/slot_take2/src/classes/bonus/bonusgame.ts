@@ -3,6 +3,19 @@ import { BonusController } from './bonuscontrolls'
 import { BonusGameContainer } from './bonusgamecontainer'
 import { eventBus } from '../../assets/eventBus';
 import type GameSimulation from './gamedimulation/game';
+
+export interface reelinfo{
+    [key : number] : [number, number]
+}
+
+export interface gameinfo{
+    [key : number] : reelinfo
+}
+
+export interface coordinates{
+    [key : number] : number
+}
+
 export default class BonusGame{
     bonusgamecontainer : BonusGameContainer
     bonusgamecontroller : BonusController
@@ -10,6 +23,7 @@ export default class BonusGame{
     appWidth : number;
     appHeight : number;
     gamesimulation : GameSimulation
+    currentgameinfo : gameinfo;
 
     constructor(appwidth : number,appheight : number , mapwidth : number, mapheight : number , gamesimulation : GameSimulation){
         this.gamesimulation = gamesimulation
@@ -25,6 +39,7 @@ export default class BonusGame{
 
         this.bonusgamecontroller = new BonusController(1,appwidth,appheight)
         this.bonusgame_app.stage.addChild(this.bonusgamecontroller.container)
+        this.currentgameinfo = gamesimulation.startinginfo;
     }
 
     async play() {
@@ -33,7 +48,7 @@ export default class BonusGame{
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i]);
-            await delay(500);
+            await delay(1000);
         }
     }
 

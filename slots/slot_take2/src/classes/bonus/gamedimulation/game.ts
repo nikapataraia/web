@@ -16,37 +16,67 @@ class pointsymbol extends mysymbol{
     }
 }
 
+function calculatelength(fullinfo : gameinfo): number {
+    let totalPoints = 0;
+    Object.values(fullinfo).forEach(reel => {
+        Object.values(reel).forEach((symbol) => {
+            const [, value] = symbol as [number,number];
+            totalPoints += 1;
+        });
+    });
+    return totalPoints;
+}
+
 class collector extends pointsymbol{
     constructor(id : number , value : number){
         super(id,value)
     }
-    doAction(fullinfo: gameinfo) {
-        Object.keys(fullinfo).forEach(reelIndex => {
-            const reel = fullinfo[parseInt(reelIndex)];
-            Object.keys(reel).forEach(positionIndex => {
-                const symbolInfo = reel[parseInt(positionIndex)];
-                if (symbolInfo) {
-                    const [, value] = symbolInfo;
-                    this.value += value;
-                }
-            });
-        });
+    doAction(fullinfo: gameinfo): Array<[number, number]> {
+        let hits: Array<[number, number]> = [];
+        let symbolsToCollectFrom = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+
+        while (hits.length < symbolsToCollectFrom) {
+            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
+            const reel = fullinfo[reelIndex];
+            const positionIndex = Math.floor(Math.random() * Object.keys(reel).length);
+            const symbolInfo = reel[positionIndex];
+            if (symbolInfo && symbolInfo[0] !== 0) {
+                this.value += symbolInfo[1];
+                hits.push([reelIndex, positionIndex]);
+            }
+        }
+
+        return hits;
+    }
+
+    calculatehits(fullinfo: gameinfo){
+
     }
 }
 class payer extends pointsymbol{
     constructor(id : number , value : number){
         super(id,value)
     }
-    doAction(fullinfo: gameinfo) {
-        Object.keys(fullinfo).forEach(reelIndex => {
-            const reel = fullinfo[parseInt(reelIndex)];
-            Object.keys(reel).forEach(positionIndex => {
-                const symbolInfo = reel[parseInt(positionIndex)];
-                if (symbolInfo) {
-                    symbolInfo[1] += this.value;
-                }
-            });
-        });
+    doAction(fullinfo: gameinfo): Array<[number, number]> {
+        let hits: Array<[number, number]> = [];
+        let symbolsToAffect = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+
+        while (hits.length < symbolsToAffect) {
+            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
+            const reel = fullinfo[reelIndex];
+            const positionIndex = Math.floor(Math.random() * Object.keys(reel).length);
+            const symbolInfo = reel[positionIndex];
+            if (symbolInfo && symbolInfo[0] !== 0) {
+                symbolInfo[1] += this.value;
+                hits.push([reelIndex, positionIndex]);
+            }
+        }
+
+        return hits;
+    }
+
+    calculatehits(fullinfo: gameinfo){
+
     }
 }
 class sniper extends pointsymbol {
@@ -70,15 +100,25 @@ class sniper extends pointsymbol {
         }
         return hits;
     }
+
+    calculatehits(fullinfo: gameinfo){
+        const randomhits = Math.floor(Math.random() * 6) + 3
+        const hits : coordinates;
+        for(let i = 0; i < randomhits; i++){
+            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
+            const reelKeys = Object.keys(fullinfo[reelIndex]);
+            if (reelKeys.length > 0) {
+                const positionIndex = reelKeys[Math.floor(Math.random() * reelKeys.length)];
+                const symbolInfo = fullinfo[reelIndex][parseInt(positionIndex)];
+                if (symbolInfo) {
+                    symbolInfo[1] *= this.value;
+                    hits.push([reelIndex, parseInt(positionIndex)]);
+                }
+            }
+        }
+    }
 }
 
-export interface reelinfo{
-    [key : number] : [number, number]
-}
-
-export interface gameinfo{
-    [key : number] : reelinfo
-}
 class reel {
     symbols: mysymbol[];
 
@@ -158,6 +198,29 @@ export function generateWeightedNumber(): number {
     return 20;
 }
 
+export interface reelinfo{
+    [key : number] : [number, number]
+}
+
+export interface gameinfo{
+    [key : number] : reelinfo
+}
+
+import type { coordinates } from "../bonusgame";
+
+export interface SpecialInfo{
+    [onsymbol : number] : coordinates[]
+}
+
+export interface DoActionInfo{
+    [onreel : number] : SpecialInfo
+}
+
+export interface Api_info{
+    gameinfo : gameinfo,
+    actioninfo : DoActionInfo
+}
+
 export default class GameSimulation {
     Bet: number;
     rollsleft: number;
@@ -204,6 +267,8 @@ export default class GameSimulation {
         });
         return totalPoints;
     }
+
+    
 
     simulate(): [gameinfo[], number, Array<Array<[number, number]>>] {
         const simulationresult: gameinfo[] = [];
@@ -263,6 +328,39 @@ export default class GameSimulation {
     
         const totalPoints = this.calculatePoints();
         return [simulationresult, totalPoints, sniperhits];
+    }
+
+    simulate2(): [Api_info[], number]{
+        const simulationresult : Api_info[] = []
+        while(this.rollsleft > 0){
+            this.rollsleft -= 1
+            const currentrollinfo : Api_info = {
+                gameinfo: {},
+                actioninfo: {}
+            }
+            let specialSymbolGenerated = false
+            for (let reelIndex = 0; reelIndex < Object.keys(this.reelcontainer.reels).length; reelIndex++) {
+                currentrollinfo.gameinfo[reelIndex] = {};
+                for (let position = 0; position < 5; position++) {
+                    if (this.fullinfo[reelIndex] && this.fullinfo[reelIndex][position]) {
+                        continue;
+                    }
+    
+                    const type = generateType();
+                    if (type != 0) {
+                        specialSymbolGenerated = true;
+                        const value = generateWeightedNumber();
+                        currentrollinfo.gameinfo[reelIndex][position] = [type, value];
+                        if (type === 2 || type === 3 || type === 4) {
+                            const actiondoer = this.createSymbolInstance(type,value)
+                            currentrollinfo.actioninfo[reelIndex][position] = 
+                    }
+                }
+            }
+            
+        }
+    }
+    return [simulationresult,this.calculatePoints()]
     }
 
     private createSymbolInstance(type: number, value: number): pointsymbol {

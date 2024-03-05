@@ -12,7 +12,6 @@ export class SlotSymbolContainer {
     container: PIXI.Container;
     location : number
     oncolumn : number
-    // SymboltextureContainer : Symboltexture;
     containerheight : number;
     containerwidth : number;
     animationInProgress: boolean = false;
@@ -29,8 +28,6 @@ export class SlotSymbolContainer {
         this.container.height = containerheight
         this.container.y = location * containerheight + y * location
         this.container.x = x
-        // this.SymboltextureContainer = new Symboltexture(containerwidth,containerheight,symboltypeid,symbolvalue)
-        // this.container.addChild(this.SymboltextureContainer.container)
         const mask = new PIXI.Graphics();
         mask.beginFill(0xffffff);
         mask.drawRect(0, 0, containerwidth, containerheight);

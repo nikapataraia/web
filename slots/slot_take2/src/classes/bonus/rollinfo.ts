@@ -7,7 +7,7 @@ export default class RollInfo {
     rollsleft: number;
     container: PIXI.Container;
     container_roll: PIXI.Container;
-    rollsText: PIXI.Text; // Add this line to store the text object
+    rollsText: PIXI.Text;
 
     constructor(appwidth: number, appheight: number) {
         this.rollsleft = 3;
@@ -39,7 +39,7 @@ export default class RollInfo {
         this.rollsText = new PIXI.Text(this.rollsleft.toString(), {
             fontFamily: 'Arial',
             fontSize: 24,
-            fill: 0xffffff,
+            fill: 'black',
             align: 'center'
         });
 
@@ -56,20 +56,50 @@ export default class RollInfo {
         });
     }
 
+    applyGlowEffect(duration = 150) {
+        const originalStyle = this.rollsText.style;
+
+        // Change to glow style
+        this.rollsText.style = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 24,
+            fill: '#ffffff', // White color
+            // Assuming PIXI.js v5+ for dropShadow options
+            dropShadow: true,
+            dropShadowColor: '#ffffff',
+            dropShadowBlur: 5,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 6,
+            align: 'center'
+        });
+
+        // Wait for the duration and revert back to the original style
+        setTimeout(() => {
+            this.rollsText.style = originalStyle;
+        }, duration);
+    }
+
     decreaseroll() {
         if (this.rollsleft > 0) {
             this.rollsleft -= 1;
             this.rollsText.text = this.rollsleft.toString();
-            const containerWidth = this.container.width;
-            const appheight = this.container.height;
-            this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
-            this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
+            // Center the text
+            this.centerText();
+            // Apply glow effect
+            this.applyGlowEffect();
         }
     }
 
-    increaseroll(){
+    increaseroll() {
         this.rollsleft = 3;
         this.rollsText.text = this.rollsleft.toString();
+        // Center the text
+        this.centerText();
+        // Apply glow effect
+        this.applyGlowEffect();
+    }
+
+    centerText() {
         const containerWidth = this.container.width;
         const appheight = this.container.height;
         this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
