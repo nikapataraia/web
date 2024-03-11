@@ -4,6 +4,7 @@ import * as Tween from '@tweenjs/tween.js';
 import Symbol from './symbol';
 import type { coordinates, gameinfo } from '../bonusgame';
 import type { Reel } from '../reel';
+import type { ReelContainer } from '../reelcontainer';
 
 export default class PointSymbol extends Symbol{
     value : number;
@@ -19,6 +20,10 @@ export default class PointSymbol extends Symbol{
         this.valuecontainer.addChild(this.valuetext)
         this.valuecontainerheight = symbolContainerHeight
         this.valuecontainerwidth = symbolContainerWidth
+        
+        PIXI.Ticker.shared.add(() => {
+            Tween.update();
+        });
     }
 
     changeValue(newValue: number) {
@@ -50,7 +55,9 @@ export default class PointSymbol extends Symbol{
         }
     }
 
-    doAction(fullinfo : gameinfo , collectesthese : coordinates[], reels : Reel[], quickplayon : boolean, symbolcontainerwidth : number, symbolcontainerheight : number){
-        return
+    doAction(fullinfo: gameinfo, collectThese: coordinates[], reelContainer: ReelContainer, quickPlayOn: boolean, symbolContainerWidth: number, symbolContainerHeight: number): Promise<void> {
+        return new Promise<void>((resolve) => {
+            resolve();
+        });
     }
 }

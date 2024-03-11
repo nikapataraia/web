@@ -4,8 +4,10 @@ import type { reelinfo } from './gamedimulation/game';
 export class Reel {
     container : PIXI.Container;
     symbols: SlotSymbolContainer[];
+    reelindex : number
 
-    constructor( isactive: boolean , reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo) {
+    constructor( reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo,  reelindex : number) {
+        this.reelindex = reelindex
         this.container = new PIXI.Container;
         this.container.width = reelWidth
         this.container.height = reelHeight
@@ -21,7 +23,7 @@ export class Reel {
         this.symbols = []
         this.container.x = reelx
         for(let i = 0 ;i < mapHeight; i++){
-                const newsymbol = new SlotSymbolContainer(((reelinfo && reelinfo[i])?reelinfo[i][0] : 0),((reelinfo && reelinfo[i])?reelinfo[i][1] : 0),symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery , i)
+                const newsymbol = new SlotSymbolContainer(((reelinfo && reelinfo[i])?reelinfo[i][0] : 0),((reelinfo && reelinfo[i])?reelinfo[i][1] : 0),symbolcontainerheight,symbolcontainerwidth,i,symbolcontainerx,symbolcontainery , this.reelindex)
                 this.symbols.push(newsymbol)
                 this.container.addChild(newsymbol.container)
         }

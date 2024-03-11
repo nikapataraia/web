@@ -4,16 +4,17 @@ import * as Tween from '@tweenjs/tween.js';
 import PointSymbol from './pointssymbol';
 import type { coordinates, gameinfo } from '../bonusgame';
 import type { Reel } from '../reel';
+import type { ReelContainer } from '../reelcontainer';
 
 export default class Payer extends PointSymbol {
     constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value: number, location : coordinates) {
         super(id, symbolContainerWidth, symbolContainerHeight, value, location);
     }
 
-    doAction(fullinfo: gameinfo, payThese: coordinates[], reels: Reel[], quickplayon: boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
+    doAction(fullinfo: gameinfo, payThese: coordinates[], reelcontainer : ReelContainer,quickplayon: boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
         return new Promise<void>((resolve) => {
             const animationPromises: Promise<void>[] = [];
-
+            const reels = reelcontainer.reels
             payThese.forEach((cords) => {
                 const { reelIndex, symbolIndex } = cords;
                 const reel = reels[reelIndex];

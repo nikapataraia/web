@@ -288,7 +288,6 @@ export default class GameSimulation {
     simulate2(): [Api_info[], number]{
         const simulationresult : Api_info[] = []
         while(this.rollsleft > 0){
-            console.log('rolls left ' + this.rollsleft)
             this.rollsleft -= 1
             const currentrollinfo : Api_info = {
                 gameinfo: {},

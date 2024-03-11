@@ -2,53 +2,54 @@ import * as PIXI from 'pixi.js'
 import * as Tween from '@tweenjs/tween.js';
 import PointSymbol from './pointssymbol';
 import type { coordinates, gameinfo } from '../bonusgame';
-import type { Reel } from '../reel';
+import type { ReelContainer } from '../reelcontainer';
 
 export default class Collector extends PointSymbol{
     constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates){
         super(id,symbolContainerWidth,symbolContainerHeight,value, location);
     }
 
-    doAction(fullinfo: gameinfo, collectThese: coordinates[], reels: Reel[], quickplayon: boolean , symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
-        return new Promise<void>((resolve) => {
+    doAction(fullinfo: gameinfo, collectThese: coordinates[], reelcontainer: ReelContainer, quickplayon: boolean, symbolcontainerwidth: number, symbolcontainerheight: number): Promise<void> {
+        return new Promise((resolve) => {
             let totalCollectedValue = 0;
             const animationPromises: Promise<void>[] = [];
-            const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms)); 
-            
-            collectThese.forEach(async coord => {
-                await quickplayon ? delay(0) : delay(700)
+            const targetx = (this.location.reelIndex + 0.5) * symbolcontainerwidth
+            const targety = (this.location.symbolIndex + 0.5) * symbolcontainerheight
+            console.log(this)
+            for (let i = 0; i < collectThese.length; i++) {
+                const coord = collectThese[i];
+                const delay = quickplayon ? 100 : 1700;
                 const { reelIndex, symbolIndex } = coord;
-                const reel = reels[reelIndex];
-                const symbol = reel.symbols[symbolIndex];
-    
+                const reel = reelcontainer.reels[reelIndex];
+                const symbol = reel.symbols[symbolIndex].symbolcontainer;
+                
                 if (symbol instanceof PointSymbol) {
                     totalCollectedValue += symbol.value;
-    
                     const valueText = new PIXI.Text(symbol.value.toString(), {
                         fontFamily: 'Arial',
                         fontSize: 24,
                         fill: 'white',
                         align: 'center',
                     });
-                    valueText.position.set(symbol.container.x, symbol.container.y);
-                    reel.container.addChild(valueText);
-    
-                    const collectorPosition = { x: this.container.x, y: this.container.y };
+                    valueText.position.set((reelIndex + 0.5) * symbolcontainerwidth, (symbolIndex + 0.5) * symbolcontainerheight);
+                    reelcontainer.container.addChild(valueText);
                     const animationPromise = new Promise<void>((resolveAnimation) => {
-                        new Tween.Tween(valueText.position)
-                            .to(collectorPosition, quickplayon ? 500 : 1500)
-                            .easing(Tween.Easing.Cubic.Out)
-                            .onComplete(() => {
-                                reel.container.removeChild(valueText);
-                                resolveAnimation();
-                            })
-                            .start();
+                        setTimeout(() => {
+                            new Tween.Tween(valueText.position)
+                                .to({ x: targetx, y: targety}, quickplayon ? 500 : 1500)
+                                .easing(Tween.Easing.Cubic.Out)
+                                .onComplete(() => {
+                                    reelcontainer.container.removeChild(valueText);
+                                    resolveAnimation();
+                                })
+                                .start();
+                        }, delay);
                     });
-    
+                    
                     animationPromises.push(animationPromise);
                 }
-            });
-    
+            }
+            
             Promise.all(animationPromises).then(() => {
                 this.changeValue(this.value + totalCollectedValue);
                 resolve();

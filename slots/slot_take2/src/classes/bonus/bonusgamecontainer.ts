@@ -41,20 +41,24 @@ export class BonusGameContainer{
     
         return this.reelcontainer.animatereels(newreels).then(async () => {
             if (!isEmpty) {
-                eventBus.emit('increaseRoll');
-                if (!(Object.keys(specialsymbolactions).length === 0)) {
-                    for (const reelind of Object.keys(specialsymbolactions)) {
-                        const reelindex = parseInt(reelind);
-                        for (const symbolind of Object.keys(specialsymbolactions[reelindex])) {
-                            const symbolindex = parseInt(symbolind);
-                            const special = this.reelcontainer.reels[reelindex].symbols[symbolindex].symbolcontainer as PointSymbol;
-                            await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer.reels, false, this.gameWidth,this.gameHeight);
-                        }
-                    }
-                }
-                this.infocontainer.increasewinnings(this.calculatetotalpoints());
+                return this.completespecialopparations(specialsymbolactions)
             }
         });
+    }
+
+    async completespecialopparations(specialsymbolactions: DoActionInfo){
+        eventBus.emit('increaseRoll');
+        if (!(Object.keys(specialsymbolactions).length === 0)) {
+            for (const reelind of Object.keys(specialsymbolactions)) {
+                const reelindex = parseInt(reelind);
+                for (const symbolind of Object.keys(specialsymbolactions[reelindex])) {
+                    const symbolindex = parseInt(symbolind);
+                    const special = this.reelcontainer.reels[reelindex].symbols[symbolindex].symbolcontainer as PointSymbol;
+                    await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer, false, this.gameWidth * 0.1,this.gameHeight/5).then(() => {console.log('completed')});
+                }
+            }
+        }
+        this.infocontainer.increasewinnings(this.calculatetotalpoints());
     }
 
     calculatetotalpoints(){

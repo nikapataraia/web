@@ -6,6 +6,8 @@ export class ReelContainer {
     container: PIXI.Container;
     reels: Reel[];
     animationcomplete : boolean;
+    containerwidth : number
+    cotaninerheight : number
 
     constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number, startersymbols : gameinfo) {
         this.animationcomplete = false
@@ -14,6 +16,8 @@ export class ReelContainer {
         this.container.width = containerWidth;
         this.container.height = appHeight;
         this.container.x = appWidth * 0.2
+        this.containerwidth = containerWidth
+        this.cotaninerheight = appHeight
         
 
         const background = new PIXI.Graphics();
@@ -28,8 +32,7 @@ export class ReelContainer {
         this.reels = [];
         
         for (let i = 0; i < mapWidth; i++) {
-            const isReelActive = !(mapWidth === 6 && i === mapWidth - 1) && !(mapWidth === 7 && (i === 0 || i === mapWidth - 1));
-            const newReel = new Reel(isReelActive, reelWidth, reelHeight, mapHeight, i  * reelWidth , startersymbols[i]);
+            const newReel = new Reel( reelWidth, reelHeight, mapHeight, i  * reelWidth , startersymbols[i] ,i);
             this.reels.push(newReel);
             this.container.addChild(newReel.container);
         }
