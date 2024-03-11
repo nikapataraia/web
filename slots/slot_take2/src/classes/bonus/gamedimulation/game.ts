@@ -1,40 +1,40 @@
 class mysymbol{
     id : number
-    constructor(id : number){
+    location : coordinates;
+    constructor(id : number , cords : coordinates){
         this.id = id
+        this.location = cords
+    }
+    doAction(fullinfo: gameinfo, hitthese: coordinates[]): void {
+        throw new Error("Method not implemented.");
+    }
+    calculatehits(fullinfo: gameinfo): coordinates[] {
+        throw new Error("Method not implemented.");
     }
 }
 
 class pointsymbol extends mysymbol{
-    doAction(fullinfo: gameinfo): void {
-        throw new Error("Method not implemented.");
-    }
     value : number;
-    constructor(id : number , value : number){
-        super(id)
+    constructor(id : number , value : number , cords : coordinates){
+        super(id,cords)
         this.value = value
     }
-}
-
-function calculatelength(fullinfo : gameinfo): number {
-    let totalPoints = 0;
-    Object.values(fullinfo).forEach(reel => {
-        Object.values(reel).forEach((symbol) => {
-            const [, value] = symbol as [number,number];
-            totalPoints += 1;
-        });
-    });
-    return totalPoints;
+    doAction(fullinfo: gameinfo, hitthese: coordinates[]): void {
+        throw new Error("Method not implemented.");
+    }
+    calculatehits(fullinfo: gameinfo): coordinates[] {
+        throw new Error("Method not implemented.");
+    }
 }
 
 class collector extends pointsymbol{
-    constructor(id : number , value : number){
-        super(id,value)
+    constructor(id : number , value : number , cords : coordinates){
+        super(id,value,cords )
     }
-    doAction(fullinfo: gameinfo): Array<[number, number]> {
-        let hits: Array<[number, number]> = [];
-        let symbolsToCollectFrom = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
-
+    doAction(fullinfo: gameinfo, hitthese: coordinates[]): void {
+        const hits: coordinates[] = [];
+        const symbolsToCollectFrom = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+    
         while (hits.length < symbolsToCollectFrom) {
             const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
             const reel = fullinfo[reelIndex];
@@ -42,109 +42,124 @@ class collector extends pointsymbol{
             const symbolInfo = reel[positionIndex];
             if (symbolInfo && symbolInfo[0] !== 0) {
                 this.value += symbolInfo[1];
-                hits.push([reelIndex, positionIndex]);
+                hits.push({ reelIndex: reelIndex, symbolIndex: positionIndex });
             }
         }
-
-        return hits;
+    
     }
 
-    calculatehits(fullinfo: gameinfo){
-
+    calculatehits(fullinfo: gameinfo): coordinates[] {
+        const hits: coordinates[] = [];
+        Object.entries(fullinfo).forEach(([reelIndex, symbols]) => {
+            Object.entries(symbols).forEach(([symbolIndex, symbolData]) => {
+                if(parseInt(reelIndex) != this.location.reelIndex && parseInt(symbolIndex) != this.location.symbolIndex){
+                    hits.push({ reelIndex: parseInt(reelIndex), symbolIndex: parseInt(symbolIndex) });
+                }
+            });
+        });
+    
+        return hits;
     }
 }
 class payer extends pointsymbol{
-    constructor(id : number , value : number){
-        super(id,value)
+    constructor(id : number , value : number , cords : coordinates){
+        super(id,value,cords )
     }
-    doAction(fullinfo: gameinfo): Array<[number, number]> {
-        let hits: Array<[number, number]> = [];
-        let symbolsToAffect = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
-
-        while (hits.length < symbolsToAffect) {
-            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
-            const reel = fullinfo[reelIndex];
-            const positionIndex = Math.floor(Math.random() * Object.keys(reel).length);
-            const symbolInfo = reel[positionIndex];
+    doAction(fullinfo: gameinfo, hitThese: coordinates[]): void {
+        hitThese.forEach(coord => {
+            const reelIndex = coord.reelIndex
+            const positionIndex = coord.symbolIndex
+    
+            const symbolInfo = fullinfo[reelIndex][positionIndex];
             if (symbolInfo && symbolInfo[0] !== 0) {
                 symbolInfo[1] += this.value;
-                hits.push([reelIndex, positionIndex]);
             }
-        }
-
-        return hits;
+        });
     }
 
-    calculatehits(fullinfo: gameinfo){
-
+    calculatehits(fullinfo: gameinfo): coordinates[] {
+        const hits: coordinates[] = [];
+        Object.entries(fullinfo).forEach(([reelIndex, symbols]) => {
+            Object.entries(symbols).forEach(([symbolIndex, symbolData]) => {
+                if(parseInt(reelIndex) != this.location.reelIndex && parseInt(symbolIndex) != this.location.symbolIndex){
+                    hits.push({ reelIndex: parseInt(reelIndex), symbolIndex: parseInt(symbolIndex) });
+                }
+            });
+        });
+    
+        return hits;
     }
 }
 class sniper extends pointsymbol {
-    constructor(id: number, value: number) {
-        super(id, value);
+    constructor(id: number, value: number , cords : coordinates) {
+        super(id, value,cords );
     }
 
-    doAction(fullinfo: gameinfo): Array<[number, number]> {
-        const hits: Array<[number, number]> = [];
-        for (let i = 0; i < 3; i++) {
-            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
-            const reelKeys = Object.keys(fullinfo[reelIndex]);
-            if (reelKeys.length > 0) {
-                const positionIndex = reelKeys[Math.floor(Math.random() * reelKeys.length)];
-                const symbolInfo = fullinfo[reelIndex][parseInt(positionIndex)];
-                if (symbolInfo) {
-                    symbolInfo[1] *= this.value;
-                    hits.push([reelIndex, parseInt(positionIndex)]);
-                }
+    doAction(fullinfo: gameinfo , hitThese: coordinates[]): void {
+        hitThese.forEach(target => {
+            const reelindex = target.reelIndex
+            const symbolindex = target.symbolIndex
+            const symbolinfo = fullinfo[reelindex][symbolindex];
+            if(symbolinfo && symbolinfo[0] !== 0){
+                symbolinfo[1] *= this.value
             }
+        })
+    }
+
+    calculatehits(fullinfo: gameinfo): coordinates[] {
+        const allSymbols: coordinates[] = [];
+        Object.entries(fullinfo).forEach(([reelIndexStr, symbols]) => {
+            const reelIndex = parseInt(reelIndexStr);
+            Object.keys(symbols).forEach(symbolIndexStr => {
+                const symbolIndex = parseInt(symbolIndexStr);
+                if (!(reelIndex === this.location.reelIndex && symbolIndex === this.location.symbolIndex)) {
+                    allSymbols.push({ reelIndex: reelIndex, symbolIndex: symbolIndex });
+                }
+            });
+        });
+    
+        const randomhits_count = Math.floor(Math.random() * 6) + 3;
+        const hits: coordinates[] = [];
+        for (let i = 0; i < randomhits_count && allSymbols.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * allSymbols.length);
+            const selectedSymbol = allSymbols.splice(randomIndex, 1)[0];
+            hits.push(selectedSymbol);
         }
+    
         return hits;
-    }
-
-    calculatehits(fullinfo: gameinfo){
-        const randomhits = Math.floor(Math.random() * 6) + 3
-        const hits : coordinates;
-        for(let i = 0; i < randomhits; i++){
-            const reelIndex = Math.floor(Math.random() * Object.keys(fullinfo).length);
-            const reelKeys = Object.keys(fullinfo[reelIndex]);
-            if (reelKeys.length > 0) {
-                const positionIndex = reelKeys[Math.floor(Math.random() * reelKeys.length)];
-                const symbolInfo = fullinfo[reelIndex][parseInt(positionIndex)];
-                if (symbolInfo) {
-                    symbolInfo[1] *= this.value;
-                    hits.push([reelIndex, parseInt(positionIndex)]);
-                }
-            }
-        }
     }
 }
 
 class reel {
     symbols: mysymbol[];
-
-    constructor(starterinfo: reelinfo, reelheight: number) {
+    reelindex : number
+    constructor(starterinfo: reelinfo, reelheight: number, reelindex: number) {
         this.symbols = [];
+        this.reelindex = reelindex;
 
         for (let i = 0; i < reelheight; i++) {
+            const coords: coordinates = { reelIndex: reelindex, symbolIndex: i };
+
             if (i in starterinfo) {
                 const [id, value] = starterinfo[i];
                 switch(id) {
                     case 1: 
-                        this.symbols.push(new pointsymbol(id, value));
+                        this.symbols.push(new pointsymbol(id, value, coords));
                         break;
                     case 2:
-                        this.symbols.push(new collector(id, value));
+                        this.symbols.push(new collector(id, value, coords));
                         break;
                     case 3:
-                        this.symbols.push(new payer(id, value));
+                        this.symbols.push(new payer(id, value, coords));
                         break;
                     case 4: 
-                        this.symbols.push(new sniper(id, value));
+                        this.symbols.push(new sniper(id, value, coords));
                         break;
                     default:
+                        this.symbols.push(new mysymbol(0, coords)); // Assuming mysymbol also accepts coordinates
                 }
             } else {
-                this.symbols.push(new mysymbol(0))
+                this.symbols.push(new mysymbol(0, coords)); // Assuming mysymbol also accepts coordinates
             }
         }
     }
@@ -156,7 +171,7 @@ class reelcontainer{
         this.reels = []
 
         for(let i = 0; i < gamewidth; i++){
-            this.reels.push(new reel(((i in starterinfo? starterinfo[i] : {})) , 5))
+            this.reels.push(new reel(((i in starterinfo? starterinfo[i] : {})) , 5 , i))
         }
     }
 }
@@ -166,9 +181,9 @@ interface ISymbolData {
 }
 
 const SymbolData : ISymbolData = {
-    0 : ['basicsymbol' , 800],
-    1 : ['pointsymbol' , 830],
-    2 : ['collector' , 835],
+    0 : ['basicsymbol' , 700],
+    1 : ['pointsymbol' , 710],
+    2 : ['collector' , 800],
     3 : ['payer' , 840],
     4 : ['sniper' , 845]
 }
@@ -185,7 +200,7 @@ export const generateType= () =>{
     return type;
 }
 export function generateWeightedNumber(): number {
-    let rand = Math.random();
+    const rand = Math.random();
     let cumulativeProbability = 0;
     let probabilityStep = 0.5;
     for (let i = 1; i <= 20; i++) {
@@ -207,6 +222,7 @@ export interface gameinfo{
 }
 
 import type { coordinates } from "../bonusgame";
+import PointSymbol from "../symbols/pointssymbol";
 
 export interface SpecialInfo{
     [onsymbol : number] : coordinates[]
@@ -239,7 +255,7 @@ export default class GameSimulation {
     }
 
     private generateStarterInfo(gamewidth: number, reelheight: number): gameinfo {
-        let starterinfo33: gameinfo = {};
+        const starterinfo33: gameinfo = {};
         const numberOfPointSymbols = 3 + Math.floor(Math.random() * 2)
         for (let i = 0; i < numberOfPointSymbols; ) {
             const reelIndex = Math.floor(Math.random() * gamewidth);
@@ -267,72 +283,12 @@ export default class GameSimulation {
         });
         return totalPoints;
     }
-
     
-
-    simulate(): [gameinfo[], number, Array<Array<[number, number]>>] {
-        const simulationresult: gameinfo[] = [];
-        const sniperhits: Array<Array<[number, number]>> = [];
-    
-        while (this.rollsleft > 0) {
-            const currentRollInfo: gameinfo = {};
-            const actionDoers: pointsymbol[] = [];
-            let specialSymbolGenerated = false;
-    
-            for (let reelIndex = 0; reelIndex < Object.keys(this.reelcontainer.reels).length; reelIndex++) {
-                currentRollInfo[reelIndex] = {};
-                for (let position = 0; position < 5; position++) {
-                    if (this.fullinfo[reelIndex] && this.fullinfo[reelIndex][position]) {
-                        continue;
-                    }
-    
-                    const type = generateType();
-                    if (type != 0) {
-                        specialSymbolGenerated = true;
-                        const value = generateWeightedNumber();
-                        currentRollInfo[reelIndex][position] = [type, value];
-                        if (type === 2 || type === 3 || type === 4) {
-                            actionDoers.push(this.createSymbolInstance(type, value));
-                        }
-                    }
-                }
-            }
-            Object.keys(currentRollInfo).forEach(reelIndex => {
-                const reelIndexNum = parseInt(reelIndex);
-                if (!this.fullinfo[reelIndexNum]) {
-                    this.fullinfo[reelIndexNum] = {};
-                }
-                Object.keys(currentRollInfo[reelIndexNum]).forEach(position => {
-                    const positionNum = parseInt(position);
-                    this.fullinfo[reelIndexNum][positionNum] = currentRollInfo[reelIndexNum][positionNum];
-                });
-            });
-    
-            actionDoers.forEach(symbol => {
-                if (symbol instanceof sniper) {
-                    const hits = symbol.doAction(this.fullinfo);
-                    sniperhits.push(hits);
-                } else {
-                    symbol.doAction(this.fullinfo);
-                }
-            });
-    
-            if (!specialSymbolGenerated) {
-                this.rollsleft -= 1;
-            } else {
-                this.rollsleft = 3;
-            }
-    
-            simulationresult.push(currentRollInfo);
-        }
-    
-        const totalPoints = this.calculatePoints();
-        return [simulationresult, totalPoints, sniperhits];
-    }
 
     simulate2(): [Api_info[], number]{
         const simulationresult : Api_info[] = []
         while(this.rollsleft > 0){
+            console.log('rolls left ' + this.rollsleft)
             this.rollsleft -= 1
             const currentrollinfo : Api_info = {
                 gameinfo: {},
@@ -345,30 +301,60 @@ export default class GameSimulation {
                     if (this.fullinfo[reelIndex] && this.fullinfo[reelIndex][position]) {
                         continue;
                     }
-    
                     const type = generateType();
                     if (type != 0) {
                         specialSymbolGenerated = true;
                         const value = generateWeightedNumber();
                         currentrollinfo.gameinfo[reelIndex][position] = [type, value];
+                        const cordss : coordinates = {reelIndex: reelIndex, symbolIndex: position}
                         if (type === 2 || type === 3 || type === 4) {
-                            const actiondoer = this.createSymbolInstance(type,value)
-                            currentrollinfo.actioninfo[reelIndex][position] = 
+                            if (!currentrollinfo.actioninfo[reelIndex]) {
+                                currentrollinfo.actioninfo[reelIndex] = {};
+                            }
+                            const actiondoer = this.createSymbolInstance(type, value, cordss);
+                            currentrollinfo.actioninfo[reelIndex][position] = actiondoer.calculatehits(this.fullinfo);
+                        }
                     }
-                }
+                } 
             }
-            
+        Object.keys(currentrollinfo.gameinfo).forEach(reelIndex => {
+                const reelIndexNum = parseInt(reelIndex);
+                if (!this.fullinfo[reelIndexNum]) {
+                    this.fullinfo[reelIndexNum] = {};
+                }
+                Object.keys(currentrollinfo.gameinfo[reelIndexNum]).forEach(position => {
+                    const positionNum = parseInt(position);
+                    this.fullinfo[reelIndexNum][positionNum] = currentrollinfo.gameinfo[reelIndexNum][positionNum];
+                    this.reelcontainer.reels[parseInt(reelIndex)].symbols[parseInt(position)] = this.createSymbolInstance(this.fullinfo[reelIndexNum][positionNum][0],this.fullinfo[reelIndexNum][positionNum][1],{reelIndex : parseInt(reelIndex), symbolIndex : parseInt(position)})
+                });
+            });
+        if(specialSymbolGenerated){
+            this.rollsleft = 3
         }
+        Object.keys(currentrollinfo.actioninfo).forEach(reelindex => {
+            Object.keys(currentrollinfo.actioninfo[parseInt(reelindex)]).forEach(symbolindex => {
+                this.reelcontainer.reels[parseInt(reelindex)].symbols[parseInt(symbolindex)].doAction(this.fullinfo,currentrollinfo.actioninfo[parseInt(reelindex)][parseInt(symbolindex)])
+                Object.keys(this.fullinfo).forEach(reelindex2 => {
+                    Object.keys(this.fullinfo[parseInt(reelindex2)]).forEach(symbolindex2 => {
+                        const symbol = this.reelcontainer.reels[parseInt(reelindex2)].symbols[parseInt(symbolindex2)];
+                        if (symbol instanceof PointSymbol) {
+                           (symbol as PointSymbol).value = this.fullinfo[parseInt(reelindex2)][parseInt(symbolindex2)][1];
+                        }
+                    })
+                })
+            })
+        })
+        simulationresult.push(currentrollinfo)
     }
     return [simulationresult,this.calculatePoints()]
     }
 
-    private createSymbolInstance(type: number, value: number): pointsymbol {
+    private createSymbolInstance(type: number, value: number , location : coordinates): pointsymbol {
         switch (type) {
-            case 2: return new collector(type, value);
-            case 3: return new payer(type, value);
-            case 4: return new sniper(type, value);
-            default: return new pointsymbol(type, value)
+            case 2: return new collector(type, value, location);
+            case 3: return new payer(type, value, location);
+            case 4: return new sniper(type, value, location);
+            default: return new pointsymbol(type, value, location)
         }
     }
 }

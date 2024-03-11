@@ -40,23 +40,23 @@ export class SlotSymbolContainer {
 
         switch (symboltypeid) {
             case 0:
-                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight);
+                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight , {reelIndex : oncolumn , symbolIndex :location});
                 break;
             case 1:
-                this.symbolcontainer = new PointSymbol(symboltypeid, containerwidth, containerheight, symbolvalue);
+                this.symbolcontainer = new PointSymbol(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
                 break;
             case 2:
-                this.symbolcontainer = new Collector(symboltypeid, containerwidth, containerheight, symbolvalue);
+                this.symbolcontainer = new Collector(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
                 break;
             case 3:
-                this.symbolcontainer = new Payer(symboltypeid, containerwidth, containerheight, symbolvalue);
+                this.symbolcontainer = new Payer(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
                 break;
             case 4:
-                this.symbolcontainer = new Sniper(symboltypeid, containerwidth, containerheight, symbolvalue);
+                this.symbolcontainer = new Sniper(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
                 break;
             default:
                 console.log("Invalid symbol type id");
-                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight);
+                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight, {reelIndex : oncolumn , symbolIndex :location});
         }
         if(this.symbolcontainer instanceof PointSymbol){
             this.symbolcontainer.generatevalue()
@@ -149,7 +149,7 @@ export class SlotSymbolContainer {
             // mtavari chamoyris animacia
             const loopAnimation = (index : number) => {
                 if (index >= textureSet.length - 1) {
-                    const toptexture = new Symbol(textureSet[textureSet.length - 1],this.containerwidth,this.containerheight)
+                    const toptexture = new Symbol(textureSet[textureSet.length - 1],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
                     toptexture.container.y = -this.containerheight
                     this.container.addChild(toptexture.container);
                     animateRazgonreverse(curTexture.container, toptexture.container, () => {
@@ -163,13 +163,13 @@ export class SlotSymbolContainer {
                     return;
                 }
                 const newTexture = (index != textureSet.length - 2)
-                ? new Symbol(textureSet[index], this.containerwidth, this.containerheight)
-                   : ((newid === 0) ? new Symbol(textureSet[index], this.containerwidth, this.containerheight)
-                   : (newid === 1) ? new PointSymbol(textureSet[index], this.containerwidth, this.containerheight, value)
-                   : (newid === 2) ? new Collector(textureSet[index], this.containerwidth, this.containerheight, value)
-                   : (newid === 3) ? new Payer(textureSet[index], this.containerwidth, this.containerheight, value)
-                   : (newid === 4) ? new Sniper(textureSet[index], this.containerwidth, this.containerheight, value)
-                   : new Symbol(textureSet[index], this.containerwidth, this.containerheight));
+                ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : ((newid === 0) ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : (newid === 1) ? new PointSymbol(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : (newid === 2) ? new Collector(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : (newid === 3) ? new Payer(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : (newid === 4) ? new Sniper(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                   : new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}));
 
                 const newtexturecontainer = newTexture.container;
                 newtexturecontainer.y = -this.containerheight;
@@ -200,12 +200,12 @@ export class SlotSymbolContainer {
             };
 
             // callloop
-            const bottexture = new Symbol(textureSet[0],this.containerwidth,this.containerheight)
+            const bottexture = new Symbol(textureSet[0],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
             bottexture.container.y = this.containerheight
             this.container.addChild(bottexture.container)
             animateRazgon(this.symbolcontainer.container, bottexture.container, () => {
                 this.container.removeChild(bottexture.container)
-                let index = 2
+                const index = 2
                 loopAnimation(index);
             })
 

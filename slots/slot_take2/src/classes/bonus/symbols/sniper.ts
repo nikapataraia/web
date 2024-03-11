@@ -6,11 +6,11 @@ import type { coordinates, gameinfo } from '../bonusgame';
 import type { Reel } from '../reel';
 
 export default class Sniper extends PointSymbol{
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number){
-        super(id,symbolContainerWidth,symbolContainerHeight,value);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates){
+        super(id,symbolContainerWidth,symbolContainerHeight,value, location);
     }
 
-    doAction(fullinfo : gameinfo , snipethese : coordinates, reels : Reel[], quickplayon : boolean){
-
+    doAction(fullinfo : gameinfo , snipethese : coordinates[], reels : Reel[], quickplayon : boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void>{
+        return new Promise<void>((resolve) => {resolve})
     }
 }

@@ -23,4 +23,7 @@ export default class InfoContainer{
     decreaseroll(){
         this.rollinfo.decreaseroll();
     }
+    increasewinnings(total : number){
+        this.winninginfo.changeWinnings(total)
+    }
 }

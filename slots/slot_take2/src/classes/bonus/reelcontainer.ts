@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js'
-import * as Tween from '@tweenjs/tween.js';
 import { Reel } from './reel';
-import { eventBus } from '@/assets/eventBus';
 import type { gameinfo } from './gamedimulation/game';
 import PointSymbol from './symbols/pointssymbol';
 export class ReelContainer {
@@ -25,15 +23,15 @@ export class ReelContainer {
 
         this.container.addChild(background);
 
-        let reelWidth = containerWidth / mapWidth;
-        let reelHeight = appHeight;
+        const reelWidth = containerWidth / mapWidth;
+        const reelHeight = appHeight;
         this.reels = [];
         
         for (let i = 0; i < mapWidth; i++) {
-            let isReelActive = !(mapWidth === 6 && i === mapWidth - 1) && !(mapWidth === 7 && (i === 0 || i === mapWidth - 1));
+            const isReelActive = !(mapWidth === 6 && i === mapWidth - 1) && !(mapWidth === 7 && (i === 0 || i === mapWidth - 1));
             const newReel = new Reel(isReelActive, reelWidth, reelHeight, mapHeight, i  * reelWidth , startersymbols[i]);
             this.reels.push(newReel);
-            this.container.addChild(newReel.reel);
+            this.container.addChild(newReel.container);
         }
     }
 

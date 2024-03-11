@@ -6,16 +6,16 @@ import type { coordinates, gameinfo } from '../bonusgame';
 import type { Reel } from '../reel';
 
 export default class Payer extends PointSymbol {
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value: number) {
-        super(id, symbolContainerWidth, symbolContainerHeight, value);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value: number, location : coordinates) {
+        super(id, symbolContainerWidth, symbolContainerHeight, value, location);
     }
 
-    doAction(fullinfo: gameinfo, payThese: coordinates, reels: Reel[], quickplayon: boolean): Promise<void> {
+    doAction(fullinfo: gameinfo, payThese: coordinates[], reels: Reel[], quickplayon: boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
         return new Promise<void>((resolve) => {
             const animationPromises: Promise<void>[] = [];
 
-            Object.entries(payThese).forEach(([reelIndexStr, symbolIndex]) => {
-                const reelIndex = parseInt(reelIndexStr, 10);
+            payThese.forEach((cords) => {
+                const { reelIndex, symbolIndex } = cords;
                 const reel = reels[reelIndex];
                 const symbol = reel.symbols[symbolIndex];
 

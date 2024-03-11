@@ -4,6 +4,8 @@ import InfoContainer from "./infocontainer";
 import { ReelContainer } from "./reelcontainer";
 import * as PIXI from 'pixi.js'
 import type { gameinfo } from "./bonusgame";
+import type { DoActionInfo } from "./gamedimulation/game";
+import PointSymbol from "./symbols/pointssymbol";
 
 
 export class BonusGameContainer{
@@ -28,21 +30,44 @@ export class BonusGameContainer{
         this.fullgameinfo = startersymbols
     }
 
-    animatereels(newreels: gameinfo) {
+    animatereels(newreels: gameinfo, specialsymbolactions: DoActionInfo): Promise<void> {
         eventBus.emit('decreaseRoll');
         let isEmpty = true;
         Object.keys(newreels).forEach(key => {
             if (Object.keys(newreels[parseInt(key)]).length > 0) {
-                isEmpty = false; 
+                isEmpty = false;
             }
         });
-        return this.reelcontainer.animatereels(newreels).then(() => {
-            if(!isEmpty){
+    
+        return this.reelcontainer.animatereels(newreels).then(async () => {
+            if (!isEmpty) {
                 eventBus.emit('increaseRoll');
+                if (!(Object.keys(specialsymbolactions).length === 0)) {
+                    for (const reelind of Object.keys(specialsymbolactions)) {
+                        const reelindex = parseInt(reelind);
+                        for (const symbolind of Object.keys(specialsymbolactions[reelindex])) {
+                            const symbolindex = parseInt(symbolind);
+                            const special = this.reelcontainer.reels[reelindex].symbols[symbolindex].symbolcontainer as PointSymbol;
+                            await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer.reels, false, this.gameWidth,this.gameHeight);
+                        }
+                    }
+                }
+                this.infocontainer.increasewinnings(this.calculatetotalpoints());
             }
         });
     }
 
+    calculatetotalpoints(){
+        let total = 0
+        this.reelcontainer.reels.forEach(reel => {
+            reel.symbols.forEach(symbol => {
+                if(symbol.symbolcontainer instanceof PointSymbol){
+                    total += symbol.symbolcontainer.value;
+                }
+            })
+        });
+        return total
+    }
     getpoints(){
         return this.reelcontainer.getpoints()
     }

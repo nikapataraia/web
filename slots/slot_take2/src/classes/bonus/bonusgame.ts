@@ -12,8 +12,9 @@ export interface gameinfo{
     [key : number] : reelinfo
 }
 
-export interface coordinates{
-    [key : number] : number
+export interface coordinates {
+    reelIndex: number;
+    symbolIndex: number;
 }
 
 export default class BonusGame{
@@ -43,13 +44,15 @@ export default class BonusGame{
     }
 
     async play() {
-        const [simulationResult, totalPoints, sniperHits] = this.gamesimulation.simulate();
-
+        const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
+        console.log(simulationResult.length)
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < simulationResult.length; i++) {
-            await this.bonusgamecontainer.animatereels(simulationResult[i]);
+            await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
             await delay(1000);
+            console.log(i)
         }
+        console.log('you won ' +  totalPoints)
     }
 
     changedimension(newWidth: number, newHeight: number) {

@@ -1,11 +1,9 @@
-import { generateType } from '@/assets/Data';
 import { SlotSymbolContainer } from './slotsymbolcontainer';
 import * as PIXI from 'pixi.js'
 import type { reelinfo } from './gamedimulation/game';
 export class Reel {
     container : PIXI.Container;
     symbols: SlotSymbolContainer[];
-    // isactive: boolean;
 
     constructor( isactive: boolean , reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo) {
         this.container = new PIXI.Container;
@@ -13,9 +11,9 @@ export class Reel {
         this.container.height = reelHeight
 
         let symbolcontainerheight = reelHeight / mapHeight
-        symbolcontainerheight = symbolcontainerheight - symbolcontainerheight * 0.06
+        symbolcontainerheight = symbolcontainerheight * 0.94
         let symbolcontainerwidth = reelWidth
-        symbolcontainerwidth = symbolcontainerwidth - symbolcontainerwidth * 0.1
+        symbolcontainerwidth = symbolcontainerwidth  * 0.9
 
         const symbolcontainery = symbolcontainerheight * 0.05
         const symbolcontainerx = symbolcontainerwidth * 0.05

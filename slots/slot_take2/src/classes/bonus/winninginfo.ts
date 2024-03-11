@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js'
-import { BonusController } from './bonuscontrolls'
-import { BonusGameContainer } from './bonusgamecontainer'
-import { eventBus } from '../../assets/eventBus';
+import { gsap } from 'gsap';
 export default class WinningInfo {
     winning: number;
     container: PIXI.Container;
     container_winning: PIXI.Container;
+    winningText: PIXI.Text;
 
     constructor(appwidth: number, appheight: number, winningstart: number) {
         this.winning = winningstart;
@@ -40,8 +39,24 @@ export default class WinningInfo {
             fill: 0xffffff,
             align: 'center'
         });
+        this.winningText = winningText
         winningText.x = (containerWidth - winningText.width) / 2;
         winningText.y = (appheight * 0.3 - winningText.height) / 2;
         this.container_winning.addChild(winningText);
+    }
+
+    changeWinnings(newWinning: number) {
+        this.winning = newWinning;
+        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: 0.5, ease: 'back.out' })
+            .then(() => {
+                this.winningText.style.fill = '#FFD700';
+                this.winningText.text = `${this.winning}x`;
+            })
+            .then(() => {
+                gsap.to(this.winningText.scale, { x: 1, y: 1, duration: 0.5, ease: 'back.in' })
+                    .then(() => {
+                        this.winningText.style.fill = '#ffffff';
+                    });
+            });
     }
 }
