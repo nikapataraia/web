@@ -10,7 +10,8 @@ export default class Collector extends PointSymbol{
     }
 
     doAction(fullinfo: gameinfo, collectThese: coordinates[], reelcontainer: ReelContainer, quickplayon: boolean, symbolcontainerwidth: number, symbolcontainerheight: number): Promise<void> {
-        return new Promise((resolve) => {
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise(async (resolve) => {
             let totalCollectedValue = 0;
             const animationPromises: Promise<void>[] = [];
             const targetx = (this.location.reelIndex + 0.5) * symbolcontainerwidth
@@ -42,7 +43,9 @@ export default class Collector extends PointSymbol{
                                 .start();
                     });
                     animationPromises.push(animationPromise);
-
+                    if (!quickplayon) {
+                        await new Promise(resolveDelay => setTimeout(resolveDelay, 200));
+                    }
                 }
             }
             

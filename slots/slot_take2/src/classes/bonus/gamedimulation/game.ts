@@ -182,7 +182,7 @@ interface ISymbolData {
 
 const SymbolData : ISymbolData = {
     0 : ['basicsymbol' , 700],
-    1 : ['pointsymbol' , 730],
+    1 : ['pointsymbol' , 830],
     2 : ['collector' , 835],
     3 : ['payer' , 840],
     4 : ['sniper' , 845]

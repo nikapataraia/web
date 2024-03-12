@@ -12,7 +12,8 @@ export default class Payer extends PointSymbol {
     }
 
     doAction(fullinfo: gameinfo, payThese: coordinates[], reelcontainer : ReelContainer,quickplayon: boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
-        return new Promise((resolve) => {
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise(async (resolve) => {
             const animationPromises: Promise<void>[] = [];
             const startingx = (this.location.reelIndex + 0.5) * symbolcontainerwidth
             const startingy = (this.location.symbolIndex + 0.5) * symbolcontainerheight
@@ -45,8 +46,10 @@ export default class Payer extends PointSymbol {
                                 })
                                 .start()
                     });
-                    
                     animationPromises.push(animationPromise);
+                    if (!quickplayon) {
+                        await new Promise(resolveDelay => setTimeout(resolveDelay, 200));
+                    }
                 }
             }
             
