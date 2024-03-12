@@ -15,10 +15,8 @@ export default class Collector extends PointSymbol{
             const animationPromises: Promise<void>[] = [];
             const targetx = (this.location.reelIndex + 0.5) * symbolcontainerwidth
             const targety = (this.location.symbolIndex + 0.5) * symbolcontainerheight
-            console.log(this)
             for (let i = 0; i < collectThese.length; i++) {
                 const coord = collectThese[i];
-                const delay = quickplayon ? 100 : 1700;
                 const { reelIndex, symbolIndex } = coord;
                 const reel = reelcontainer.reels[reelIndex];
                 const symbol = reel.symbols[symbolIndex].symbolcontainer;
@@ -34,8 +32,7 @@ export default class Collector extends PointSymbol{
                     valueText.position.set((reelIndex + 0.5) * symbolcontainerwidth, (symbolIndex + 0.5) * symbolcontainerheight);
                     reelcontainer.container.addChild(valueText);
                     const animationPromise = new Promise<void>((resolveAnimation) => {
-                        setTimeout(() => {
-                            new Tween.Tween(valueText.position)
+                    new Tween.Tween(valueText.position)
                                 .to({ x: targetx, y: targety}, quickplayon ? 500 : 1500)
                                 .easing(Tween.Easing.Cubic.Out)
                                 .onComplete(() => {
@@ -43,16 +40,16 @@ export default class Collector extends PointSymbol{
                                     resolveAnimation();
                                 })
                                 .start();
-                        }, delay);
                     });
-                    
                     animationPromises.push(animationPromise);
+
                 }
             }
             
             Promise.all(animationPromises).then(() => {
-                this.changeValue(this.value + totalCollectedValue);
-                resolve();
+                this.changeValue(this.value + totalCollectedValue).then(() => {
+                    resolve();
+                });
             });
         });
     }

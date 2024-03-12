@@ -12,43 +12,44 @@ export default class Payer extends PointSymbol {
     }
 
     doAction(fullinfo: gameinfo, payThese: coordinates[], reelcontainer : ReelContainer,quickplayon: boolean, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
-        return new Promise<void>((resolve) => {
+        return new Promise((resolve) => {
             const animationPromises: Promise<void>[] = [];
-            const reels = reelcontainer.reels
-            payThese.forEach((cords) => {
-                const { reelIndex, symbolIndex } = cords;
-                const reel = reels[reelIndex];
-                const symbol = reel.symbols[symbolIndex];
-
+            const startingx = (this.location.reelIndex + 0.5) * symbolcontainerwidth
+            const startingy = (this.location.symbolIndex + 0.5) * symbolcontainerheight
+            console.log(this)
+            for (let i = 0; i < payThese.length; i++) {
+                const coord = payThese[i];
+                const delay = quickplayon ? 100 : 1700;
+                const { reelIndex, symbolIndex } = coord;
+                const reel = reelcontainer.reels[reelIndex];
+                const symbol = reel.symbols[symbolIndex].symbolcontainer;
+                
                 if (symbol instanceof PointSymbol) {
-                    const newValue = symbol.value + this.value;
-
-                    const valueText = new PIXI.Text(`+${this.value}`, {
+                    const targetx = (reelIndex + 0.5) * symbolcontainerwidth
+                    const targety = (symbolIndex + 0.5) * symbolcontainerheight
+                    const valueText = new PIXI.Text(this.value.toString(), {
                         fontFamily: 'Arial',
                         fontSize: 24,
                         fill: 'white',
                         align: 'center',
                     });
-                    valueText.position.set(this.container.x, this.container.y);
-                    reel.container.addChild(valueText);
-
-                    const symbolPosition = { x: symbol.container.x, y: symbol.container.y };
+                    valueText.position.set(startingx,startingy);
+                    reelcontainer.container.addChild(valueText);
                     const animationPromise = new Promise<void>((resolveAnimation) => {
-                        new Tween.Tween(valueText.position)
-                            .to(symbolPosition, quickplayon ? 500 : 1500)
-                            .easing(Tween.Easing.Cubic.Out)
-                            .onComplete(() => {
-                                reel.container.removeChild(valueText);
-                                symbol.changeValue(newValue);
-                                resolveAnimation();
-                            })
-                            .start();
+                            new Tween.Tween(valueText.position)
+                                .to({ x: targetx, y: targety}, quickplayon ? 500 : 1500)
+                                .easing(Tween.Easing.Cubic.Out)
+                                .onComplete(() => {
+                                    reelcontainer.container.removeChild(valueText);
+                                    symbol.changeValue(symbol.value + this.value).then(() => resolveAnimation())
+                                })
+                                .start()
                     });
-
+                    
                     animationPromises.push(animationPromise);
                 }
-            });
-
+            }
+            
             Promise.all(animationPromises).then(() => {
                 resolve();
             });

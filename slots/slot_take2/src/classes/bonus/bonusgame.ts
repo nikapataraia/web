@@ -45,7 +45,6 @@ export default class BonusGame{
 
     async play() {
         const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
-        console.log(simulationResult.length)
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);

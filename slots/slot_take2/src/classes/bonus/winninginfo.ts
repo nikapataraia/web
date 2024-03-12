@@ -56,6 +56,7 @@ export default class WinningInfo {
                 gsap.to(this.winningText.scale, { x: 1, y: 1, duration: 0.5, ease: 'back.in' })
                     .then(() => {
                         this.winningText.style.fill = '#ffffff';
+                        this.winningText.x = (this.container.width - this.winningText.width) / 2;
                     });
             });
     }

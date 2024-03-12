@@ -54,7 +54,7 @@ export class BonusGameContainer{
                 for (const symbolind of Object.keys(specialsymbolactions[reelindex])) {
                     const symbolindex = parseInt(symbolind);
                     const special = this.reelcontainer.reels[reelindex].symbols[symbolindex].symbolcontainer as PointSymbol;
-                    await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer, false, this.gameWidth * 0.1,this.gameHeight/5).then(() => {console.log('completed')});
+                    await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer, false, this.gameWidth * 0.1,this.gameHeight/5);
                 }
             }
         }

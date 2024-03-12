@@ -1,11 +1,9 @@
 import * as PIXI from 'pixi.js'
-import { slotTextures } from '@/assets/Data_textures';
 import * as Tween from '@tweenjs/tween.js';
 import Symbol from './symbol';
 import type { coordinates, gameinfo } from '../bonusgame';
-import type { Reel } from '../reel';
 import type { ReelContainer } from '../reelcontainer';
-
+import { gsap } from "gsap";
 export default class PointSymbol extends Symbol{
     value : number;
     valuecontainer : PIXI.Container;
@@ -24,17 +22,23 @@ export default class PointSymbol extends Symbol{
         PIXI.Ticker.shared.add(() => {
             Tween.update();
         });
+        this.valuetext.anchor.set(0.5);
     }
 
-    changeValue(newValue: number) {
-        this.value = newValue;
-        this.updateValueDisplay();
-    }
-
-    updateValueDisplay() {
-        this.valuetext.text = `${this.value}x`;
-        this.valuetext.x = (this.container.width - this.valuetext.width) / 2;
-        this.valuetext.y = (this.container.height - this.valuetext.height) / 2;
+    changeValue(newValue: number): Promise<void> {
+        return new Promise<void>((resolve) => {
+            gsap.to(this.valuetext.scale, { x: 1.1, y: 1.1, duration: 0.5, ease: 'back.out' })
+                .then(() => {
+                    this.value = newValue;
+                    this.valuetext.text = `${this.value}x`;
+                    this.valuetext.x = (this.container.width - this.valuetext.width) / 2;
+                    this.valuetext.y = (this.container.height - this.valuetext.height) / 2;
+                    return gsap.to(this.valuetext.scale, { x: 1, y: 1, duration: 0.5, ease: 'back.in' });
+                })
+                .then(() => {
+                    resolve();
+                });
+        });
     }
 
     generatevalue() {
