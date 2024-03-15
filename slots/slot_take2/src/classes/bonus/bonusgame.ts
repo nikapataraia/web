@@ -51,7 +51,7 @@ export default class BonusGame{
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
-            await this.quickplayon ? delay(500) : delay(1000);
+            await (this.quickplayon ? delay(300) : delay(600));
         }
     }
 

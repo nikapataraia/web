@@ -58,15 +58,14 @@ export default class RollInfo {
         });
     }
 
-    applyGlowEffect(duration = this.quickplayon ? 75 :150) {
-        const originalStyle = this.rollsText.style;
-
-        // Change to glow style
+    applyGlowEffect(duration = this.quickplayon ? 75 : 150) {
+        const originalStyleJson = JSON.stringify(this.rollsText.style);
+        const originalStyleCopy = JSON.parse(originalStyleJson);
+    
         this.rollsText.style = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: 24,
-            fill: '#ffffff', // White color
-            // Assuming PIXI.js v5+ for dropShadow options
+            fill: '#ffffff',
             dropShadow: true,
             dropShadowColor: '#ffffff',
             dropShadowBlur: 5,
@@ -74,10 +73,9 @@ export default class RollInfo {
             dropShadowDistance: 6,
             align: 'center'
         });
-
-        // Wait for the duration and revert back to the original style
+    
         setTimeout(() => {
-            this.rollsText.style = originalStyle;
+            this.rollsText.style = new PIXI.TextStyle(originalStyleCopy);
         }, duration);
     }
 
