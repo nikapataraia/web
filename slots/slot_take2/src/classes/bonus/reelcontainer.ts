@@ -8,14 +8,16 @@ export class ReelContainer {
     animationcomplete : boolean;
     containerwidth : number
     cotaninerheight : number
+    quickplayon : boolean
 
     constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number, startersymbols : gameinfo) {
+        this.quickplayon = false
         this.animationcomplete = false
         this.container = new PIXI.Container();
-        const containerWidth = appWidth * 0.6
+        const containerWidth = appWidth * 0.7
         this.container.width = containerWidth;
         this.container.height = appHeight;
-        this.container.x = appWidth * 0.2
+        this.container.x = appWidth * 0.15
         this.containerwidth = containerWidth
         this.cotaninerheight = appHeight
         
@@ -42,7 +44,7 @@ export class ReelContainer {
         this.animationcomplete = false
         const reelPromises = this.reels.map((reel, index) => 
             new Promise<void>(resolve => setTimeout(() => {
-                resolve(reel.animatereel(false , ((newreels && newreels[index]) ? newreels[index] : {})));
+                resolve(reel.animatereel( this.quickplayon, ((newreels && newreels[index]) ? newreels[index] : {})));
             }, 50 * index))
         );
     
@@ -60,5 +62,11 @@ export class ReelContainer {
             })
         });
         return points
+    }
+    changequikcplay(){
+        this.quickplayon = !this.quickplayon
+        this.reels.forEach((reel) => {
+            reel.changequickplay()
+        })
     }
 }

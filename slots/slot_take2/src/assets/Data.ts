@@ -4,23 +4,16 @@ export interface ISymbolData {
     [key: number]: [string, number];
 }
 
-export const SymbolData: ISymbolData = {
-    0: ['nothing', 800],
-    1: ['silver', 950],
-    2: ['gold', 976],
-    3: ['payer', 981],
-    4: ['collector', 985],
-    5: ['collector and payer', 987],
-    6: ['sniper', 990],
-    7: ['reset', 992],
-    8: ['necromancer', 994],
-    9: ['persistent payer', 995],
-    10: ['persistent collector', 996],
-    11: ['persistent sniper', 997],
-};
+export const SymbolData : ISymbolData = {
+    0 : ['basicsymbol' , 700],
+    1 : ['pointsymbol' , 800],
+    2 : ['collector' , 820],
+    3 : ['payer' , 835],
+    4 : ['sniper' , 845]
+}
 
 export const generateType= () =>{
-    const rand = Math.floor(Math.random() * 998);
+    const rand = Math.floor(Math.random() * 846);
     let type = 0;
     for (const key in SymbolData) {
         if (rand <= SymbolData[key][1]) {
@@ -32,7 +25,7 @@ export const generateType= () =>{
 }
 
 export function generateWeightedNumber(): number {
-    let rand = Math.random();
+    const rand = Math.random();
     let cumulativeProbability = 0;
     let probabilityStep = 0.5;
 
@@ -47,3 +40,47 @@ export function generateWeightedNumber(): number {
     return 20;
 }
 
+
+export const data = {
+    animation_generation: {
+        normal: 25,
+        quickplay: 10,
+        skip: 4,
+    },
+    animation_speed :{
+        roll : {
+            normal :{
+                razgon : 150,
+                razgonreverse : 350,
+                middle : 100,
+            },
+            quickplay : {
+                razgon : 100,
+                razgonreverse : 250,
+                middle : 70,
+            },
+            skip : {
+                razgon : 50,
+                razgonreverse : 150,
+                middle : 40,
+            }
+        },
+        special : {
+            collector:{
+                normal : 1500,
+                quickplay : 750,
+                skip : 0,
+            },
+            payer : {
+                normal : 1500,
+                quickplay : 750,
+                skip : 0,
+            },
+            sniper : {
+                normal : 300,
+                quickplay : 150,
+                skip : 0,
+            }
+        }
+    }
+};

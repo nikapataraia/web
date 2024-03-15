@@ -10,8 +10,8 @@ export default class PointSymbol extends Symbol{
     valuetext : PIXI.Text
     valuecontainerwidth : number
     valuecontainerheight : number
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number , location : coordinates){
-        super(id,symbolContainerWidth,symbolContainerHeight, location);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number , location : coordinates , quickplayon : boolean){
+        super(id,symbolContainerWidth,symbolContainerHeight, location , quickplayon);
         this.value = value
         this.valuecontainer = new PIXI.Container()
         this.valuetext = new PIXI.Text()
@@ -27,7 +27,7 @@ export default class PointSymbol extends Symbol{
 
     changeValue(newValue: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            gsap.to(this.valuetext.scale, { x: 1.1, y: 1.1, duration: 0.5, ease: 'back.out' })
+            gsap.to(this.valuetext.scale, { x: 1.1, y: 1.1, duration: this.quickplayon? 0.1  : 0.2, ease: 'back.out' })
                 .then(() => {
                     this.value = newValue;
                     this.valuetext.text = `${this.value}x`;
@@ -59,7 +59,7 @@ export default class PointSymbol extends Symbol{
         }
     }
 
-    doAction(fullinfo: gameinfo, collectThese: coordinates[], reelContainer: ReelContainer, quickPlayOn: boolean, symbolContainerWidth: number, symbolContainerHeight: number): Promise<void> {
+    doAction(fullinfo: gameinfo, collectThese: coordinates[], reelContainer: ReelContainer,  symbolContainerWidth: number, symbolContainerHeight: number): Promise<void> {
         return new Promise<void>((resolve) => {
             resolve();
         });

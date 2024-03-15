@@ -3,7 +3,11 @@
     
     </div>
     <button @click=animatereelLocal>roll</button>
-    <button @click=changedimensionsLocal>change dim</button>
+    <button @click=changedimensionsLocal(400,300)>400,300</button>
+    <button @click=changedimensionsLocal(800,600)>800,600</button>
+    <button @click=changedimensionsLocal(1000,700)>1000,700</button>
+    <button @click=changequickplaymode()>quickplay</button>
+    <button @click=skiproll()>skip</button>
 </template>
     
 <script setup lang="ts">
@@ -14,7 +18,7 @@
     import BonusGame from '../classes/bonus/bonusgame'
     import GameSimulation from "../classes/bonus/gamedimulation/game"
     let appwidth =  1000
-    let appheight = 600
+    let appheight = 700
     let mapWidth = 6
     let mapHeight = 5
     let speed = 2500
@@ -44,10 +48,15 @@
         bonusgame.play()
     }
 
-    function changedimensionsLocal(){
-        bonusgame.changedimension(400,250)
+    function changedimensionsLocal(width : number,height : number){
+        bonusgame.changedimension(width,height)
     }
-
+    function changequickplaymode(){
+        bonusgame.bonusgamecontainer.changequikcplay()
+    }
+    function skiproll(){
+        
+    }
 
 
 </script>

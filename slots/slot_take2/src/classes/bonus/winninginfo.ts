@@ -5,12 +5,14 @@ export default class WinningInfo {
     container: PIXI.Container;
     container_winning: PIXI.Container;
     winningText: PIXI.Text;
+    quickplayon : boolean;
 
-    constructor(appwidth: number, appheight: number, winningstart: number) {
+    constructor(appwidth: number, appheight: number, winningstart: number,quickplayon : boolean) {
         this.winning = winningstart;
         this.container = new PIXI.Container();
         this.container_winning = new PIXI.Container();
-        const containerWidth = appwidth * 0.2;
+        const containerWidth = appwidth * 0.15;
+        this.quickplayon = quickplayon
 
         const background = new PIXI.Graphics();
         background.beginFill(0xFFC0CB);
@@ -24,7 +26,7 @@ export default class WinningInfo {
 
         this.container.width = containerWidth;
         this.container.height = appheight;
-        this.container.x = appwidth * 0.8;
+        this.container.x = appwidth * 0.85;
 
         this.container_winning.width = containerWidth;
         this.container_winning.height = appheight * 0.3;
@@ -47,17 +49,21 @@ export default class WinningInfo {
 
     changeWinnings(newWinning: number) {
         this.winning = newWinning;
-        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: 0.5, ease: 'back.out' })
+        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: this.quickplayon ? 0.25 : 0.5, ease: 'back.out' })
             .then(() => {
                 this.winningText.style.fill = '#FFD700';
                 this.winningText.text = `${this.winning}x`;
             })
             .then(() => {
-                gsap.to(this.winningText.scale, { x: 1, y: 1, duration: 0.5, ease: 'back.in' })
+                gsap.to(this.winningText.scale, { x: 1, y: 1, duration: this.quickplayon ? 0.25 : 0.5, ease: 'back.in' })
                     .then(() => {
                         this.winningText.style.fill = '#ffffff';
                         this.winningText.x = (this.container.width - this.winningText.width) / 2;
                     });
             });
+    }
+
+    changequickplay(){
+        this.quickplayon = !this.quickplayon
     }
 }

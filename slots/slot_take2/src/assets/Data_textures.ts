@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { ref } from 'vue';
-import { SymbolData, generateType } from './Data';
+import { SymbolData, data, generateType } from './Data';
 
 export let slotTextures: PIXI.Texture<PIXI.Resource>[] = []
 export const AssetsLoaded = ref<boolean>(false);
@@ -46,34 +46,50 @@ interface AnimationSet {
 
 export const animationsets : AnimationSet = {}
 export const animationsets_quickplay : AnimationSet = {}
+export const animationsets_skip : AnimationSet = {}
+
 
 export function generateanimationsets(){
-    for(let key in SymbolData){
+    for(const key in SymbolData){
         const setforconcretekey = []
-        for(let i = 0 ; i < 12 - parseInt(key, 10); i++){
+        for(let i = 0 ; i < 5; i++){
             const newset : number[] = []
-        for(let i =0; i < 20 ; i++){
-            newset.push(generateType())
-        }
+            for(let i =0; i < data.animation_generation.normal ; i++){
+                newset.push(generateType())
+            }
         newset[1] = 0
-        newset[18] = parseInt(key , 10)
+        newset[data.animation_generation.normal - 2] = parseInt(key , 10)
         setforconcretekey.push(newset)
         }
         animationsets[parseInt(key, 10)] = setforconcretekey
     }
 
 
-    for(let key in SymbolData){
+    for(const key in SymbolData){
         const setforconcretekey = []
-        for(let i = 0 ; i < 4; i++){
+        for(let i = 0 ; i < 5; i++){
             const newset : number[] = []
-        for(let i =0; i < 5 ; i++){
+        for(let i =0; i < data.animation_generation.quickplay ; i++){
             newset.push(generateType())
         }
         newset[1] = 0
-        newset[3] = parseInt(key , 10)
+        newset[data.animation_generation.quickplay - 2] = parseInt(key , 10)
         setforconcretekey.push(newset)
         }
         animationsets_quickplay[parseInt(key, 10)] = setforconcretekey
+    }
+
+    for(const key in SymbolData){
+        const setforconcretekey = []
+        for(let i = 0; i < 5; i++){
+            const newset : number[] = []
+            for(let j =0; j < data.animation_generation.skip; j++){
+                newset.push(generateType())
+            }
+            newset[1] = 0
+            newset[data.animation_generation.skip - 2] = parseInt(key , 10)
+            setforconcretekey.push(newset)
+        }
+        animationsets_skip[parseInt(key, 10)] = setforconcretekey
     }
 }

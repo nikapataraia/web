@@ -8,12 +8,14 @@ export default class RollInfo {
     container: PIXI.Container;
     container_roll: PIXI.Container;
     rollsText: PIXI.Text;
+    quickplayon : boolean;
 
-    constructor(appwidth: number, appheight: number) {
+    constructor(appwidth: number, appheight: number,quickplayon : boolean) {
         this.rollsleft = 3;
         this.container = new PIXI.Container();
         this.container_roll = new PIXI.Container();
-        const containerWidth = appwidth * 0.2;
+        const containerWidth = appwidth * 0.15;
+        this.quickplayon = quickplayon
 
         const background = new PIXI.Graphics();
         background.beginFill(0xFFC0CB);
@@ -56,7 +58,7 @@ export default class RollInfo {
         });
     }
 
-    applyGlowEffect(duration = 150) {
+    applyGlowEffect(duration = this.quickplayon ? 75 :150) {
         const originalStyle = this.rollsText.style;
 
         // Change to glow style
@@ -83,9 +85,7 @@ export default class RollInfo {
         if (this.rollsleft > 0) {
             this.rollsleft -= 1;
             this.rollsText.text = this.rollsleft.toString();
-            // Center the text
             this.centerText();
-            // Apply glow effect
             this.applyGlowEffect();
         }
     }
@@ -93,9 +93,7 @@ export default class RollInfo {
     increaseroll() {
         this.rollsleft = 3;
         this.rollsText.text = this.rollsleft.toString();
-        // Center the text
         this.centerText();
-        // Apply glow effect
         this.applyGlowEffect();
     }
 
@@ -104,5 +102,9 @@ export default class RollInfo {
         const appheight = this.container.height;
         this.rollsText.x = (containerWidth - this.rollsText.width) / 2;
         this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
+    }
+
+    changequickplay(){
+        this.quickplayon = !this.quickplayon
     }
 }

@@ -5,8 +5,10 @@ export class Reel {
     container : PIXI.Container;
     symbols: SlotSymbolContainer[];
     reelindex : number
+    quickplayon : boolean
 
     constructor( reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo,  reelindex : number) {
+        this.quickplayon = false
         this.reelindex = reelindex
         this.container = new PIXI.Container;
         this.container.width = reelWidth
@@ -14,8 +16,7 @@ export class Reel {
 
         let symbolcontainerheight = reelHeight / mapHeight
         symbolcontainerheight = symbolcontainerheight * 0.94
-        let symbolcontainerwidth = reelWidth
-        symbolcontainerwidth = symbolcontainerwidth  * 0.9
+        const symbolcontainerwidth = reelWidth * 0.9
 
         const symbolcontainery = symbolcontainerheight * 0.05
         const symbolcontainerx = symbolcontainerwidth * 0.05
@@ -36,5 +37,12 @@ export class Reel {
             }, 50 * index))
         );
         return Promise.all(promises).then(() => {});
+    }
+
+    changequickplay(){
+        this.quickplayon = !this.quickplayon
+        this.symbols.forEach((symbol) => {
+            symbol.changequickplay()
+        })
     }
 }

@@ -294,14 +294,17 @@ export default class GameSimulation {
                 actioninfo: {}
             }
             let specialSymbolGenerated = false
+            let aaaa = 0
             for (let reelIndex = 0; reelIndex < Object.keys(this.reelcontainer.reels).length; reelIndex++) {
                 currentrollinfo.gameinfo[reelIndex] = {};
                 for (let position = 0; position < 5; position++) {
                     if (this.fullinfo[reelIndex] && this.fullinfo[reelIndex][position]) {
+                        aaaa += 1
                         continue;
                     }
                     const type = generateType();
                     if (type != 0) {
+                        aaaa +=1
                         specialSymbolGenerated = true;
                         const value = generateWeightedNumber();
                         currentrollinfo.gameinfo[reelIndex][position] = [type, value];
@@ -344,6 +347,9 @@ export default class GameSimulation {
             })
         })
         simulationresult.push(currentrollinfo)
+        if(aaaa == 30){
+            break;
+        }
     }
     return [simulationresult,this.calculatePoints()]
     }

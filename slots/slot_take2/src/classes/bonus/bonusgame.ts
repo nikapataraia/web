@@ -25,11 +25,13 @@ export default class BonusGame{
     appHeight : number;
     gamesimulation : GameSimulation
     currentgameinfo : gameinfo;
+    quickplayon : boolean
 
     constructor(appwidth : number,appheight : number , mapwidth : number, mapheight : number , gamesimulation : GameSimulation){
         this.gamesimulation = gamesimulation
         this.appHeight = appheight
         this.appWidth = appwidth
+        this.quickplayon = false
         this.bonusgame_app = new PIXI.Application({
             width : this.appWidth,
             height : this.appHeight,
@@ -45,22 +47,26 @@ export default class BonusGame{
 
     async play() {
         const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
+        console.log('game started')
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
-            await delay(1000);
-            console.log(i)
+            await this.quickplayon ? delay(500) : delay(1000);
         }
-        console.log('you won ' +  totalPoints)
     }
 
     changedimension(newWidth: number, newHeight: number) {
         this.bonusgame_app.renderer.resize(newWidth, newHeight);
         const scaleX = newWidth / this.appWidth;
         const scaleY = newHeight / this.appHeight;
-        this.bonusgamecontainer.container.scale.x = scaleX;
-        this.bonusgamecontainer.container.scale.y = scaleY;
         this.appWidth = newWidth;
         this.appHeight = newHeight;
+        this.bonusgamecontainer.changedimension(scaleX,scaleY)
+    }
+
+    changequikcplay(){
+        this.quickplayon = !this.quickplayon
+        this.bonusgamecontroller.quickplayon = !this.bonusgamecontroller.quickplayon
+        this.bonusgamecontainer.reelcontainer.changequikcplay()
     }
 }

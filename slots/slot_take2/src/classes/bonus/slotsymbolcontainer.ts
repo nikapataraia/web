@@ -1,7 +1,7 @@
 import { animationsets, animationsets_quickplay, slotTextures } from '@/assets/Data_textures';
 import * as PIXI from 'pixi.js'
 import {} from '../../assets/Data_textures'
-import { generateType, generateWeightedNumber } from '@/assets/Data';
+import { data, generateType, generateWeightedNumber } from '@/assets/Data';
 import Symbol from './symbols/symbol';
 import PointSymbol from './symbols/pointssymbol';
 import Collector from './symbols/collector';
@@ -16,13 +16,14 @@ export class SlotSymbolContainer {
     containerwidth : number;
     animationInProgress: boolean = false;
     symbolcontainer : Symbol
+    quickplayon : boolean
 
-    constructor(symboltypeid: number, symbolvalue : number,  containerheight : number, containerwidth : number , location : number , x : number, y : number, oncolumn : number) {
+    constructor(symboltypeid: number, symbolvalue : number,  containerheight : number, containerwidth : number , location : number , x : number, y : number, oncolumn : number ) {
         this.location = location
         this.oncolumn = oncolumn
         this.containerheight = containerheight
         this.containerwidth = containerwidth
-
+        this.quickplayon = false
         this.container = new PIXI.Container;
         this.container.width = containerwidth
         this.container.height = containerheight
@@ -40,23 +41,23 @@ export class SlotSymbolContainer {
 
         switch (symboltypeid) {
             case 0:
-                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight , {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight , {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
                 break;
             case 1:
-                this.symbolcontainer = new PointSymbol(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new PointSymbol(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
                 break;
             case 2:
-                this.symbolcontainer = new Collector(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new Collector(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
                 break;
             case 3:
-                this.symbolcontainer = new Payer(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new Payer(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
                 break;
             case 4:
-                this.symbolcontainer = new Sniper(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new Sniper(symboltypeid, containerwidth, containerheight, symbolvalue, {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
                 break;
             default:
                 console.log("Invalid symbol type id");
-                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight, {reelIndex : oncolumn , symbolIndex :location});
+                this.symbolcontainer = new Symbol(symboltypeid, containerwidth, containerheight, {reelIndex : oncolumn , symbolIndex :location}, this.quickplayon);
         }
         if(this.symbolcontainer instanceof PointSymbol){
             this.symbolcontainer.generatevalue()
@@ -91,7 +92,7 @@ export class SlotSymbolContainer {
             // razgonis ageba
             const animateRazgon = (cur : PIXI.Container, bot : PIXI.Container, onComplete: () => void) => {
                 const tweenCur = new Tween.Tween({ y: cur.y })
-                .to({ y: cur.y - this.containerheight * 0.1 }, 150)
+                .to({ y: cur.y - this.containerheight * 0.1 }, this.quickplayon ? data.animation_speed.roll.quickplay.razgon : data.animation_speed.roll.normal.razgon)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     cur.y = object.y;
@@ -100,7 +101,7 @@ export class SlotSymbolContainer {
                 .repeat(1);
 
             const tweenBot = new Tween.Tween({ y: bot.y })
-                .to({ y: bot.y - this.containerheight * 0.1 }, 150)
+                .to({ y: bot.y - this.containerheight * 0.1 }, this.quickplayon ? data.animation_speed.roll.quickplay.razgon : data.animation_speed.roll.normal.razgon)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     bot.y = object.y;
@@ -121,7 +122,7 @@ export class SlotSymbolContainer {
             //  bolo sheneleba
             const animateRazgonreverse = (bot: PIXI.Container, top: PIXI.Container, onComplete: () => void) => {
                 const tweenBot = new Tween.Tween({ y: bot.y })
-                .to({ y: bot.y + this.containerheight * 0.2 }, 350)
+                .to({ y: bot.y + this.containerheight * 0.2 }, this.quickplayon ? data.animation_speed.roll.quickplay.razgonreverse : data.animation_speed.roll.normal.razgonreverse)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     bot.y = object.y;
@@ -130,7 +131,7 @@ export class SlotSymbolContainer {
                 .repeat(1);
 
             const tweenTop = new Tween.Tween({ y: top.y })
-                .to({ y: top.y + this.containerheight * 0.2 }, 350)
+                .to({ y: top.y + this.containerheight * 0.2 }, this.quickplayon ? data.animation_speed.roll.quickplay.razgonreverse : data.animation_speed.roll.normal.razgonreverse)
                 .easing(Tween.Easing.Linear.None)
                 .onUpdate(object => {
                     top.y = object.y;
@@ -149,7 +150,7 @@ export class SlotSymbolContainer {
             // mtavari chamoyris animacia
             const loopAnimation = (index : number) => {
                 if (index >= textureSet.length - 1) {
-                    const toptexture = new Symbol(textureSet[textureSet.length - 1],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
+                    const toptexture = new Symbol(textureSet[textureSet.length - 1],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location} , this.quickplayon)
                     toptexture.container.y = -this.containerheight
                     this.container.addChild(toptexture.container);
                     animateRazgonreverse(curTexture.container, toptexture.container, () => {
@@ -163,13 +164,13 @@ export class SlotSymbolContainer {
                     return;
                 }
                 const newTexture = (index != textureSet.length - 2)
-                ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : ((newid === 0) ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : (newid === 1) ? new PointSymbol(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : (newid === 2) ? new Collector(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : (newid === 3) ? new Payer(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : (newid === 4) ? new Sniper(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location})
-                   : new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}));
+                ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : ((newid === 0) ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : (newid === 1) ? new PointSymbol(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : (newid === 2) ? new Collector(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : (newid === 3) ? new Payer(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : (newid === 4) ? new Sniper(textureSet[index], this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon)
+                   : new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon));
 
                 const newtexturecontainer = newTexture.container;
                 newtexturecontainer.y = -this.containerheight;
@@ -177,7 +178,7 @@ export class SlotSymbolContainer {
                 index++
     
                 new Tween.Tween({ y: newtexturecontainer.y })
-                    .to({ y: 0 }, 100)
+                    .to({ y: 0 }, this.quickplayon ? data.animation_speed.roll.quickplay.middle : data.animation_speed.roll.normal.middle)
                     .easing(Tween.Easing.Linear.None)
                     .onUpdate(object => {
                         newtexturecontainer.y = object.y; 
@@ -185,7 +186,7 @@ export class SlotSymbolContainer {
                     .start();
 
                 new Tween.Tween({ y: curTexture.container.y })
-                    .to({ y: this.containerheight }, 100)
+                    .to({ y: this.containerheight }, this.quickplayon ? data.animation_speed.roll.quickplay.middle : data.animation_speed.roll.normal.middle)
                     .easing(Tween.Easing.Linear.None)
                     .onUpdate(object => {
                         curTexture.container.y = object.y;
@@ -200,7 +201,7 @@ export class SlotSymbolContainer {
             };
 
             // callloop
-            const bottexture = new Symbol(textureSet[0],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location})
+            const bottexture = new Symbol(textureSet[0],this.containerwidth,this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location} , this.quickplayon)
             bottexture.container.y = this.containerheight
             this.container.addChild(bottexture.container)
             animateRazgon(this.symbolcontainer.container, bottexture.container, () => {
@@ -210,8 +211,13 @@ export class SlotSymbolContainer {
             })
 
     });
+    }
 
 
+    changequickplay(){
+        this.quickplayon = !this.quickplayon
+        this.symbolcontainer.quickplayon = !this.symbolcontainer.quickplayon
+        console.log(this.symbolcontainer.quickplayon)
     }
     
 }

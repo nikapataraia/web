@@ -9,10 +9,10 @@ export default class InfoContainer{
     rollinfo : RollInfo;
     winninginfo : WinningInfo;
     container : PIXI.Container;
-    constructor(startingwinning : number , appwidth : number, appheight : number,){
+    constructor(startingwinning : number , appwidth : number, appheight : number,quickplayon : boolean){
         this.container = new PIXI.Container
-        this.rollinfo = new RollInfo(appwidth,appheight)
-        this.winninginfo = new WinningInfo(appwidth,appheight,startingwinning)
+        this.rollinfo = new RollInfo(appwidth,appheight,quickplayon)
+        this.winninginfo = new WinningInfo(appwidth,appheight,startingwinning,quickplayon)
 
         this.container.width = appwidth
         this.container.height = appheight
@@ -25,5 +25,9 @@ export default class InfoContainer{
     }
     increasewinnings(total : number){
         this.winninginfo.changeWinnings(total)
+    }
+    changequickplay(){
+        this.rollinfo.changequickplay()
+        this.winninginfo.changequickplay()
     }
 }

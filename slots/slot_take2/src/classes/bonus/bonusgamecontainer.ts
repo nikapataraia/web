@@ -14,20 +14,31 @@ export class BonusGameContainer{
     container : PIXI.Container;
     gameWidth : number;
     gameHeight : number;
+    mapHeight : number;
+    mapWidth : number
     fullgameinfo : gameinfo;
+    quickplayon : boolean;
 
     constructor(mapWidth : number, mapHeight : number, gameWidth : number, gameHeight : number , startersymbols : gameinfo){
         this.gameHeight = gameHeight
         this.gameWidth = gameWidth
+        this.mapHeight = mapHeight
+        this.mapWidth = mapWidth
         this.reelcontainer = new ReelContainer(mapWidth,mapHeight,this.gameWidth,this.gameHeight , startersymbols)
         this.container = new PIXI.Container();
         this.container.width = gameWidth
         this.container.height = gameHeight
         this.container.addChild(this.reelcontainer.container)
+        this.quickplayon = false
 
-        this.infocontainer = new InfoContainer(this.getpoints(),gameWidth,gameHeight)
+        this.infocontainer = new InfoContainer(this.getpoints(),gameWidth,gameHeight,this.quickplayon)
         this.container.addChild(this.infocontainer.container)
         this.fullgameinfo = startersymbols
+    }
+    changequikcplay(){
+        this.reelcontainer.changequikcplay()
+        this.quickplayon = !this.quickplayon
+        this.infocontainer.changequickplay()
     }
 
     animatereels(newreels: gameinfo, specialsymbolactions: DoActionInfo): Promise<void> {
@@ -54,7 +65,7 @@ export class BonusGameContainer{
                 for (const symbolind of Object.keys(specialsymbolactions[reelindex])) {
                     const symbolindex = parseInt(symbolind);
                     const special = this.reelcontainer.reels[reelindex].symbols[symbolindex].symbolcontainer as PointSymbol;
-                    await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer, false, this.gameWidth * 0.1,this.gameHeight/5);
+                    await special.doAction(this.fullgameinfo, specialsymbolactions[reelindex][symbolindex], this.reelcontainer, this.reelcontainer.containerwidth / 6, this.gameHeight/5);
                 }
             }
         }
@@ -74,6 +85,17 @@ export class BonusGameContainer{
     }
     getpoints(){
         return this.reelcontainer.getpoints()
+    }
+
+    changedimension(targetScaleX : number, targetScaleY : number) {
+        const desiredWidth = this.container.width * targetScaleX;
+        const desiredHeight = this.container.height * targetScaleY;
+        const scaleX = desiredWidth / this.container.width;
+        const scaleY = desiredHeight / this.container.height;
+        this.container.scale.x *= scaleX;
+        this.container.scale.y *= scaleY;
+        // this.gameWidth = this.container.width;
+        // this.gameHeight = this.container.height;
     }
 
 }
