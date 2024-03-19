@@ -8,8 +8,8 @@ import type { ReelContainer } from '../reelcontainer';
 import { data } from '@/assets/Data';
 
 export default class Payer extends PointSymbol {
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value: number, location : coordinates , quickplayon : boolean) {
-        super(id, symbolContainerWidth, symbolContainerHeight, value, location , quickplayon);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value: number, location : coordinates , quickplayon : boolean , skiped : boolean) {
+        super(id, symbolContainerWidth, symbolContainerHeight, value, location , quickplayon , skiped);
     }
 
     doAction(fullinfo: gameinfo, payThese: coordinates[], reelcontainer : ReelContainer, symbolcontainerwidth : number, symbolcontainerheight : number): Promise<void> {
@@ -19,7 +19,7 @@ export default class Payer extends PointSymbol {
             const startingx = (this.location.reelIndex + 0.5) * symbolcontainerwidth - this.valuetext.width/2
             const startingy = (this.location.symbolIndex + 0.5) * symbolcontainerheight - this.valuetext.height/2
             for (let i = 0; i < payThese.length; i++) {
-                const animationtime = this.quickplayon?data.animation_speed.special.payer.quickplay : data.animation_speed.special.payer.normal
+                const animationtime = this.skiped ? data.animation_speed.special.payer.skip : (this.quickplayon?data.animation_speed.special.payer.quickplay : data.animation_speed.special.payer.normal)
                 const coord = payThese[i];
                 const { reelIndex, symbolIndex } = coord;
                 const reel = reelcontainer.reels[reelIndex];
@@ -47,7 +47,7 @@ export default class Payer extends PointSymbol {
                                 .start()
                     });
                     animationPromises.push(animationPromise);
-                    if (!this.quickplayon) {
+                    if (!this.quickplayon && !this.skiped) {
                         await new Promise(resolveDelay => setTimeout(resolveDelay, 200));
                     }
                 }

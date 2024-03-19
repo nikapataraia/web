@@ -7,8 +7,8 @@ import crosshairTexture from '../../../assets/images/crosshair1.png';
 import { data } from '@/assets/Data';
 
 export default class Sniper extends PointSymbol{
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates  , quickplayon : boolean){
-        super(id,symbolContainerWidth,symbolContainerHeight,value, location,quickplayon);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates  , quickplayon : boolean , skiped : boolean){
+        super(id,symbolContainerWidth,symbolContainerHeight,value, location,quickplayon,skiped);
     }
 
     doAction(fullinfo: gameinfo, snipethese: coordinates[], reelcontainer: ReelContainer,  symbolcontainerwidth: number, symbolcontainerheight: number): Promise<void> {
@@ -16,7 +16,7 @@ export default class Sniper extends PointSymbol{
         return new Promise(async (resolve) => {
             const animationPromises: Promise<void>[] = [];
             for (let i = 0; i < snipethese.length; i++) {
-                const animationtime = this.quickplayon?data.animation_speed.special.sniper.quickplay : data.animation_speed.special.sniper.normal
+                const animationtime = this.skiped ? data.animation_speed.special.sniper.skip : (this.quickplayon?data.animation_speed.special.sniper.quickplay : data.animation_speed.special.sniper.normal)
                 const { reelIndex, symbolIndex } = snipethese[i];
                 const targetX = (reelIndex + 0.5) * symbolcontainerwidth;
                 const targetY = (symbolIndex + 0.5) * symbolcontainerheight;
@@ -66,7 +66,7 @@ export default class Sniper extends PointSymbol{
     
                 animationPromises.push(animationPromise);
                 await animationPromise;
-                if (!this.quickplayon) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
+                if (!this.quickplayon && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
             }
             Promise.all(animationPromises).then(() => resolve());
         });

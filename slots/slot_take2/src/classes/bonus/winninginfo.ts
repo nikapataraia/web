@@ -6,8 +6,10 @@ export default class WinningInfo {
     container_winning: PIXI.Container;
     winningText: PIXI.Text;
     quickplayon : boolean;
+    skiped : boolean;
 
     constructor(appwidth: number, appheight: number, winningstart: number,quickplayon : boolean) {
+        this.skiped = false
         this.winning = winningstart;
         this.container = new PIXI.Container();
         this.container_winning = new PIXI.Container();
@@ -49,13 +51,13 @@ export default class WinningInfo {
 
     changeWinnings(newWinning: number) {
         this.winning = newWinning;
-        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: this.quickplayon ? 0.25 : 0.5, ease: 'back.out' })
+        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: this.skiped ? 0.1 : (this.quickplayon ? 0.25 : 0.5), ease: 'back.out' })
             .then(() => {
                 this.winningText.style.fill = '#FFD700';
                 this.winningText.text = `${this.winning}x`;
             })
             .then(() => {
-                gsap.to(this.winningText.scale, { x: 1, y: 1, duration: this.quickplayon ? 0.25 : 0.5, ease: 'back.in' })
+                gsap.to(this.winningText.scale, { x: 1, y: 1, duration:this.skiped ? 0.1 : (this.quickplayon ? 0.25 : 0.5), ease: 'back.in' })
                     .then(() => {
                         this.winningText.style.fill = '#ffffff';
                         this.winningText.x = (this.container.width - this.winningText.width) / 2;
@@ -65,5 +67,12 @@ export default class WinningInfo {
 
     changequickplay(){
         this.quickplayon = !this.quickplayon
+    }
+
+    changeskiped(){
+        this.skiped = true
+    }
+    changeskiped_tofalse(){
+        this.skiped = false
     }
 }

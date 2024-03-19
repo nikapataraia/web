@@ -55,7 +55,7 @@
         bonusgame.bonusgamecontainer.changequikcplay()
     }
     function skiproll(){
-        
+        bonusgame.bonusgamecontainer.changeskiped()
     }
 
 

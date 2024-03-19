@@ -6,8 +6,10 @@ export class Reel {
     symbols: SlotSymbolContainer[];
     reelindex : number
     quickplayon : boolean
+    skiped : boolean;
 
     constructor( reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo,  reelindex : number) {
+        this.skiped = false
         this.quickplayon = false
         this.reelindex = reelindex
         this.container = new PIXI.Container;
@@ -43,6 +45,20 @@ export class Reel {
         this.quickplayon = !this.quickplayon
         this.symbols.forEach((symbol) => {
             symbol.changequickplay()
+        })
+    }
+
+    changeskiped(){
+        this.skiped = true
+        this.symbols.forEach((symbol) => {
+            symbol.changeskiped()
+        })
+    }
+
+    changeskiped_tofalse(){
+        this.skiped = false
+        this.symbols.forEach((sym) => {
+            sym.changeskip_tofalse()
         })
     }
 }

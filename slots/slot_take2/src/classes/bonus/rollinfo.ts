@@ -9,8 +9,10 @@ export default class RollInfo {
     container_roll: PIXI.Container;
     rollsText: PIXI.Text;
     quickplayon : boolean;
+    skiped :  boolean;
 
     constructor(appwidth: number, appheight: number,quickplayon : boolean) {
+        this.skiped = false
         this.rollsleft = 3;
         this.container = new PIXI.Container();
         this.container_roll = new PIXI.Container();
@@ -58,7 +60,7 @@ export default class RollInfo {
         });
     }
 
-    applyGlowEffect(duration = this.quickplayon ? 75 : 150) {
+    applyGlowEffect(duration = this.skiped ? 40 : (this.quickplayon ? 75 : 150)) {
         const originalStyleJson = JSON.stringify(this.rollsText.style);
         const originalStyleCopy = JSON.parse(originalStyleJson);
     
@@ -103,6 +105,13 @@ export default class RollInfo {
     }
 
     changequickplay(){
-        this.quickplayon = !this.quickplayon
+        this.quickplayon =      !this.quickplayon
+    }
+
+    changeskiped(){
+        this.skiped = true
+    }
+    changeskiped_tofalse(){
+        this.skiped = false
     }
 }

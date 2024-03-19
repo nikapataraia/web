@@ -10,8 +10,8 @@ export default class PointSymbol extends Symbol{
     valuetext : PIXI.Text
     valuecontainerwidth : number
     valuecontainerheight : number
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number , location : coordinates , quickplayon : boolean){
-        super(id,symbolContainerWidth,symbolContainerHeight, location , quickplayon);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number , location : coordinates , quickplayon : boolean , skiped : boolean){
+        super(id,symbolContainerWidth,symbolContainerHeight, location , quickplayon,skiped);
         this.value = value
         this.valuecontainer = new PIXI.Container()
         this.valuetext = new PIXI.Text()

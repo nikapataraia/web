@@ -18,8 +18,10 @@ export class BonusGameContainer{
     mapWidth : number
     fullgameinfo : gameinfo;
     quickplayon : boolean;
+    skiped : boolean;
 
     constructor(mapWidth : number, mapHeight : number, gameWidth : number, gameHeight : number , startersymbols : gameinfo){
+        this.skiped = false
         this.gameHeight = gameHeight
         this.gameWidth = gameWidth
         this.mapHeight = mapHeight
@@ -96,6 +98,18 @@ export class BonusGameContainer{
         this.container.scale.y *= scaleY;
         // this.gameWidth = this.container.width;
         // this.gameHeight = this.container.height;
+    }
+
+    changeskiped(){
+        this.skiped = true
+        this.reelcontainer.changeskiped()
+        this.infocontainer.changeskiped()
+    }
+
+    changeskiped_tofalse(){
+        this.skiped = false
+        this.reelcontainer.changeskiped_tofalse()
+        this.infocontainer.changeskiped_tofalse()
     }
 
 }

@@ -30,4 +30,12 @@ export default class InfoContainer{
         this.rollinfo.changequickplay()
         this.winninginfo.changequickplay()
     }
+    changeskiped(){
+        this.rollinfo.changeskiped()
+        this.winninginfo.changeskiped()
+    }
+    changeskiped_tofalse(){
+        this.rollinfo.changeskiped_tofalse()
+        this.winninginfo.changeskiped_tofalse()
+    }
 }

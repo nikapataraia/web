@@ -45,7 +45,7 @@ export const data = {
     animation_generation: {
         normal: 25,
         quickplay: 10,
-        skip: 4,
+        skip: 3,
     },
     animation_speed :{
         roll : {

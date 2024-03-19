@@ -8,9 +8,10 @@ export default class Symbol{
     texture : PIXI.Sprite;
     location : coordinates
     quickplayon : boolean
-    constructor(id : number , symbolContainerWidth: number, symbolContainerHeight: number, location : coordinates , quickplayon : boolean){
+    skiped : boolean
+    constructor(id : number , symbolContainerWidth: number, symbolContainerHeight: number, location : coordinates , quickplayon : boolean , skiped : boolean){
         this.quickplayon = quickplayon
-
+        this.skiped = skiped
         this.location = location
         this.id = id;
         const texture = slotTextures[id];

@@ -26,12 +26,14 @@ export default class BonusGame{
     gamesimulation : GameSimulation
     currentgameinfo : gameinfo;
     quickplayon : boolean
+    skiped : boolean;
 
     constructor(appwidth : number,appheight : number , mapwidth : number, mapheight : number , gamesimulation : GameSimulation){
         this.gamesimulation = gamesimulation
         this.appHeight = appheight
         this.appWidth = appwidth
         this.quickplayon = false
+        this.skiped = false
         this.bonusgame_app = new PIXI.Application({
             width : this.appWidth,
             height : this.appHeight,
@@ -49,9 +51,11 @@ export default class BonusGame{
         const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
         console.log('game started')
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        this.changeskiped_tofalse()
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
             await (this.quickplayon ? delay(300) : delay(600));
+            this.changeskiped_tofalse()
         }
     }
 
@@ -68,5 +72,15 @@ export default class BonusGame{
         this.quickplayon = !this.quickplayon
         this.bonusgamecontroller.quickplayon = !this.bonusgamecontroller.quickplayon
         this.bonusgamecontainer.reelcontainer.changequikcplay()
+    }
+
+    changeskiped_totrue(){
+        this.skiped = true
+        this.bonusgamecontainer.changeskiped()
+    }
+
+    changeskiped_tofalse(){
+        this.skiped = false
+        this.bonusgamecontainer.changeskiped_tofalse()
     }
 }
