@@ -5,6 +5,7 @@ import type { coordinates, gameinfo } from '../bonusgame';
 import type { ReelContainer } from '../reelcontainer';
 import crosshairTexture from '../../../assets/images/crosshair1.png';
 import { data } from '@/assets/Data';
+import { gsap } from 'gsap';
 
 export default class Sniper extends PointSymbol{
     constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates  , quickplayon : boolean , skiped : boolean){
@@ -68,7 +69,9 @@ export default class Sniper extends PointSymbol{
                 await animationPromise;
                 if (!this.quickplayon && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
             }
-            Promise.all(animationPromises).then(() => resolve());
+            Promise.all(animationPromises).then(async () => {
+                resolve()
+            });
         });
     }
 }

@@ -18,6 +18,7 @@ export class SlotSymbolContainer {
     symbolcontainer : Symbol
     quickplayon : boolean
     skiped : boolean
+    mask : PIXI.Graphics;
 
     constructor(symboltypeid: number, symbolvalue : number,  containerheight : number, containerwidth : number , location : number , x : number, y : number, oncolumn : number ) {
         this.skiped = false
@@ -35,6 +36,7 @@ export class SlotSymbolContainer {
         mask.beginFill(0xffffff);
         mask.drawRect(0, 0, containerwidth, containerheight);
         mask.endFill();
+        this.mask = mask
         this.container.mask = mask;
         this.container.addChild(mask);
         PIXI.Ticker.shared.add(() => {
