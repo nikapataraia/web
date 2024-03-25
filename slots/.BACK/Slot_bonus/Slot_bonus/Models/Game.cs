@@ -102,13 +102,17 @@ namespace Slot_bonus.Models
             }
         }
 
-        private void Doactions(Location culprit, Location[] targets)
+        private void Doaction(Location culprit, Location[] targets)
         {
 
         }
 
         private RollInfo roll()
         {
+            if(rollsleft <= 0)
+            {
+                return null;
+            }
             List<SpecialHits> specialhits = new List<SpecialHits>();
             List<PointSymbol> newsymbols = new List<PointSymbol>();
             List<Symbol> doactionsymbols= new List<Symbol>();
@@ -150,23 +154,31 @@ namespace Slot_bonus.Models
                     Reels[loc.reelindex].Symbols[loc.symbolindex] = newSymbol;
                 }
             }
-            if(doactionsymbols.Count > 0)
+            foreach(Symbol symbol in doactionsymbols)
             {
-                foreach(Symbol symbol in doactionsymbols)
-                {
                     if(symbol is SpecialSymbol specialSymbol)
                     {
                         var targets = specialSymbol.SelectTargets(ActiveLocations);
                         specialSymbol.DoAction(targets, Reels);
                         specialhits.Add(new SpecialHits(specialSymbol.location, targets));
                     }
-                }
             }
+
             if (somethingcameup)
             {
                 rollsleft += 1;
             }
             return new RollInfo(specialhits,newsymbols);
+        }
+
+        public List<RollInfo> Playround()
+        {
+            List<RollInfo> Gameinfo = new List<RollInfo>();
+            while (this.rollsleft > 0)
+            {
+                Gameinfo.Add(this.roll());
+            }
+            return Gameinfo;
         }
     }
 }

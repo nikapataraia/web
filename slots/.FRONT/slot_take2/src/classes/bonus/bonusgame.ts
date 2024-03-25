@@ -19,7 +19,7 @@ export interface coordinates {
 
 export default class BonusGame{
     bonusgamecontainer : BonusGameContainer
-    bonusgamecontroller : BonusController
+    // bonusgamecontroller : BonusController
     bonusgame_app : PIXI.Application<PIXI.ICanvas>
     appWidth : number;
     appHeight : number;
@@ -42,8 +42,8 @@ export default class BonusGame{
         this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight * 0.9, gamesimulation.startinginfo)
         this.bonusgame_app.stage.addChild(this.bonusgamecontainer.container)
 
-        this.bonusgamecontroller = new BonusController(1,appwidth,appheight)
-        this.bonusgame_app.stage.addChild(this.bonusgamecontroller.container)
+        // this.bonusgamecontroller = new BonusController(1,appwidth,appheight)
+        // this.bonusgame_app.stage.addChild(this.bonusgamecontroller.container)
         this.currentgameinfo = gamesimulation.startinginfo;
     }
 
@@ -70,7 +70,7 @@ export default class BonusGame{
 
     changequikcplay(){
         this.quickplayon = !this.quickplayon
-        this.bonusgamecontroller.quickplayon = !this.bonusgamecontroller.quickplayon
+        // this.bonusgamecontroller.quickplayon = !this.bonusgamecontroller.quickplayon
         this.bonusgamecontainer.reelcontainer.changequikcplay()
     }
 

@@ -10,7 +10,15 @@ namespace Slot_bonus.Models.Symbols
 
         public override void DoAction(List<Location> targets, List<Reel> reels)
         {
-            throw new NotImplementedException();
+            foreach (var target in targets)
+            {
+                var symbol = reels[target.reelindex].Symbols[target.symbolindex];
+
+                if (symbol is PointSymbol pointSymbol)
+                {
+                    this.value += pointSymbol.value;
+                }
+            }
         }
 
         public override List<Location> SelectTargets(List<Location> opensymbols)

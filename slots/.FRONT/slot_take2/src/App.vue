@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { generateanimationsets } from './assets/Data_textures';
 import { loadassets  } from './assets/Data_textures';
-import GameContainer from './components/GameContainer.vue'
+import BonusGameContainer from './components/BonusGameContainer.vue'
 loadassets()
 generateanimationsets()
 </script>
@@ -13,7 +13,7 @@ generateanimationsets()
   </header>
 
   <main>
-    <GameContainer></GameContainer>
+    <BonusGameContainer></BonusGameContainer>
   </main>
 
   <footer>

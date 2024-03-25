@@ -8,13 +8,21 @@ namespace Slot_bonus.Models.Symbols
         {
         }
 
-        public override void DoAction(Location[] targets, List<Reel> reels)
+        public override void DoAction(List<Location> targets, List<Reel> reels)
         {
-            throw new NotImplementedException();
+            foreach (var target in targets)
+            {
+                var symbol = reels[target.reelindex].Symbols[target.symbolindex];
+
+                if (symbol is PointSymbol pointSymbol)
+                {
+                    pointSymbol.value += this.value;
+                }
+            }
         }
         public override List<Location> SelectTargets(List<Location> opensymbols)
         {
-            throw new NotImplementedException();
+            return opensymbols.Where(loc => loc.reelindex != this.location.reelindex && loc.symbolindex != this.location.symbolindex).ToList(); ;
         }
     }
 }

@@ -3,10 +3,13 @@
     public class SpecialHits
     {
         public Location actiondoer { get; set; }
-        public Location[] targets { get; set; }
-        public SpecialHits(Location actiondoer , Location[] targets) {
-            this.actiondoer= actiondoer;
-            this.targets= targets;
+        public List<Location> Targets { get; }
+
+
+        public SpecialHits(Location loc, List<Location> targets1)
+        {
+            actiondoer = loc;
+            Targets = targets1;
         }
     }
 }
