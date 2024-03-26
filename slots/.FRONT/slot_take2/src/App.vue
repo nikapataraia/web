@@ -2,6 +2,7 @@
 import { generateanimationsets } from './assets/Data_textures';
 import { loadassets  } from './assets/Data_textures';
 import BonusGameContainer from './components/BonusGameContainer.vue'
+import MainGameContainer from './components/MainGameContainer.vue';
 loadassets()
 generateanimationsets()
 </script>
@@ -13,7 +14,8 @@ generateanimationsets()
   </header>
 
   <main>
-    <BonusGameContainer></BonusGameContainer>
+    <!-- <BonusGameContainer></BonusGameContainer> -->
+    <MainGameContainer></MainGameContainer>
   </main>
 
   <footer>
@@ -21,3 +23,4 @@ generateanimationsets()
   </footer>
   
 </template>
+./assets/DataBonus/Data_textures./assets/DataBonus/Data_textures

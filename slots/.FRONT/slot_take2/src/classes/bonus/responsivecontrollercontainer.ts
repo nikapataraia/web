@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { BonusController } from './bonuscontrolls'
 import { BonusGameContainer } from './bonusgamecontainer'
-import { eventBus } from '../../assets/eventBus';
+import { eventBus } from '../../assets/DataBonus/eventBus';
 import SettingsAndInfo from './controllerchildren/settingsandinfo';
 
 export default class ResponsiveContainer{

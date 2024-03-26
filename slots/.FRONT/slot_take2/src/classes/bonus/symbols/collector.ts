@@ -3,7 +3,7 @@ import * as Tween from '@tweenjs/tween.js';
 import PointSymbol from './pointssymbol';
 import type { coordinates, gameinfo } from '../bonusgame';
 import type { ReelContainer } from '../reelcontainer';
-import { data } from '@/assets/Data';
+import { data } from '@/assets/DataBonus/Data';
 import { gsap } from 'gsap';
 
 export default class Collector extends PointSymbol{

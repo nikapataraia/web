@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { BonusController } from './bonuscontrolls'
 import { BonusGameContainer } from './bonusgamecontainer'
-import { eventBus } from '../../assets/eventBus';
+import { eventBus } from '../../assets/DataBonus/eventBus';
 import BalanceDisplay from './controllerchildren/balance';
 import WinningContainer from './controllerchildren/winnings';
 import BetDisplay from './controllerchildren/bet';

@@ -1,5 +1,5 @@
 
-import { eventBus } from "@/assets/eventBus";
+import { eventBus } from "@/assets/DataBonus/eventBus";
 import InfoContainer from "./infocontainer";
 import { ReelContainer } from "./reelcontainer";
 import * as PIXI from 'pixi.js'

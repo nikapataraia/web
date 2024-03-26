@@ -1,5 +1,5 @@
 <template>
-    <div class="GameContainer" id = "GameContainer" ref="GameContainerRef">
+    <div class="BonusGameContainer" id = "BonusGameContainer" ref="BonusGameContainerRef">
     
     </div>
     <button @click=animatereelLocal>roll</button>
@@ -22,7 +22,7 @@
     let mapWidth = 6
     let mapHeight = 5
     let speed = 2500
-    const GameContainerRef = ref<HTMLDivElement | null>(null);
+    const BonusGameContainerRef = ref<HTMLDivElement | null>(null);
     const roleanimationgoing = ref<boolean>(false)
     const gamestarted = ref<boolean>(false)
     const GameSkeletonloaded = ref<boolean>(false)
@@ -37,9 +37,9 @@
 
     function loadinbonusgame(){
         bonusgame = new BonusGame(appwidth,appheight,mapWidth,mapHeight,game)
-        const GameContainer = GameContainerRef.value
-        if(GameContainer){
-            GameContainer.appendChild(bonusgame.bonusgame_app.view as unknown as HTMLElement)
+        const BonusGameContainer = BonusGameContainerRef.value
+        if(BonusGameContainer){
+            BonusGameContainer.appendChild(bonusgame.bonusgame_app.view as unknown as HTMLElement)
         }
         GameSkeletonloaded.value = true
     }
@@ -60,3 +60,4 @@
 
 
 </script>
+../assets/DataBonus/Data_textures

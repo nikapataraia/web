@@ -4,7 +4,7 @@ import PointSymbol from './pointssymbol';
 import type { coordinates, gameinfo } from '../bonusgame';
 import type { ReelContainer } from '../reelcontainer';
 import crosshairTexture from '../../../assets/images/crosshair1.png';
-import { data } from '@/assets/Data';
+import { data } from '@/assets/DataBonus/Data';
 import { gsap } from 'gsap';
 
 export default class Sniper extends PointSymbol{

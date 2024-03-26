@@ -1,7 +1,7 @@
-import { animationsets, animationsets_quickplay, animationsets_skip, slotTextures } from '@/assets/Data_textures';
+import { animationsets, animationsets_quickplay, animationsets_skip, slotTextures } from '@/assets/DataBonus/Data_textures';
 import * as PIXI from 'pixi.js'
-import {} from '../../assets/Data_textures'
-import { data, generateType, generateWeightedNumber } from '@/assets/Data';
+import {} from '../../assets/DataBonus/Data_textures'
+import { data, generateType, generateWeightedNumber } from '@/assets/DataBonus/Data';
 import Symbol from './symbols/symbol';
 import PointSymbol from './symbols/pointssymbol';
 import Collector from './symbols/collector';

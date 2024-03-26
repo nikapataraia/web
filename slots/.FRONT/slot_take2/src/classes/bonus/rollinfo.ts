@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { BonusController } from './bonuscontrolls'
 import { BonusGameContainer } from './bonusgamecontainer'
-import { eventBus } from '../../assets/eventBus';
+import { eventBus } from '../../assets/DataBonus/eventBus';
 
 export default class RollInfo {
     rollsleft: number;

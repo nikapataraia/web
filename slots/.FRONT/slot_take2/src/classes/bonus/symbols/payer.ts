@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js'
-import { slotTextures } from '@/assets/Data_textures';
+import { slotTextures } from '@/assets/DataBonus/Data_textures';
 import * as Tween from '@tweenjs/tween.js';
 import PointSymbol from './pointssymbol';
 import type { coordinates, gameinfo } from '../bonusgame';
 import type { Reel } from '../reel';
 import type { ReelContainer } from '../reelcontainer';
-import { data } from '@/assets/Data';
+import { data } from '@/assets/DataBonus/Data';
 import { gsap } from 'gsap';
 
 export default class Payer extends PointSymbol {
