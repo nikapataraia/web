@@ -11,10 +11,14 @@
 </template>
     
 <script setup lang="ts">
+    import { generateanimationsets } from './../assets/DataBonus/Data_textures';
+    import { loadassets  } from './../assets/DataBonus/Data_textures';
+    loadassets()
+    generateanimationsets()
     import * as PIXI from 'pixi.js';
     import { onBeforeUnmount, ref, watch } from 'vue';
     import { onMounted } from 'vue';
-    import {AssetsLoaded} from '../assets/Data_textures'
+    import {AssetsLoaded} from '../assets/DataBonus/Data_textures'
     import BonusGame from '../classes/bonus/bonusgame'
     import GameSimulation from "../classes/bonus/gamedimulation/game"
     let appwidth =  1000
@@ -60,4 +64,3 @@
 
 
 </script>
-../assets/DataBonus/Data_textures

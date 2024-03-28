@@ -1,26 +1,24 @@
-<script setup lang="ts">
-import { generateanimationsets } from './assets/Data_textures';
-import { loadassets  } from './assets/Data_textures';
-import BonusGameContainer from './components/BonusGameContainer.vue'
-import MainGameContainer from './components/MainGameContainer.vue';
-loadassets()
-generateanimationsets()
-</script>
-
-
 <template>
-  <header>
-
-  </header>
-
   <main>
-    <!-- <BonusGameContainer></BonusGameContainer> -->
-    <MainGameContainer></MainGameContainer>
+    <MainGameContainer 
+    :BetAmount="BetAmount" 
+    :Balance="Balance" 
+    @bet="bet" 
+    @balanceUpdated="updateBalance">></MainGameContainer>
   </main>
-
-  <footer>
-
-  </footer>
-  
 </template>
-./assets/DataBonus/Data_textures./assets/DataBonus/Data_textures
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import MainGameContainer from './components/MainGameContainer.vue';
+
+function updateBalance(winnings : number){
+  Balance.value += winnings
+}
+function bet(Bet : number){
+  BetAmount.value = Bet;
+  Balance.value -= Bet;
+}
+const BetAmount = ref(2); 
+const Balance = ref(5000);
+</script>
