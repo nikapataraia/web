@@ -21,7 +21,7 @@ export const MainData = {
         Ball : 10,
         Application : {
             Width : 600,
-            Height : 800,
+            Height : 700,
         },
     },
 }
