@@ -1,0 +1,33 @@
+.ControllsRight{
+    margin-left: 10px;
+}
+.sound{
+    width: 60px;
+    height: 57px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.speed{
+    cursor: pointer;
+    width: 60px;
+    height: 57px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.sound img{
+    width: 100%;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    
+}
+
+.speed img{
+    width: 100%;
+    height: auto;
+}

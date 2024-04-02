@@ -1,99 +1,305 @@
 <template>
-    <div class="bottomPanel" id="bottom-panel">
-            <div class="bottomPanel__information" id="bottom-panel-info">
-                <div class="bottomPanel__information__content">
-                    <div class="totalBet">
-                        <p class="totalBet__title" id="ui-text-1">
-                            BET
-                        </p>
-                        <p class="totalBet__amount">
-                            <span id="totalBetElement" ref="BetAmount">0</span>
-                        </p>
-                    </div>
-                    <div class="playerBalance">
-                        <p class="playerBalance__title" id="ui-text-2">
-                            BAL
-                        </p>
-                        <p class="playerBalance__amount">
-                            <span id="balanceElement" ref="Balance">0</span>
-                        </p>
-                    </div>
-                </div>
+    <div class="ControllerContainer">
 
-                <div class="blue_border">
-                    <div class="mobile">
-                        <img src="../assets/UI/compressed/blue_line.png"/>
-                    </div>
-                    <img class="desktop" src="../assets/UI/compressed/blue_border_pc.png" />
-                </div>
-
+        <div class="BetAndBalanceContainer">
+            <div class="BetandBal" >
+            <!-- BET -->
+            <div class="Bet" >
+                <p class="Bet_txt" >BET</p>
+                <p class="Bet_cont">${{ props.BetAmount }}</p>
             </div>
+            <!-- Balance -->
+            <div class="Bal" >
+                <p class="Bal_txt">BAL</p>
+                <p class="Bal_cont">${{ props.Balance }}</p>
+            </div>
+            </div>
+            <div class="bluelinecontainer"><img src="/src/assets/UI/blue_border_pc.png"  draggable="false"></div>
+        </div>
 
 
-            <div class="bottomPanel__content">
-                <div class="bottomPanel__background"></div>
-                <div class="leftSide">
-                    <div class="burgerMenu" id="burgerMenu">
-                        <img class="enabled" src="../assets/UI/compressed/menu-enabled.png" />
-                        <img class="disabled" src="../assets/UI/compressed/menu-disabled.png" />
-                    </div>
-
-                    <div class="autoPlay ball-bundle-72" id="autoPlayElement"  ref="_autoPlayElement">
-                        <div class="bundleAmount hiddenLayer2">
-                            <span class="bits-left-amount"></span>
-                        </div>
-                        <img class="disabled" src="../assets/UI/compressed/autoplay-disabled-blue.png" />
-                        <img class="enabled" src="../assets/UI/compressed/autoplay-enabled.png" />
-                        <img class="disabled-pushed" src="../assets/UI/compressed/autoplay-disabled-pushed-blue.png" />
-                        <img class="enabled-pushed" src="../assets/UI/compressed/autoplay-enabled-pushed.png" />
-                        <span id="ui-text-3">AUTO</span>
-                    </div>
-                </div>
-
-                <div class="goButton">
-                    <img id="goDefault" ref="goDefault" src="../assets/UI/compressed/go-default.png" />
-                    <img id="gopressed" ref="goPressed" src="../assets/UI/compressed/go-pressed.png" />
-                    <img id="plusPressed" ref="plusPressed" src="../assets/UI/compressed/plus-pressed.png" />
-                    <img id="minusPressed" ref="minusPressed" src="../assets/UI/compressed/minus-pressed.png" />
-                    <div class="goButton__minus" id="minusButton"></div>
-                    <div class="goButton__plus" id="plusButton"></div>
-                    <div class="goButton__play" id="playButton"></div>
-                </div>
-
-                <div class="rightSide">
-                    <div class="sound" id="soundElement">
-                        <img class="enabled" src="../assets/UI/compressed/sound-enabled.png" />
-                        <img class="disabled" src="../assets/UI/compressed/sound-disabled.png" />
-                    </div>
-                    <div class="fastPlay" id="fastPlayElement">
-                        <img class="level1" src="../assets/UI/compressed/speed-level-1.png" />
-                        <img class="level1-pressed" src="../assets/UI/compressed/speed-level-1-pressed.png" />
-                        <img class="level2" src="../assets/UI/compressed/speed-level-2.png" />
-                        <img class="level2-pressed" src="../assets/UI/compressed/speed-level-2-pressed.png" />
-                        <img class="level3" src="../assets/UI/compressed/speed-level-3.png" />
-                        <img class="level3-pressed" src="../assets/UI/compressed/speed-level-3-pressed.png" />
-                        <span id="ui-text-4">SPEED</span>
-                    </div>
-                </div>
-
+        <div class="ControllsContainer" >
+            <div class="ControllsLeft" >      
+              <div class="menu" ref="menu_ref">
+                <img class="menu_disabled disabled"  draggable="false" src="/src//assets//UI/menu-enabled.png" ref="menu_image_disabled_ref">
+                <img class="menu_enabled"  draggable="false" src="/src/assets/UI/menu-disabled.png" ref="menu_image_enabled_ref">
+              </div>
+              <div class="autoplay">
+                <img class="autoplay_disabled_pushed disabled"  draggable="false"  src="/src/assets/UI/autoplay-disabled-pushed-2.png">
+                <img class="autoplay_disabled"  draggable="false" src="/src/assets/UI/autoplay-disabled-2.png">
+                <img class="autoplay_enabled disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled.png">
+                <img class="autoplay_enabled_pushed disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled-pushed.png">
+              </div>
+            </div>
+            <div class="GoControlls" ref="gocontrolls_ref">
+              <img class="go-default"  draggable="false" src="/src//assets/UI/go-default.png" ref="go_default_ref">
+              <img class="go-pressed disabled"  draggable="false" src="/src//assets/UI/go-pressed.png" ref="go_pressed_ref">
+              <img class="go-minus-pressed disabled"  draggable="false" src="/src//assets/UI/minus-pressed.png" ref="go_minus_pressed_ref">
+              <img class="go-plus-pressed disabled"  draggable="false" src="/src//assets/UI/plus-pressed.png" ref="go_plus_pressed_ref">
+              <button class="minus" ref="minus_button_ref"></button>
+              <button class="go"  ref="go_button_ref"></button>
+              <button class="plus"  ref="plus_button_ref"></button>
+            </div>
+            <div class="ControllsRight">
+              <div class="sound" ref="sound_ref">
+                <img class="sound-enabled"  draggable="false" src="/src//assets/UI/sound-enabled.png" ref="sound_image_enabled">
+                <img class="sound-disabled disabled"  draggable="false" src="/src//assets/UI/sound-disabled.png" ref="sound_image_disabled">
+              </div>
+              <div class="speed" draggable="false" ref="speed_ref">
+                <img class="speed1"  draggable="false" src="/src//assets/UI/speed-level-1.png" ref="speed1_image_ref">
+                <img class="speed1-pressed disabled"  draggable="false" src="/src//assets/UI/speed-level-1-pressed.png" ref="speed1_image_pressed_ref">
+                <img class="speed2 disabled"  draggable="false" src="/src//assets/UI/speed-level-2.png" ref="speed2_image_ref">
+                <img class="speed2-pressed disabled"  draggable="false" src="/src//assets/UI/speed-level-2-pressed.png" ref="speed2_image_pressed_ref">
+                <img class="speed3 disabled"  draggable="false" src="/src//assets/UI/speed-level-3.png" ref="speed3_image_ref">
+                <img class="speed3-pressed disabled"  draggable="false" src="/src//assets/UI/speed-level-3-pressed.png" ref="speed3_image_pressed_ref">    
+              </div>
             </div>
         </div>
+
+
+    </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-const _autoPlayElement = ref(null);
-const BetAmount = ref(null)
-const Balance = ref(null)
-const goDefault = ref(null);
-const goPressed = ref(null);
-const plusPressed = ref(null);
-const minusPressed = ref(null);
+import { ref, onMounted , onUnmounted } from 'vue';
+// GO CONSTANTS
+const go_button_ref = ref(null)
+const plus_button_ref = ref(null)
+const minus_button_ref = ref(null)
+const gocontrolls_ref = ref(null)
+const go_default_ref = ref(null)
+const go_pressed_ref = ref(null)
+const go_minus_pressed_ref = ref(null)
+const go_plus_pressed_ref = ref(null)
+let CurrentGoState = go_default_ref;
+let GoHoldFlag = false
 
-const GoStates = {
-    playStill: 0,
-    playHold: 1,
-    playMinus: 2,
-    playPlus: 3,
+// SPEED CONSTANTS
+const speed_ref = ref(null)
+const speed1_image_ref = ref(null)
+const speed1_image_pressed_ref = ref(null)
+const speed2_image_ref = ref(null)
+const speed2_image_pressed_ref = ref(null)
+const speed3_image_ref = ref(null)
+const speed3_image_pressed_ref = ref(null)
+const speed_array = [
+    speed1_image_ref,
+    speed1_image_pressed_ref,
+    speed2_image_ref,
+    speed2_image_pressed_ref,
+    speed3_image_ref,
+    speed3_image_pressed_ref
+];
+let CurrentSpeedindex = 0
+let speed_held = false
+
+
+// SOUND CONSTANTS
+const sound_ref = ref(null)
+const sound_image_enabled = ref(null)
+const sound_image_disabled = ref(null)
+const soundon = ref(true)
+const soundpressed = ref(false)
+
+
+// MENU CONSTANTS
+const menu_ref = ref(null)
+const menu_image_disabled_ref = ref(null)
+const menu_image_enabled_ref = ref(null)
+const menuon = ref(false)
+
+
+
+
+// props
+const props = defineProps({
+  BetAmount_index: Number,
+  BetAmount : Number,
+  Balance: Number,
+  autoPlayActive: Boolean,
+  speedLevel: Number,
+  settingsOpen: Boolean,
+  soundOn: Boolean,
+});
+// emits
+const emit = defineEmits([
+  'changeBetAmount',
+  'changesound',
+  'changespeedlevel',
+  'opensettings',
+  'startAutoPlay',
+  'autoPlayToggle',  
+  'bet',
+]);
+
+
+
+// GO-PLUS-MINUS EVENT FUNCTION
+function handleGoMouseDown() {
+  if(CurrentGoState.value){
+    GoHoldFlag = true
+    emit('bet' , props.BetAmount);
+    CurrentGoState.value.classList.add("disabled")
+    CurrentGoState = go_pressed_ref
+    CurrentGoState.value.classList.remove("disabled")
+  }
 }
+
+function handleMinusMouseDown(){
+  if(CurrentGoState.value){
+    emit('changeBetAmount' , true);
+    CurrentGoState.value.classList.add("disabled")
+    CurrentGoState = go_minus_pressed_ref
+    CurrentGoState.value.classList.remove("disabled")
+  }
+}
+
+function handlePlusMouseDown(){
+  if(CurrentGoState.value){
+    emit('changeBetAmount' , false);
+    CurrentGoState.value.classList.add("disabled")
+    CurrentGoState = go_plus_pressed_ref
+    CurrentGoState.value.classList.remove("disabled")
+  }
+}
+
+function clearGo(){
+  setTimeout(() => {
+    if (CurrentGoState.value) {
+      CurrentGoState.value.classList.add("disabled");
+      CurrentGoState = go_default_ref;
+      if (CurrentGoState.value) {
+        CurrentGoState.value.classList.remove("disabled");
+      }
+    }
+    GoHoldFlag = false
+  }, 10);
+}
+// 
+
+// SPEED EVENT FUNCTIONS
+function speedMouseDownHandler(){
+  emit('changespeedlevel')
+  if(speed_array[CurrentSpeedindex].value){
+    speed_held = true
+  if(CurrentSpeedindex + 1 <= speed_array.length){
+    speed_array[CurrentSpeedindex].value.classList.add("disabled")
+    CurrentSpeedindex+=1
+    speed_array[CurrentSpeedindex].value.classList.remove("disabled")
+  }
+}
+}
+
+function clearSpeed(){
+  setTimeout(() => {
+    if(CurrentSpeedindex >= speed_array.length - 1){
+      speed_array[CurrentSpeedindex].value.classList.add("disabled")
+      CurrentSpeedindex = 0
+      speed_array[CurrentSpeedindex].value.classList.remove("disabled")
+    }
+    else{
+      speed_array[CurrentSpeedindex].value.classList.add("disabled")
+      CurrentSpeedindex += 1
+      speed_array[CurrentSpeedindex].value.classList.remove("disabled")
+    }
+    speed_held = false
+  }, 10);
+}
+
+function mouseleaveSpeed(){
+  if(speed_held){
+    clearSpeed()
+  }
+}
+// 
+
+// MENU EVENT FUNCTIONS
+function menuMouseDownHandler(){
+menuon.value = !menuon.value
+if(menu_image_disabled_ref.value &&  menu_image_enabled_ref.value){
+  if(menuon.value){
+    menu_image_enabled_ref.value.classList.add("disabled")
+    menu_image_disabled_ref.value.classList.remove("disabled")
+  }
+  else{
+    menu_image_disabled_ref.value.classList.add("disabled")
+    menu_image_enabled_ref.value.classList.remove("disabled")
+  }
+}
+}
+function menuMouseUpHandler(){
+
+}
+function menuMouseleaveHandler(){
+
+}
+// SOUND EVENT FUNCTIONS
+function soundMouseDownHandler(){
+  soundon.value = !soundon.value
+  soundpressed.value = true
+  if(sound_image_disabled.value && sound_image_enabled.value){
+    if(soundon.value){
+      sound_image_disabled.value.classList.add("disabled")
+      sound_image_enabled.value.classList.remove("disabled")
+    }
+    else{
+      sound_image_enabled.value.classList.add("disabled")
+      sound_image_disabled.value.classList.remove("disabled")
+    }
+  }
+}
+function soundMouseUpHandler(){
+  soundpressed.value = false
+}
+function soundMouseleaveHandler(){
+  if(soundpressed.value){
+    soundpressed.value = false
+  }
+}
+onMounted(() => {
+  // GO-PLUS-MINUS EVENTS
+  if (go_button_ref.value) {
+    go_button_ref.value.addEventListener('mousedown',  handleGoMouseDown);
+    go_button_ref.value.addEventListener('mouseup', clearGo);
+    go_button_ref.value.addEventListener('mouseleave', clearGo);
+  }
+  if (plus_button_ref.value) {
+    plus_button_ref.value.addEventListener('mousedown', handlePlusMouseDown);
+    plus_button_ref.value.addEventListener('mouseup', clearGo);
+    plus_button_ref.value.addEventListener('mouseleave', clearGo);
+  }
+  if (minus_button_ref.value) {
+    minus_button_ref.value.addEventListener('mousedown',  handleMinusMouseDown);
+    minus_button_ref.value.addEventListener('mouseup', clearGo);
+    minus_button_ref.value.addEventListener('mouseleave', clearGo);
+  }
+
+  // SPEED EVENTS
+  if(speed_ref.value){
+    speed_ref.value.addEventListener('mousedown', speedMouseDownHandler)
+    speed_ref.value.addEventListener('mouseup', clearSpeed)
+    speed_ref.value.addEventListener('mouseleave', mouseleaveSpeed)
+  }
+
+
+  // Sound EVENTS
+  if(sound_ref.value){
+    sound_ref.value.addEventListener('mousedown' , soundMouseDownHandler)
+    sound_ref.value.addEventListener('mouseup' , soundMouseUpHandler)
+    sound_ref.value.addEventListener('mouseleave' ,soundMouseleaveHandler)
+  }
+
+  // MENU EVENTS
+  if(menu_ref.value){
+    menu_ref.value.addEventListener('mousedown' , menuMouseDownHandler)
+    menu_ref.value.addEventListener('mouseup' , menuMouseUpHandler)
+    menu_ref.value.addEventListener('mouseleave' ,menuMouseleaveHandler)
+  }
+
+});
+
+
+onUnmounted(() => {
+  
+});
 </script>

@@ -1,0 +1,29 @@
+.BetAndBalanceContainer img{
+margin-top: 0px;
+padding-top: 10px;
+}
+
+.BetandBal{
+    display: flex;
+    justify-content: space-between;
+}
+
+.Bet{
+    float: left;
+}
+.Bal{
+    float: right;
+}
+
+.Bet_txt,.Bet_cont,.Bal_txt,.Bal_cont{
+    margin: 0px;
+    padding: 0px;
+}
+
+.bluelinecontainer{
+    margin-top: -10px;
+}
+
+.bluelinecontainer img{
+    width: 100%;
+}

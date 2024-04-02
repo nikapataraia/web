@@ -1,4 +1,8 @@
 @import "./Bonus/BonusGameContainer.scss";
 @import "./Main/MainGameContainer.scss";
 @import "./Modals.scss";
-@import "./Controlls//Controlls.scss";
+@import "./Controlls/Controller.scss";
+
+body{
+    margin: 0px;
+}

@@ -1,0 +1,51 @@
+.GoControlls{
+    width: 150px;
+    position: relative; /* Makes this the reference for absolutely positioned children */
+    display: flex; /* Example: Aligns children (e.g., buttons) in a row */
+    justify-content: space-around; /* Spreads children evenly across the container's main axis */
+    align-items: center;
+}
+
+.GoControlls img{
+    width: 100%;
+}
+
+.GoControlls button{
+    position: absolute;
+    border: none;
+    // opacity: 0.6;
+    background: transparent;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.minus {
+    // background-color: purple;
+    width: 54px;
+    height: 110px;
+    border-radius: 350px 0 0 350px;
+    left: 15px;
+    top: 55px;
+    transform: translateY(-50%);
+    z-index: 5;
+}
+
+.go{
+    // background-color: red;
+    width: 66px;
+    left: 43px;
+    height: 60px;
+    top: 10px;
+    border-radius: 50%;
+    z-index: 10;
+}
+.plus{
+    // background-color: purple;
+    left: 83px;
+    width: 54px;
+    height: 110px;
+    border-radius: 0 350px 350px 0;
+    top: 55px;
+    transform: translateY(-50%);
+    z-index: 5;
+}

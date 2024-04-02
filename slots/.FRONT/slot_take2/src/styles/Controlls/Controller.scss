@@ -1,0 +1,15 @@
+.ControllerContainer{
+    display: flex;
+    width: 450px;
+    justify-content: center;
+    text-align: center;
+    font-family: "Digib";
+    flex-direction: column;
+    margin-left: calc(50% - 225px);
+}
+.disabled{
+    display: none;
+}
+
+@import "./betandbalance.scss";
+@import "./bottomcontrolls.scss";
