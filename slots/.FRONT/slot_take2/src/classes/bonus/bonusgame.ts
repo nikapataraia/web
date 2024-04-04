@@ -19,7 +19,6 @@ export interface coordinates {
 
 export default class BonusGame{
     bonusgamecontainer : BonusGameContainer
-    // bonusgamecontroller : BonusController
     bonusgame_app : PIXI.Application<PIXI.ICanvas>
     appWidth : number;
     appHeight : number;
@@ -39,7 +38,7 @@ export default class BonusGame{
             height : this.appHeight,
             backgroundColor : 'black'
         })
-        this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight * 0.9, gamesimulation.startinginfo)
+        this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight, gamesimulation.startinginfo)
         this.bonusgame_app.stage.addChild(this.bonusgamecontainer.container)
 
         // this.bonusgamecontroller = new BonusController(1,appwidth,appheight)

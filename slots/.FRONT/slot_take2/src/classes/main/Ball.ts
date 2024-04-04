@@ -67,20 +67,20 @@ export default class Ball{
     setTimeAndGravity(){
         switch (this.speed){
             case 1:
-                this.t = MainData.BallAnimation.Speed1.t;
-                this.gravity = MainData.BallAnimation.Speed1.Gravity;
+                this.t = MainData.BallAnimation.Normal.Speed1.t;
+                this.gravity = MainData.BallAnimation.Normal.Speed1.Gravity;
                 break
             case 2:
-                this.t = MainData.BallAnimation.Speed2.t;
-                this.gravity = MainData.BallAnimation.Speed2.Gravity;
+                this.t = MainData.BallAnimation.Normal.Speed2.t;
+                this.gravity = MainData.BallAnimation.Normal.Speed2.Gravity;
                 break
             case 3:
-                this.t = MainData.BallAnimation.Speed3.t
-                this.gravity = MainData.BallAnimation.Speed3.Gravity
+                this.t = MainData.BallAnimation.Normal.Speed3.t
+                this.gravity = MainData.BallAnimation.Normal.Speed3.Gravity
                 break
             default:
-                this.t = MainData.BallAnimation.Speed1.t;
-                this.gravity = MainData.BallAnimation.Speed1.Gravity; 
+                this.t = MainData.BallAnimation.Normal.Speed1.t;
+                this.gravity = MainData.BallAnimation.Normal.Speed1.Gravity; 
                 break
         }
     }

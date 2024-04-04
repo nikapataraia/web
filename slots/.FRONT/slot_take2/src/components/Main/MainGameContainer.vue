@@ -7,26 +7,29 @@ import { onMounted, onUnmounted, ref, watch , defineProps, defineEmits, defineEx
 import Plinko from '@/classes/main/Plinko';
 import * as PIXI from 'pixi.js'
 import { MainData } from '@/assets/DataMain/Data';
-const emit = defineEmits(['bet', 'balanceUpdated'])
+const emit = defineEmits(['bet', 'balanceUpdated','EnableBonusDropped','GoToBonus'])
 defineExpose({Bet , ChangeSpeed})
 const props = defineProps({
 BetAmount_index: Number,
   BetAmount: Number,
   Balance: Number,
+  BonusBallDroped: Boolean,
 });
 const localBetAmount = ref(props.BetAmount || 0);
 const Ballidincrementer = ref(0);
-const BonusDropped = ref(false)
+const BonusDropped_local = ref(false)
 const isBetOnCooldown = ref(false);
-function Bet() {
-    if (!BonusDropped.value && !isBetOnCooldown.value) {
+function Bet(BallType : number, BallID : number, BetAmount : number , DropLocation : number) {
+    if (!BonusDropped_local.value && !isBetOnCooldown.value) {
         isBetOnCooldown.value = true;
         setTimeout(() => {
             isBetOnCooldown.value = false;
         }, 100);
-        
-        emit('bet', localBetAmount.value);
-        MainGame.AddBall(Ballidincrementer.value, Math.random() > 0.999 ? 1 : 0, Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1)), localBetAmount.value);
+        if(BallType === 1){
+            BonusDropped_local.value = true
+            emit('EnableBonusDropped')
+        }
+        MainGame.AddBall(BallID, BallType, DropLocation, BetAmount);
     }
 }
 function updateBalance(winnings : number){
@@ -40,10 +43,13 @@ watch(() => props.BetAmount, (newVal) => {
   localBetAmount.value = newVal || 1;
   MainGame.BetAmount = newVal || 1;
 });
+function GoToBonus(){
+    emit("GoToBonus")
+}
 
 function LoadInMainGame() {
     LoadAssets();
-    MainGame = new Plinko(localBetAmount.value , updateBalance);
+    MainGame = new Plinko(localBetAmount.value , updateBalance, GoToBonus);
     const MainGameContainer = MainGameContainerRef.value;
     if (MainGameContainer) {
         MainGameContainer.appendChild(MainGame.Plinko_app.view as unknown as HTMLElement);

@@ -22,10 +22,11 @@ const props = defineProps({
   isOpen: Boolean
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close' , 'doafter']);
 
 function closeModal() {
   emit('close');
+  emit('doafter')
 }
 
 onClickOutside(modal , () => {closeModal()})

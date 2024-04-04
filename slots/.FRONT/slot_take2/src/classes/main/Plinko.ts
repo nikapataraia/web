@@ -14,7 +14,7 @@ export default class Plinko{
     FinishLines : number[]
     BallDropDisabled : boolean
 
-    constructor( BetAmount : number, onUpdateBalance: (winnings: number) => void){
+    constructor( BetAmount : number, onUpdateBalance: (winnings: number) => void , GoToBonus : Function){
         this.BetAmount = BetAmount
         this.Speed = 1
         this.scale = 1
@@ -26,7 +26,7 @@ export default class Plinko{
             backgroundColor : 'gray',
         })
         this.FinishLines = MainData.Map.FinishLine1
-        this.Map = new PlinkoMap( this.FinishLines , onUpdateBalance)
+        this.Map = new PlinkoMap( this.FinishLines , onUpdateBalance , GoToBonus)
         this.Plinko_app.stage.addChild(this.Map.container)
     }
 

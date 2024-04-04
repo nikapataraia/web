@@ -1,16 +1,32 @@
 export const MainData = {
     BallAnimation : {
-        Speed1:{
-            Gravity : 0.15,
-            t : 40,
+        Normal : {
+            Speed1:{
+                Gravity : 0.15,
+                t : 40,
+            },
+            Speed2:{
+                Gravity : 0.5,
+                t : 20,
+            },
+            Speed3:{
+                Gravity : 1,
+                t : 15,
+            },
         },
-        Speed2:{
-            Gravity : 1,
-            t : 15,
-        },
-        Speed3:{
-            Gravity : 2,
-            t : 10,
+        Bonus : {
+            Speed1:{
+                Gravity : 0.08,
+                t : 50,
+            },
+            Speed2:{
+                Gravity : 0.15,
+                t : 35,
+            },
+            Speed3:{
+                Gravity : 0.3,
+                t : 25,
+            },
         },
     },
     Map : {
@@ -20,8 +36,8 @@ export const MainData = {
         Pole : 8,
         Ball : 10,
         Application : {
-            Width : 600,
-            Height : 700,
+            Width : 500,
+            Height : 750,
         },
     },
     BetAmounts : [0.2,0.25,0.4,0.5,1,1.5,2,4,6,10,15,20,25,50,100,120]

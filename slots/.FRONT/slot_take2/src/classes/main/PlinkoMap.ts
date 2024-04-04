@@ -15,8 +15,10 @@ export default class PlinkoMap{
     BallSpawnCords : Coordinates;
     DropedBalls : Ball[] = [];
     private onUpdateBalance: (winnings: number) => void;
+    private GoToBonus : Function;
     speed:number;
-    constructor(FinishLines : number[] , onUpdateBalance: (winnings: number) => void){
+    constructor(FinishLines : number[] , onUpdateBalance: (winnings: number) => void , GoToBonus : Function){
+        this.GoToBonus = GoToBonus
         this.onUpdateBalance = onUpdateBalance;
         this.container = new PIXI.Container()
         const containerwidth = MainData.Sizes.Application.Width * 0.9
@@ -51,7 +53,6 @@ export default class PlinkoMap{
 
         if(IsBonus){
             Ball = new BonusBall(Ballid,this.BallSpawnCords.x,this.BallSpawnCords.y,BallDestination, Route , polecords , finishcord , BetAmount,this.speed)
-            console.log('bonus dropped')
         }
         else{
             Ball = new SimpleBall(Ballid,this.BallSpawnCords.x,this.BallSpawnCords.y,BallDestination, Route, polecords , finishcord , BetAmount,this.speed)
@@ -64,7 +65,12 @@ export default class PlinkoMap{
         this.DropedBalls = this.DropedBalls.filter(ball => {
             if (ball.update(Deltatime)) {
                 this.container.removeChild(ball.container);
-                this.onUpdateBalance(ball.BetAmount * this.Finishline.FinishLine[ball.FinishLineIndex])
+                if(ball instanceof BonusBall){
+                    this.GoToBonus()
+                }
+                else{
+                    this.onUpdateBalance(ball.BetAmount * this.Finishline.FinishLine[ball.FinishLineIndex])
+                }
                 return false;
             }
             return true;

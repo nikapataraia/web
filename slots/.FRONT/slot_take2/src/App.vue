@@ -1,66 +1,123 @@
 <template>
-    <BasicModal :isOpen="isModalOpen" @close="closemodal"></BasicModal>
+    <BasicModal :isOpen="isModalOpen" @close="closemodal" @doafter="LoadInBonusGame"></BasicModal>
+    <MenuModal :isOpen="isMenuOpen" @close="closemenumodal"></MenuModal>
+    <AutoPlayModal :isOpen="isAutoPlayOpen" @close="closeautoplaymodal" @startAutoPlay="startAutoPlay"></AutoPlayModal>
+    <div ref="maingamecont_ff" class="">
     <MainGameContainer 
     ref="Maincomponent_ref"
     :BetAmount_index="BetAmount_index" 
     :BetAmount="BetAmount"
     :Balance="Balance" 
+    :BonusBallDroped="BonusBallDroped"
+    @GoToBonus="GoToBonus"
     @bet="bet" 
-    @balanceUpdated="updateBalance"></MainGameContainer>
+    @balanceUpdated="updateBalance"
+    @EnableBonusDropped="EnableBonusDropped"></MainGameContainer>
+    </div>
+    <div ref="bonusgamecont_ff" class="disabled">
+        <BonusGameContainer v-if="InBonusGame" ref="bonusgame_ref"></BonusGameContainer>
+    </div>
     <ControllsContainer
+    ref="Controller_ref"
     :BetAmount_index="BetAmount_index" 
     :BetAmount="BetAmount"
     :Balance="Balance" 
     :autoPlayActive="autoPlatActive"
     :speedLevel="speedLevel"
-    :settingsOpen ="settingsOpen"
+    :settingsOpen="settingsOpen"
     :soundOn="soundOn"
+    :isAutoPlayOpen="isAutoPlayOpen"
+    :isMenuOpen="isMenuOpen"
+    :BonusBallDroped="BonusBallDroped"
+    :InBonusGame="InBonusGame"
+    @changeAutoPlayOpen="changeAutoPlayOpen"
+    @changeMenuOpen="changeMenuOpen"
     @changeBetAmount="changeBetAmount"
     @changesound="changesound"
     @changespeedlevel="changespeedlevel"
     @opensettings="opensettings"
     @startAutoPlay="startAutoPlay"
     @bet="bet"
+    @StopAutoPlay="StopAutoPlay"
     >
-
     </ControllsContainer>
-    <button @click="isModalOpen = true">openmodal</button>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import MainGameContainer from './components/MainGameContainer.vue';
+import MainGameContainer from './components/Main/MainGameContainer.vue';
+import BonusGameContainer from './components/Bonus/BonusGameContainer.vue'
 import BasicModal from './components/Modals/BasicModal.vue'
-import ControllsContainer from './components/ControllsContainer.vue'
+import ControllsContainer from './components/Controller/ControllsContainer.vue'
+import AutoPlayModal from './components/Modals/AutoPlayModal.vue';
+import MenuModal from './components/Modals/MenuModal.vue';
 import { MainData } from './assets/DataMain/Data';
+import GameSimulation from './classes/bonus/gamedimulation/game';
+
+// MODAL CONSTANTS
 const isModalOpen = ref(false)
+const isAutoPlayOpen = ref(false)
+const isMenuOpen = ref(false)
+
+// COMPONENT COMSTANTS
+const Controller_ref = ref(null)
 const Maincomponent_ref = ref(null)
-function updateBalance(winnings : number){
-  Balance.value += winnings
-}
-function bet(Bet : number){
-  BetAmount.value = Bet;
-  if(Maincomponent_ref.value){
-    Maincomponent_ref.value.Bet()
-  }
-  Balance.value =  Number((Balance.value - Bet).toFixed(1))
-}
-function closemodal(DoSomething : Function){
-  isModalOpen.value = false
-}
+const maingamecont_ff = ref(null)
+const bonusgamecont_ff = ref(null)
+
+// Controller Constants
 const BetAmount_index = ref(0);
-const BetAmount = ref(0.2) 
+const BetAmount = ref(MainData.BetAmounts[BetAmount_index.value]) 
 const Balance = ref(5000);
 const autoPlatActive = ref(false)
 const speedLevel = ref(1)
 const settingsOpen = ref(false)
 const soundOn = ref(false)
-const autoPlayAmount = ref(0)
+
+// BONUS HELPERS
+const BonusBallDroped = ref(false)
+const bonusgame_ref = ref(false)
+function EnableBonusDropped(){
+  BonusBallDroped.value = true
+  autoPlatActive.value = false
+}
+const InBonusGame = ref(false)
+function GoToBonus(){
+  BonusBallDroped.value = false
+  isModalOpen.value = true
+  LoadInBonusGame()
+}
+function LoadInBonusGame(){
+const game = new GameSimulation(1, 6, 5);
+InBonusGame.value = true
+if(maingamecont_ff.value && bonusgamecont_ff.value){
+  bonusgame_ref.value.loadinbonusgame(game)
+  maingamecont_ff.value.classList.add('disabled')
+  bonusgamecont_ff.value.classList.remove('disabled')
+}
+}
+
+// BET AND BALANCE FUNCTIONS
+function updateBalance(winnings : number){
+  Balance.value += winnings
+}
+function bet(Bet : number){
+  if(!BonusBallDroped.value){
+      BetAmount.value = Bet;
+      if(Maincomponent_ref.value){
+        const BallType = Math.random() > 0.999 ? 1 : 0;
+        const BallID = 0
+        const DropLocation = Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1))
+        Maincomponent_ref.value.Bet(BallType , BallID, BetAmount.value, DropLocation)
+      }
+  Balance.value =  Number((Balance.value - Bet).toFixed(1))
+  }
+}
 
 function changeBetAmount(isdecreasing : boolean){
   if(isdecreasing){
     if(BetAmount_index.value <= 0){
-      //dosomething
+      // 
     }
     else{
       BetAmount_index.value -= 1;
@@ -69,7 +126,7 @@ function changeBetAmount(isdecreasing : boolean){
   }
   else{
     if(BetAmount_index.value >= MainData.BetAmounts.length - 1){
-      //dosomething
+      // 
     }
     else{
       BetAmount_index.value += 1;
@@ -77,6 +134,29 @@ function changeBetAmount(isdecreasing : boolean){
     }
   }
 }
+
+
+// MODAL FUNCTIONS
+function closemodal(DoSomething : Function){
+  isModalOpen.value = false
+}
+function closeautoplaymodal(){
+  isAutoPlayOpen.value = false
+  Controller_ref.value.autoPlayDefaulter()
+}
+function closemenumodal(){
+  isMenuOpen.value = false
+  Controller_ref.value.menuDefaulter()
+}
+function changeAutoPlayOpen(){
+  isAutoPlayOpen.value = true
+}
+function changeMenuOpen(){
+  isMenuOpen.value = true
+}
+
+
+// Controller Functions
 function changesound(){
   soundOn.value = !soundOn.value
 }
@@ -95,7 +175,30 @@ function changespeedlevel(){
 function opensettings(){
   settingsOpen.value =  !settingsOpen.value
 }
-function startAutoPlay(){
+function startAutoPlay(amount : number) {
+  autoPlatActive.value = true;
+  let i = 0;
+  function nextBet() {
+    if (!autoPlatActive.value || i >= amount) {
+      autoPlatActive.value = false;
+      if (Controller_ref.value) {
+        Controller_ref.value.autoPlayDefaulter();
+      }
+      return;
+    }
+    setTimeout(() => {
+      bet(BetAmount.value);
+      i++;
+      nextBet();
+    }, 300);
+  }
+  nextBet();
+}  
 
+function StopAutoPlay(){
+  autoPlatActive.value = false
+  if (Controller_ref.value) {
+    Controller_ref.value.autoPlayDefaulter();
+  }
 }
 </script>

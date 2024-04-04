@@ -24,11 +24,11 @@
                 <img class="menu_disabled disabled"  draggable="false" src="/src//assets//UI/menu-enabled.png" ref="menu_image_disabled_ref">
                 <img class="menu_enabled"  draggable="false" src="/src/assets/UI/menu-disabled.png" ref="menu_image_enabled_ref">
               </div>
-              <div class="autoplay">
-                <img class="autoplay_disabled_pushed disabled"  draggable="false"  src="/src/assets/UI/autoplay-disabled-pushed-2.png">
-                <img class="autoplay_disabled"  draggable="false" src="/src/assets/UI/autoplay-disabled-2.png">
-                <img class="autoplay_enabled disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled.png">
-                <img class="autoplay_enabled_pushed disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled-pushed.png">
+              <div class="autoplay" ref="autoplay_ref">
+                <img class="autoplay_disabled_pushed disabled"  draggable="false"  src="/src/assets/UI/autoplay-disabled-pushed-2.png" ref="autoplay_disabled_pushed_ref">
+                <img class="autoplay_disabled"  draggable="false" src="/src/assets/UI/autoplay-disabled-2.png" ref="autoplay_disabled_ref">
+                <img class="autoplay_enabled disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled.png" ref="autoplay_enabled_ref">
+                <img class="autoplay_enabled_pushed disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled-pushed.png" ref="autoplay_enabled_pushed_ref">
               </div>
             </div>
             <div class="GoControlls" ref="gocontrolls_ref">
@@ -73,6 +73,10 @@ const go_minus_pressed_ref = ref(null)
 const go_plus_pressed_ref = ref(null)
 let CurrentGoState = go_default_ref;
 let GoHoldFlag = false
+let longPressActive = false;
+let pressInterval = null;
+const ButtonTimer = ref(null)
+let intervalcooldown = 300
 
 // SPEED CONSTANTS
 const speed_ref = ref(null)
@@ -107,9 +111,16 @@ const menu_ref = ref(null)
 const menu_image_disabled_ref = ref(null)
 const menu_image_enabled_ref = ref(null)
 const menuon = ref(false)
+const menupressed = ref(false)
 
-
-
+// AUTOPLAY CONSTANTS
+const autoplay_ref = ref(null)
+const autoplay_disabled_pushed_ref = ref(null)
+const autoplay_disabled_ref = ref(null)
+const autoplay_enabled_ref = ref(null)
+const autoplay_enabled_pushed_ref = ref(null)
+let currentautoplay = autoplay_disabled_ref
+const autoplaypressed = ref(false)
 
 // props
 const props = defineProps({
@@ -120,6 +131,10 @@ const props = defineProps({
   speedLevel: Number,
   settingsOpen: Boolean,
   soundOn: Boolean,
+  isAutoPlayOpen:Boolean,
+  isMenuOpen:Boolean,
+  BonusBallDroped:Boolean,
+  InBonusGame:Boolean,
 });
 // emits
 const emit = defineEmits([
@@ -130,40 +145,78 @@ const emit = defineEmits([
   'startAutoPlay',
   'autoPlayToggle',  
   'bet',
+  'changeAutoPlayOpen',
+  'changeMenuOpen',
+  'StopAutoPlay'
 ]);
-
+// exposes
+defineExpose({menuDefaulter,autoPlayDefaulter})
 
 
 // GO-PLUS-MINUS EVENT FUNCTION
 function handleGoMouseDown() {
   if(CurrentGoState.value){
     GoHoldFlag = true
-    emit('bet' , props.BetAmount);
     CurrentGoState.value.classList.add("disabled")
     CurrentGoState = go_pressed_ref
     CurrentGoState.value.classList.remove("disabled")
+    if(!props.BonusBallDroped && !props.autoPlayActive){
+      emit('bet' , props.BetAmount);
+    ButtonTimer.value = setTimeout(() => {
+      longPressActive = true
+      pressInterval = setInterval(() => {
+        emit('bet' , props.BetAmount)
+      }, intervalcooldown);
+    },400)
+  }
   }
 }
-
-function handleMinusMouseDown(){
-  if(CurrentGoState.value){
-    emit('changeBetAmount' , true);
-    CurrentGoState.value.classList.add("disabled")
-    CurrentGoState = go_minus_pressed_ref
-    CurrentGoState.value.classList.remove("disabled")
+function handleMinusMouseDown() {
+  if (CurrentGoState.value) {
+    CurrentGoState.value.classList.add("disabled");
+    CurrentGoState = go_minus_pressed_ref;
+    CurrentGoState.value.classList.remove("disabled");
+    if(!props.BonusBallDroped){
+      emit('changeBetAmount', true);
+      ButtonTimer.value = setTimeout(function run() {
+      longPressActive = true;
+      emit('changeBetAmount', true);
+      if (intervalcooldown >= 100) {
+        intervalcooldown -= 30;
+      }
+      pressInterval = setTimeout(run, intervalcooldown);
+      }, 400);
+    }
   }
 }
 
 function handlePlusMouseDown(){
   if(CurrentGoState.value){
-    emit('changeBetAmount' , false);
     CurrentGoState.value.classList.add("disabled")
     CurrentGoState = go_plus_pressed_ref
     CurrentGoState.value.classList.remove("disabled")
+    if(!props.BonusBallDroped){
+      emit('changeBetAmount' , false);
+      ButtonTimer.value = setTimeout(function run() {
+      longPressActive = true;
+      emit('changeBetAmount' , false);
+      if (intervalcooldown >= 100) {
+        intervalcooldown -= 30;
+      }
+      pressInterval = setTimeout(run, intervalcooldown);
+      }, 400);
+    }
   }
 }
 
 function clearGo(){
+  clearTimeout(ButtonTimer.value);
+  ButtonTimer.value = null;
+  if (longPressActive) {
+    clearInterval(pressInterval);
+    longPressActive = false;
+    intervalcooldown = 300
+  }
   setTimeout(() => {
     if (CurrentGoState.value) {
       CurrentGoState.value.classList.add("disabled");
@@ -215,23 +268,27 @@ function mouseleaveSpeed(){
 
 // MENU EVENT FUNCTIONS
 function menuMouseDownHandler(){
-menuon.value = !menuon.value
-if(menu_image_disabled_ref.value &&  menu_image_enabled_ref.value){
-  if(menuon.value){
-    menu_image_enabled_ref.value.classList.add("disabled")
-    menu_image_disabled_ref.value.classList.remove("disabled")
-  }
-  else{
-    menu_image_disabled_ref.value.classList.add("disabled")
-    menu_image_enabled_ref.value.classList.remove("disabled")
-  }
+  if(menu_image_disabled_ref.value &&  menu_image_enabled_ref.value){
+  menupressed.value = true
+  menu_image_enabled_ref.value.classList.add("disabled")
+  menu_image_disabled_ref.value.classList.remove("disabled")
 }
+}
+function menuDefaulter(){
+  menuon.value = false
+  menu_image_disabled_ref.value.classList.add("disabled")
+  menu_image_enabled_ref.value.classList.remove("disabled")
+  menupressed.value = false
 }
 function menuMouseUpHandler(){
-
+  emit("changeMenuOpen")
+  menuon.value = true
+  menupressed.value = false
 }
 function menuMouseleaveHandler(){
-
+if(menupressed.value){
+  menuMouseUpHandler()
+}
 }
 // SOUND EVENT FUNCTIONS
 function soundMouseDownHandler(){
@@ -255,6 +312,53 @@ function soundMouseleaveHandler(){
   if(soundpressed.value){
     soundpressed.value = false
   }
+}
+
+
+
+// AUTOPLAY EVENT FUNCTIONS
+function autoPlayMouseDownHandler(){
+  autoplaypressed.value = true
+  if(props.autoPlayActive){
+    currentautoplay.value.classList.add("disabled")
+    currentautoplay = autoplay_enabled_pushed_ref
+    currentautoplay.value.classList.remove("disabled")
+  }
+  else{
+    currentautoplay.value.classList.add("disabled")
+    currentautoplay = autoplay_disabled_pushed_ref
+    currentautoplay.value.classList.remove("disabled")
+  }
+}
+function autoPlayMouseLeaveHandler(){
+  if(autoplaypressed.value){
+    autoPlayMouseUpHandler()
+  }
+}
+function autoPlayMouseUpHandler(){
+  autoplaypressed.value = false
+  if(props.autoPlayActive){
+    emit("StopAutoPlay")
+  }
+  else{
+    emit("changeAutoPlayOpen")
+  }
+}
+function autoPlayDefaulter(){
+  autoplaypressed.value = false
+  setTimeout(() => {
+    if(props.autoPlayActive){
+    emit("startAutoPlay")
+    currentautoplay.value.classList.add("disabled")
+    currentautoplay = autoplay_enabled_ref
+    currentautoplay.value.classList.remove("disabled")
+  }
+  else{
+    currentautoplay.value.classList.add("disabled")
+    currentautoplay = autoplay_disabled_ref
+    currentautoplay.value.classList.remove("disabled")
+  }
+  } , 10)
 }
 onMounted(() => {
   // GO-PLUS-MINUS EVENTS
@@ -294,6 +398,13 @@ onMounted(() => {
     menu_ref.value.addEventListener('mousedown' , menuMouseDownHandler)
     menu_ref.value.addEventListener('mouseup' , menuMouseUpHandler)
     menu_ref.value.addEventListener('mouseleave' ,menuMouseleaveHandler)
+  }
+
+  // AUTOPLAY EVENTS
+  if(autoplay_ref.value){
+    autoplay_ref.value.addEventListener('mousedown' , autoPlayMouseDownHandler)
+    autoplay_ref.value.addEventListener('mouseup' , autoPlayMouseUpHandler)
+    autoplay_ref.value.addEventListener('mouseleave' ,autoPlayMouseLeaveHandler)
   }
 
 });
