@@ -76,7 +76,7 @@ const soundOn = ref(false)
 
 // BONUS HELPERS
 const BonusBallDroped = ref(false)
-const bonusgame_ref = ref(false)
+const bonusgame_ref = ref(null)
 function EnableBonusDropped(){
   BonusBallDroped.value = true
   autoPlatActive.value = false
@@ -90,7 +90,7 @@ function GoToBonus(){
 function LoadInBonusGame(){
 const game = new GameSimulation(1, 6, 5);
 InBonusGame.value = true
-if(maingamecont_ff.value && bonusgamecont_ff.value){
+if(maingamecont_ff.value && bonusgamecont_ff.value && bonusgame_ref.value){
   bonusgame_ref.value.loadinbonusgame(game)
   maingamecont_ff.value.classList.add('disabled')
   bonusgamecont_ff.value.classList.remove('disabled')
