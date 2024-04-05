@@ -1,5 +1,5 @@
 <template>
-    <BasicModal :isOpen="isModalOpen" @close="closemodal" @doafter="LoadInBonusGame"></BasicModal>
+    <BasicModal :isOpen="isModalOpen" :TextforModal="ModalText" @close="closemodal" @doafter="modalDoAfter"></BasicModal>
     <MenuModal :isOpen="isMenuOpen" @close="closemenumodal"></MenuModal>
     <AutoPlayModal :isOpen="isAutoPlayOpen" @close="closeautoplaymodal" @startAutoPlay="startAutoPlay"></AutoPlayModal>
     <div ref="maingamecont_ff" class="">
@@ -15,7 +15,7 @@
     @EnableBonusDropped="EnableBonusDropped"></MainGameContainer>
     </div>
     <div ref="bonusgamecont_ff" class="disabled">
-        <BonusGameContainer v-if="InBonusGame" ref="bonusgame_ref"></BonusGameContainer>
+        <BonusGameContainer ref="bonusgame_ref"></BonusGameContainer>
     </div>
     <ControllsContainer
     ref="Controller_ref"
@@ -58,6 +58,8 @@ import GameSimulation from './classes/bonus/gamedimulation/game';
 const isModalOpen = ref(false)
 const isAutoPlayOpen = ref(false)
 const isMenuOpen = ref(false)
+const ModalText =ref<string[]>([]);
+const modalDoAfter = ref<() => void>(() => {});
 
 // COMPONENT COMSTANTS
 const Controller_ref = ref(null)
@@ -84,13 +86,14 @@ function EnableBonusDropped(){
 const InBonusGame = ref(false)
 function GoToBonus(){
   BonusBallDroped.value = false
-  isModalOpen.value = true
+  openModal(['Congradulations' , 'you won Bonus Round'] , bonusgame_ref.value.startplaying)
   LoadInBonusGame()
 }
 function LoadInBonusGame(){
 const game = new GameSimulation(1, 6, 5);
 InBonusGame.value = true
 if(maingamecont_ff.value && bonusgamecont_ff.value && bonusgame_ref.value){
+  console.log('gets here')
   bonusgame_ref.value.loadinbonusgame(game)
   maingamecont_ff.value.classList.add('disabled')
   bonusgamecont_ff.value.classList.remove('disabled')
@@ -102,10 +105,10 @@ function updateBalance(winnings : number){
   Balance.value += winnings
 }
 function bet(Bet : number){
-  if(!BonusBallDroped.value){
+  if(!BonusBallDroped.value && !InBonusGame.value){
       BetAmount.value = Bet;
       if(Maincomponent_ref.value){
-        const BallType = Math.random() > 0.999 ? 1 : 0;
+        const BallType = Math.random() > 0.1 ? 1 : 0;
         const BallID = 0
         const DropLocation = Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1))
         Maincomponent_ref.value.Bet(BallType , BallID, BetAmount.value, DropLocation)
@@ -137,6 +140,11 @@ function changeBetAmount(isdecreasing : boolean){
 
 
 // MODAL FUNCTIONS
+function openModal(modaltext : string[] , doAfter: () => void){
+  isModalOpen.value = true
+  ModalText.value = modaltext;
+  modalDoAfter.value = doAfter;
+}
 function closemodal(DoSomething : Function){
   isModalOpen.value = false
 }
@@ -155,14 +163,13 @@ function changeMenuOpen(){
   isMenuOpen.value = true
 }
 
-
 // Controller Functions
 function changesound(){
   soundOn.value = !soundOn.value
 }
 
 function changespeedlevel(){
-  if(speedLevel.value >=3){
+  if(speedLevel.value >= 3){
       speedLevel.value = 1
   }
   else{
@@ -179,7 +186,7 @@ function startAutoPlay(amount : number) {
   autoPlatActive.value = true;
   let i = 0;
   function nextBet() {
-    if (!autoPlatActive.value || i >= amount) {
+    if (!autoPlatActive.value || i >= amount || BonusBallDroped.value) {
       autoPlatActive.value = false;
       if (Controller_ref.value) {
         Controller_ref.value.autoPlayDefaulter();

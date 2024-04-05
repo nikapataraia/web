@@ -73,7 +73,6 @@ export class SlotSymbolContainer {
         return new Promise((resolve) => {
             if (!(this.symbolcontainer instanceof PointSymbol)) {
                 const newsymbol = newinfo[0];
-                console.log(this.skiped)
                 const setsOnChosenSymbol = this.skiped? animationsets_skip[newsymbol] : (quickplayactive ? animationsets_quickplay[newsymbol] : animationsets[newsymbol]);
                 const animationSet = setsOnChosenSymbol[Math.floor(Math.random() * setsOnChosenSymbol.length)];
                 this.animateTexture(animationSet, newinfo[1] , newinfo[0]).then(resolve)
@@ -170,7 +169,6 @@ export class SlotSymbolContainer {
                 }
                 if((skipinfo != this.skiped) && (index <textureSet.length -  data.animation_generation.skip)){
                     index = textureSet.length - data.animation_generation.skip
-                    console.log(index)
                 }
                 const newTexture = (index != textureSet.length - 2)
                 ? new Symbol(textureSet[index], this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon , this.skiped)
@@ -239,6 +237,34 @@ export class SlotSymbolContainer {
     changeskip_tofalse(){
         this.skiped = false
         this.symbolcontainer.skiped = false
+    }
+
+    loadinstarters(value : number , newid : number){
+        this.container.removeChild(this.symbolcontainer.container)
+        switch (newid) {
+            case 0:
+                this.symbolcontainer = new Symbol(newid, this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                break;
+            case 1:
+                this.symbolcontainer = new PointSymbol(newid, this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                break;
+            case 2:
+                this.symbolcontainer = new Collector(newid, this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                break;
+            case 3:
+                this.symbolcontainer = new Payer(newid, this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                break;
+            case 4:
+                this.symbolcontainer = new Sniper(newid, this.containerwidth, this.containerheight, value,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                break;
+            default:
+                console.log("Invalid symbol type id");
+                this.symbolcontainer = new Symbol(newid, this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+        }
+        if(this.symbolcontainer instanceof PointSymbol){
+            this.symbolcontainer.generatevalue()
+        }
+        this.container.addChild(this.symbolcontainer.container)
     }
     
 }

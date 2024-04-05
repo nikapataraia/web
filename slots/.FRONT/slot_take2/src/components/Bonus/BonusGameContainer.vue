@@ -24,7 +24,7 @@
     const gamestarted = ref<boolean>(false)
     const GameSkeletonloaded = ref<boolean>(false)
     let bonusgame : BonusGame;
-    defineExpose({loadinbonusgame,})
+    defineExpose({loadinbonusgame,startplaying,})
 
 
     function initializeGame(game : GameSimulation) {
@@ -36,9 +36,9 @@
   }
 
   GameSkeletonloaded.value = true;
-  setTimeout(() => bonusgame.play(), 400);
 }
     function loadinbonusgame(game : GameSimulation) {
+      console.log('wtf')
   loadassets()
   generateanimationsets();
 
@@ -63,4 +63,7 @@
         bonusgame.bonusgamecontainer.changeskiped()
     }
 
+function startplaying(){
+  bonusgame.play()
+}
 </script>

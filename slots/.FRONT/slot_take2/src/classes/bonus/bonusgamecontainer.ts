@@ -96,8 +96,6 @@ export class BonusGameContainer{
         const scaleY = desiredHeight / this.container.height;
         this.container.scale.x *= scaleX;
         this.container.scale.y *= scaleY;
-        // this.gameWidth = this.container.width;
-        // this.gameHeight = this.container.height;
     }
 
     changeskiped(){
@@ -112,4 +110,7 @@ export class BonusGameContainer{
         this.infocontainer.changeskiped_tofalse()
     }
 
+    loadinstarters(startersymbols : gameinfo){
+        this.reelcontainer.loadinstarters(startersymbols)
+    }
 }

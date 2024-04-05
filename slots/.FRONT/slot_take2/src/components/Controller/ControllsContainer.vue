@@ -337,6 +337,10 @@ function autoPlayMouseLeaveHandler(){
 }
 function autoPlayMouseUpHandler(){
   autoplaypressed.value = false
+  if(props.BonusBallDroped){
+    autoPlayDefaulter()
+    return;
+  }
   if(props.autoPlayActive){
     emit("StopAutoPlay")
   }

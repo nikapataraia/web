@@ -38,11 +38,8 @@ export default class BonusGame{
             height : this.appHeight,
             backgroundColor : 'black'
         })
-        this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight, gamesimulation.startinginfo)
+        this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight, {})
         this.bonusgame_app.stage.addChild(this.bonusgamecontainer.container)
-
-        // this.bonusgamecontroller = new BonusController(1,appwidth,appheight)
-        // this.bonusgame_app.stage.addChild(this.bonusgamecontroller.container)
         this.currentgameinfo = gamesimulation.startinginfo;
     }
 
@@ -69,7 +66,6 @@ export default class BonusGame{
 
     changequikcplay(){
         this.quickplayon = !this.quickplayon
-        // this.bonusgamecontroller.quickplayon = !this.bonusgamecontroller.quickplayon
         this.bonusgamecontainer.reelcontainer.changequikcplay()
     }
 
@@ -81,5 +77,10 @@ export default class BonusGame{
     changeskiped_tofalse(){
         this.skiped = false
         this.bonusgamecontainer.changeskiped_tofalse()
+    }
+
+    loadingame(){
+        const startinginfo = this.gamesimulation.startinginfo;
+        this.bonusgamecontainer.loadinstarters(startinginfo)
     }
 }

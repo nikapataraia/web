@@ -82,4 +82,12 @@ export class ReelContainer {
             reel.changeskiped_tofalse()
         })
     }
+
+    loadinstarters(startersymbols : gameinfo){
+        this.reels.map((reel , index) => {
+            if(startersymbols && startersymbols[index]){
+                reel.loadinstarters(startersymbols[index])
+            }
+        })
+    }
 }

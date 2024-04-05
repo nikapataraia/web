@@ -5,8 +5,10 @@
         <div class="modal-bg" v-if="props.isOpen">
             <div class="modal" ref="modal">
                 <button @click="closeModal" class="modal-close-btn">x</button>
+                <div>
+                  <p v-for="(text, index) in props.TextforModal" :key="index">{{ text }}</p>
+                </div>
                 <div>Click OutSide</div>
-                <div>Congratulations you won Bonus</div>
             </div>
         </div>
       </Transition>
@@ -19,14 +21,15 @@ import { defineProps, defineEmits, ref } from 'vue';
 import {onClickOutside} from '@vueuse/core'
 const modal = ref(null)
 const props = defineProps({
-  isOpen: Boolean
+  isOpen: Boolean,
+  TextforModal: Array,
 });
 
 const emit = defineEmits(['close' , 'doafter']);
 
 function closeModal() {
   emit('close');
-  emit('doafter')
+  emit('doafter');
 }
 
 onClickOutside(modal , () => {closeModal()})

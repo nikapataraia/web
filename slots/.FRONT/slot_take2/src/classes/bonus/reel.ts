@@ -61,4 +61,12 @@ export class Reel {
             sym.changeskip_tofalse()
         })
     }
+
+    loadinstarters(newinfo : reelinfo){
+        this.symbols.map((symbol , index) => {
+            if(newinfo && newinfo[index]){
+                symbol.loadinstarters(newinfo[index][0] , newinfo[index][1])
+            }
+        })
+    }
 }
