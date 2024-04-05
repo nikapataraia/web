@@ -100,6 +100,15 @@ if(maingamecont_ff.value && bonusgamecont_ff.value && bonusgame_ref.value){
 }
 }
 
+
+function getBackFromBonus(){
+  InBonusGame.value = false
+  if(maingamecont_ff.value && bonusgamecont_ff.value && bonusgame_ref.value){
+  bonusgamecont_ff.value.classList.add('disabled')
+  maingamecont_ff.value.classList.remove('disabled')
+  // bonusgame_ref.value.resetBonus()
+}
+}
 // BET AND BALANCE FUNCTIONS
 function updateBalance(winnings : number){
   Balance.value += winnings
