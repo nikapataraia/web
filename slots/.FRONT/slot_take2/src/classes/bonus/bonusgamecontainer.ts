@@ -113,4 +113,8 @@ export class BonusGameContainer{
     loadinstarters(startersymbols : gameinfo){
         this.reelcontainer.loadinstarters(startersymbols)
     }
+    reset(){
+        this.infocontainer.reset()
+        this.reelcontainer.reset()
+    }
 }

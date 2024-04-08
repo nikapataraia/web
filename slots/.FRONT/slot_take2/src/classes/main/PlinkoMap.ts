@@ -66,7 +66,7 @@ export default class PlinkoMap{
             if (ball.update(Deltatime)) {
                 this.container.removeChild(ball.container);
                 if(ball instanceof BonusBall){
-                    this.GoToBonus()
+                    this.GoToBonus(ball.BetAmount)
                 }
                 else{
                     this.onUpdateBalance(ball.BetAmount * this.Finishline.FinishLine[ball.FinishLineIndex])

@@ -38,4 +38,8 @@ export default class InfoContainer{
         this.rollinfo.changeskiped_tofalse()
         this.winninginfo.changeskiped_tofalse()
     }
+    reset(){
+        this.rollinfo.reset()
+        this.winninginfo.reset()
+    }
 }

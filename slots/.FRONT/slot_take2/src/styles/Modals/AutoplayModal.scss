@@ -1,0 +1,15 @@
+.autoplay_amount_button_cont{
+    display: flex;
+    justify-content: space-between;
+}
+
+.autoplay_amount_button{
+    border: 1px solid black;
+    text-align: center;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 60%;
+}

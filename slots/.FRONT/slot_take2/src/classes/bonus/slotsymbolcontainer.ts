@@ -226,7 +226,6 @@ export class SlotSymbolContainer {
     changequickplay(){
         this.quickplayon = !this.quickplayon
         this.symbolcontainer.quickplayon = !this.symbolcontainer.quickplayon
-        console.log(this.symbolcontainer.quickplayon)
     }
 
     changeskiped(){
@@ -239,7 +238,7 @@ export class SlotSymbolContainer {
         this.symbolcontainer.skiped = false
     }
 
-    loadinstarters(value : number , newid : number){
+    loadinstarters( newid : number , value : number){
         this.container.removeChild(this.symbolcontainer.container)
         switch (newid) {
             case 0:
@@ -266,5 +265,14 @@ export class SlotSymbolContainer {
         }
         this.container.addChild(this.symbolcontainer.container)
     }
-    
+    reset(){
+        if(this.symbolcontainer instanceof Sniper ||
+            this.symbolcontainer instanceof Payer ||
+            this.symbolcontainer instanceof Collector ||
+            this.symbolcontainer instanceof PointSymbol){
+                this.container.removeChild(this.symbolcontainer.container)
+                this.symbolcontainer = new Symbol(0, this.containerwidth, this.containerheight,{reelIndex:this.oncolumn, symbolIndex:this.location}, this.quickplayon, this.skiped);
+                this.container.addChild(this.symbolcontainer.container)
+        }
+    }
 }

@@ -2,68 +2,80 @@
     <div class="BonusGameContainer" id="BonusGameContainer" ref="BonusGameContainerRef">
     
     </div>
-    <button @click=changedimensionsLocal(400,250)>400,250</button>
+    <!-- <button @click=changedimensionsLocal(400,250)>400,250</button>
     <button @click=changedimensionsLocal(800,500)>800,500</button>
     <button @click=changedimensionsLocal(1000,600)>1000,600</button>
-    <button @click=changequickplaymode()>quickplay</button>
-    <button @click=skiproll()>skip</button>
+    <button @click=changespeed(1)>quickplay</button>
+    <button @click=skiproll()>skip</button> -->
 </template>
     
 <script setup lang="ts">
     import { generateanimationsets , loadassets , AssetsLoaded } from './../../assets/DataBonus/Data_textures';
-    import {  ref, watch } from 'vue';
+    import {  onMounted, ref, watch } from 'vue';
     import BonusGame from '../../classes/bonus/bonusgame'
     import GameSimulation from "../../classes/bonus/gamedimulation/game"
     let appwidth =  1000
     let appheight = 600
     let mapWidth = 6
     let mapHeight = 5
-    let speed = 2500
     const BonusGameContainerRef = ref<HTMLDivElement | null>(null);
-    const roleanimationgoing = ref<boolean>(false)
-    const gamestarted = ref<boolean>(false)
     const GameSkeletonloaded = ref<boolean>(false)
     let bonusgame : BonusGame;
-    defineExpose({loadinbonusgame,startplaying,})
+    defineExpose({loadinbonusgame,startplaying,resetBonus,skiproll,changespeed})
+    const emit = defineEmits(['getBackFromBonus',])
+    const props = defineProps({
+      BetAmount: Number,
+      });
+    
+    function getBackFromBonus(totalwin : number){
+      emit('getBackFromBonus' , totalwin)
+    }
 
-
-    function initializeGame(game : GameSimulation) {
-  bonusgame = new BonusGame(appwidth, appheight, mapWidth, mapHeight, game);
-
-  const BonusGameContainer = BonusGameContainerRef.value;
-  if (BonusGameContainer) {
-    BonusGameContainer.appendChild(bonusgame.bonusgame_app.view as unknown as HTMLElement);
+  function initializeGame() {
+    bonusgame = new BonusGame(appwidth, appheight, mapWidth, mapHeight , getBackFromBonus);
+    const BonusGameContainer = BonusGameContainerRef.value;
+    if (BonusGameContainer) {
+        BonusGameContainer.appendChild(bonusgame.bonusgame_app.view as unknown as HTMLElement);
+      }
+    GameSkeletonloaded.value = true;
   }
-
-  GameSkeletonloaded.value = true;
-}
-    function loadinbonusgame(game : GameSimulation) {
-      console.log('wtf')
+  function loadinbonusgame() {
   loadassets()
   generateanimationsets();
 
   const unwatch = watch(AssetsLoaded, (newValue) => {
     if (newValue && !GameSkeletonloaded.value) {
-      initializeGame(game);
+      initializeGame();
       unwatch();
     }
   });
 
   if (AssetsLoaded.value && !GameSkeletonloaded.value) {
-    initializeGame(game);
+    initializeGame();
   }}
 
     function changedimensionsLocal(width : number,height : number){
         bonusgame.changedimension(width,height)
     }
-    function changequickplaymode(){
+    function changespeed(speedlevel : number){
+      if(speedlevel === 1 || speedlevel === 3){
         bonusgame.bonusgamecontainer.changequikcplay()
+      }
     }
     function skiproll(){
         bonusgame.bonusgamecontainer.changeskiped()
     }
 
 function startplaying(){
-  bonusgame.play()
+  if(props.BetAmount){
+    bonusgame.loadingame(new GameSimulation(props.BetAmount,6,5))
+    bonusgame.play()
+  }
 }
+function resetBonus(){
+  bonusgame.reset()
+}
+onMounted(() => {
+  loadinbonusgame()
+})
 </script>

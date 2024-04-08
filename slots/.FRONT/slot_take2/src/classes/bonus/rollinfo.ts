@@ -105,7 +105,7 @@ export default class RollInfo {
     }
 
     changequickplay(){
-        this.quickplayon =      !this.quickplayon
+        this.quickplayon = !this.quickplayon
     }
 
     changeskiped(){
@@ -113,5 +113,9 @@ export default class RollInfo {
     }
     changeskiped_tofalse(){
         this.skiped = false
+    }
+    reset(){
+        this.rollsText.text = '3'
+        this.rollsleft = 3
     }
 }

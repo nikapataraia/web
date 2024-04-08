@@ -75,4 +75,8 @@ export default class WinningInfo {
     changeskiped_tofalse(){
         this.skiped = false
     }
+    reset(){
+        this.winningText.text = `${0}x`;
+        this.winning = 0
+    }
 }

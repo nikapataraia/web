@@ -22,17 +22,20 @@ export default class BonusGame{
     bonusgame_app : PIXI.Application<PIXI.ICanvas>
     appWidth : number;
     appHeight : number;
-    gamesimulation : GameSimulation
+    gamesimulation : GameSimulation | null
     currentgameinfo : gameinfo;
     quickplayon : boolean
     skiped : boolean;
+    getBackFromBonus : Function
 
-    constructor(appwidth : number,appheight : number , mapwidth : number, mapheight : number , gamesimulation : GameSimulation){
-        this.gamesimulation = gamesimulation
+    constructor(appwidth : number,appheight : number , mapwidth : number, mapheight : number , getBackFromBonus : Function){
+        this.gamesimulation = null
+        this.currentgameinfo = {}
         this.appHeight = appheight
         this.appWidth = appwidth
         this.quickplayon = false
         this.skiped = false
+        this.getBackFromBonus = getBackFromBonus
         this.bonusgame_app = new PIXI.Application({
             width : this.appWidth,
             height : this.appHeight,
@@ -40,18 +43,19 @@ export default class BonusGame{
         })
         this.bonusgamecontainer = new BonusGameContainer(mapwidth,mapheight,appwidth,appheight, {})
         this.bonusgame_app.stage.addChild(this.bonusgamecontainer.container)
-        this.currentgameinfo = gamesimulation.startinginfo;
     }
 
     async play() {
+        if(this.gamesimulation){
         const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
-        console.log('game started')
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         this.changeskiped_tofalse()
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
             await (this.quickplayon ? delay(300) : delay(600));
             this.changeskiped_tofalse()
+        }
+        this.getBackFromBonus(this.bonusgamecontainer.calculatetotalpoints())
         }
     }
 
@@ -79,8 +83,18 @@ export default class BonusGame{
         this.bonusgamecontainer.changeskiped_tofalse()
     }
 
-    loadingame(){
+    loadingame(game : GameSimulation){
+        this.gamesimulation = game
         const startinginfo = this.gamesimulation.startinginfo;
         this.bonusgamecontainer.loadinstarters(startinginfo)
+        this.bonusgamecontainer.infocontainer.winninginfo.changeWinnings(this.bonusgamecontainer.calculatetotalpoints())
     }
+    reset(){
+        this.bonusgamecontainer.reset()
+        this.gamesimulation = null
+        this.currentgameinfo = {}
+        if(this.quickplayon){
+            this.changequikcplay()
+        }
+        }
 }

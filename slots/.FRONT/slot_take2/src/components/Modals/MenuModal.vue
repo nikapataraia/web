@@ -5,8 +5,8 @@
             <div class="modal-bg" v-if="props.isOpen">
                 <div class="modal" ref="modal">
                     <button @click="closeModal" class="modal-close-btn">x</button>
-                    <div>Click OutSide</div>
                     <div>Menu is Open</div>
+                    <div>Click OutSide</div>
                 </div>
             </div>
           </Transition>

@@ -69,4 +69,9 @@ export class Reel {
             }
         })
     }
+    reset(){
+        this.symbols.forEach((symbol) => {
+            symbol.reset()
+        })
+    }
 }

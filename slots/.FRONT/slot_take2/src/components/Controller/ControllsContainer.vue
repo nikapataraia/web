@@ -61,6 +61,7 @@
 </template>
 
 <script setup>
+import { skipHydrate } from 'pinia';
 import { ref, onMounted , onUnmounted } from 'vue';
 // GO CONSTANTS
 const go_button_ref = ref(null)
@@ -147,7 +148,8 @@ const emit = defineEmits([
   'bet',
   'changeAutoPlayOpen',
   'changeMenuOpen',
-  'StopAutoPlay'
+  'StopAutoPlay',
+  'skip',
 ]);
 // exposes
 defineExpose({menuDefaulter,autoPlayDefaulter})
@@ -161,13 +163,18 @@ function handleGoMouseDown() {
     CurrentGoState = go_pressed_ref
     CurrentGoState.value.classList.remove("disabled")
     if(!props.BonusBallDroped && !props.autoPlayActive){
-      emit('bet' , props.BetAmount);
-    ButtonTimer.value = setTimeout(() => {
-      longPressActive = true
-      pressInterval = setInterval(() => {
-        emit('bet' , props.BetAmount)
-      }, intervalcooldown);
-    },400)
+      if(props.InBonusGame){
+        emit('skip')
+      }
+      else{
+        emit('bet' , props.BetAmount);
+        ButtonTimer.value = setTimeout(() => {
+        longPressActive = true
+        pressInterval = setInterval(() => {
+          emit('bet' , props.BetAmount)
+        }, intervalcooldown);
+        },400)
+      }
   }
   }
 }
@@ -176,7 +183,7 @@ function handleMinusMouseDown() {
     CurrentGoState.value.classList.add("disabled");
     CurrentGoState = go_minus_pressed_ref;
     CurrentGoState.value.classList.remove("disabled");
-    if(!props.BonusBallDroped){
+    if(!props.BonusBallDroped || props.InBonusGame){
       emit('changeBetAmount', true);
       ButtonTimer.value = setTimeout(function run() {
       longPressActive = true;
@@ -195,7 +202,7 @@ function handlePlusMouseDown(){
     CurrentGoState.value.classList.add("disabled")
     CurrentGoState = go_plus_pressed_ref
     CurrentGoState.value.classList.remove("disabled")
-    if(!props.BonusBallDroped){
+    if(!props.BonusBallDroped || props.InBonusGame){
       emit('changeBetAmount' , false);
       ButtonTimer.value = setTimeout(function run() {
       longPressActive = true;
@@ -337,7 +344,7 @@ function autoPlayMouseLeaveHandler(){
 }
 function autoPlayMouseUpHandler(){
   autoplaypressed.value = false
-  if(props.BonusBallDroped){
+  if(props.BonusBallDroped || props.InBonusGame){
     autoPlayDefaulter()
     return;
   }

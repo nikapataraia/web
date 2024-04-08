@@ -90,4 +90,9 @@ export class ReelContainer {
             }
         })
     }
+    reset(){
+        this.reels.forEach((reel) => {
+            reel.reset()
+        })
+    }
 }

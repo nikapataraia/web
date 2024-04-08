@@ -6,8 +6,7 @@
 import { onMounted, onUnmounted, ref, watch , defineProps, defineEmits, defineExpose,} from 'vue';
 import Plinko from '@/classes/main/Plinko';
 import * as PIXI from 'pixi.js'
-import { MainData } from '@/assets/DataMain/Data';
-const emit = defineEmits(['bet', 'balanceUpdated','EnableBonusDropped','GoToBonus'])
+const emit = defineEmits(['bet', 'balanceUpdated','EnableBonusDropped','GoToBonus_'])
 defineExpose({Bet , ChangeSpeed})
 const props = defineProps({
 BetAmount_index: Number,
@@ -16,7 +15,6 @@ BetAmount_index: Number,
   BonusBallDroped: Boolean,
 });
 const localBetAmount = ref(props.BetAmount || 0);
-const Ballidincrementer = ref(0);
 const BonusDropped_local = ref(false)
 const isBetOnCooldown = ref(false);
 function Bet(BallType : number, BallID : number, BetAmount : number , DropLocation : number) {
@@ -43,13 +41,14 @@ watch(() => props.BetAmount, (newVal) => {
   localBetAmount.value = newVal || 1;
   MainGame.BetAmount = newVal || 1;
 });
-function GoToBonus(){
-    emit("GoToBonus")
+function GoToBonus_(Bet : number){
+    emit("GoToBonus_" , Bet)
+    BonusDropped_local.value = false
 }
 
 function LoadInMainGame() {
     LoadAssets();
-    MainGame = new Plinko(localBetAmount.value , updateBalance, GoToBonus);
+    MainGame = new Plinko(localBetAmount.value , updateBalance, GoToBonus_);
     const MainGameContainer = MainGameContainerRef.value;
     if (MainGameContainer) {
         MainGameContainer.appendChild(MainGame.Plinko_app.view as unknown as HTMLElement);
