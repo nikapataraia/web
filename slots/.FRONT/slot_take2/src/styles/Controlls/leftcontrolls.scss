@@ -6,12 +6,16 @@
     cursor: pointer;
     height: 57px;
     border-radius: 50%;
-    overflow: hidden;
+    overflow:hidden;
     margin-left: 30px;
 }
 
 .menu img{
     width: 100%;
+}
+
+.autoplay_container{
+    position: relative;
 }
 
 .autoplay{
@@ -24,4 +28,21 @@
 }
 .autoplay img{
     width: 100%;
+}
+
+.autoplay_ballsleft{
+    width: 60px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -28px;
+    font-size: 16px;
+    left: 30px;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 10px;
+    background: transparent;
 }

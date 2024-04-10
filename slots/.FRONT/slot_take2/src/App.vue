@@ -33,6 +33,7 @@
     :isMenuOpen="isMenuOpen"
     :BonusBallDroped="BonusBallDroped"
     :InBonusGame="InBonusGame"
+    :autoplayballsleft="autoplayballsleft"
     @changeAutoPlayOpen="changeAutoPlayOpen"
     @changeMenuOpen="changeMenuOpen"
     @changeBetAmount="changeBetAmount"
@@ -127,6 +128,10 @@ function skip(){
   }
 }
 
+
+// AUTOPLAY HELPERS
+const autoplayballsleft = ref(null)
+
 // BET AND BALANCE FUNCTIONS
 function updateBalance(winnings : number){
   Balance.value += winnings
@@ -210,33 +215,46 @@ function changespeedlevel(){
 function opensettings(){
   settingsOpen.value =  !settingsOpen.value
 }
+let nextbetRunning = false
 function startAutoPlay(amount : number) {
   autoPlatActive.value = true;
+  autoplayballsleft.value = amount - 1
   let i = 0;
   function nextBet() {
+    if(nextbetRunning) return;
+    nextbetRunning = true
     if (!autoPlatActive.value || i >= amount || BonusBallDroped.value) {
       autoPlatActive.value = false;
       if (Controller_ref.value) {
+        nextbetRunning = false
         Controller_ref.value.autoPlayDefaulter();
       }
       return;
     }
     setTimeout(() => {
       bet(BetAmount.value);
+      autoplayballsleft.value = amount - i - 1
+      console.log(autoplayballsleft)
       i++;
+      nextbetRunning = false
       nextBet();
-    }, 300);
+    }, 1000);
   }
   function nextbet_inf(){
+    if(nextbetRunning) return;
+    nextbetRunning = true
+    autoplayballsleft.value = "inf"
     if (!autoPlatActive.value ||  BonusBallDroped.value) {
       autoPlatActive.value = false;
       if (Controller_ref.value) {
+        nextbetRunning = false
         Controller_ref.value.autoPlayDefaulter();
       }
       return;
     }
     setTimeout(() => {
       bet(BetAmount.value);
+      nextbetRunning = false
       i++;
       nextbet_inf();
     }, 300);

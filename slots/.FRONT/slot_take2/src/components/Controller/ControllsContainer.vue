@@ -24,11 +24,16 @@
                 <img class="menu_disabled disabled"  draggable="false" src="/src//assets//UI/menu-enabled.png" ref="menu_image_disabled_ref">
                 <img class="menu_enabled"  draggable="false" src="/src/assets/UI/menu-disabled.png" ref="menu_image_enabled_ref">
               </div>
-              <div class="autoplay" ref="autoplay_ref">
-                <img class="autoplay_disabled_pushed disabled"  draggable="false"  src="/src/assets/UI/autoplay-disabled-pushed-2.png" ref="autoplay_disabled_pushed_ref">
-                <img class="autoplay_disabled"  draggable="false" src="/src/assets/UI/autoplay-disabled-2.png" ref="autoplay_disabled_ref">
-                <img class="autoplay_enabled disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled.png" ref="autoplay_enabled_ref">
-                <img class="autoplay_enabled_pushed disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled-pushed.png" ref="autoplay_enabled_pushed_ref">
+              <div class="autoplay_container">
+                <div class="autoplay_ballsleft disabled" ref="autoplay_ballsleft_ref">
+                  {{ props.autoplayballsleft ? props.autoplayballsleft : '' }}
+                </div>
+                <div class="autoplay" ref="autoplay_ref">
+                  <img class="autoplay_disabled_pushed disabled"  draggable="false"  src="/src/assets/UI/autoplay-disabled-pushed-2.png" ref="autoplay_disabled_pushed_ref">
+                  <img class="autoplay_disabled"  draggable="false" src="/src/assets/UI/autoplay-disabled-2.png" ref="autoplay_disabled_ref">
+                  <img class="autoplay_enabled disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled.png" ref="autoplay_enabled_ref">
+                  <img class="autoplay_enabled_pushed disabled"  draggable="false" src="/src/assets/UI/autoplay-enabled-pushed.png" ref="autoplay_enabled_pushed_ref">
+                </div>
               </div>
             </div>
             <div class="GoControlls" ref="gocontrolls_ref">
@@ -62,7 +67,7 @@
 
 <script setup>
 import { skipHydrate } from 'pinia';
-import { ref, onMounted , onUnmounted } from 'vue';
+import { ref, onMounted , onUnmounted , watch} from 'vue';
 // GO CONSTANTS
 const go_button_ref = ref(null)
 const plus_button_ref = ref(null)
@@ -122,7 +127,8 @@ const autoplay_enabled_ref = ref(null)
 const autoplay_enabled_pushed_ref = ref(null)
 let currentautoplay = autoplay_disabled_ref
 const autoplaypressed = ref(false)
-
+const autoplay_ballsleft_ref=  ref(null)
+const inf = ref(1)
 // props
 const props = defineProps({
   BetAmount_index: Number,
@@ -136,6 +142,7 @@ const props = defineProps({
   isMenuOpen:Boolean,
   BonusBallDroped:Boolean,
   InBonusGame:Boolean,
+  autoplayballsleft:Number,
 });
 // emits
 const emit = defineEmits([
@@ -178,6 +185,9 @@ function handleGoMouseDown() {
   }
   }
 }
+watch(() => props.autoplayballsleft, (newValue) => {
+  console.log(newValue);
+});
 function handleMinusMouseDown() {
   if (CurrentGoState.value) {
     CurrentGoState.value.classList.add("disabled");
@@ -350,6 +360,9 @@ function autoPlayMouseUpHandler(){
   }
   if(props.autoPlayActive){
     emit("StopAutoPlay")
+    if(autoplay_ballsleft_ref.value){
+      autoplay_ballsleft_ref.value.classList.add("disabled")
+    }
   }
   else{
     emit("changeAutoPlayOpen")
@@ -363,8 +376,12 @@ function autoPlayDefaulter(){
     currentautoplay.value.classList.add("disabled")
     currentautoplay = autoplay_enabled_ref
     currentautoplay.value.classList.remove("disabled")
+    autoplay_ballsleft_ref.value.classList.remove("disabled")
   }
   else{
+    if(autoplay_ballsleft_ref.value){
+      autoplay_ballsleft_ref.value.classList.add("disabled")
+    }
     currentautoplay.value.classList.add("disabled")
     currentautoplay = autoplay_disabled_ref
     currentautoplay.value.classList.remove("disabled")
