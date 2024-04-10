@@ -69,6 +69,7 @@
 function startplaying(){
   if(props.BetAmount){
     bonusgame.loadingame(new GameSimulation(props.BetAmount,6,5))
+    console.log('gg')
     bonusgame.play()
   }
 }

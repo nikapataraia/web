@@ -142,7 +142,7 @@ const props = defineProps({
   isMenuOpen:Boolean,
   BonusBallDroped:Boolean,
   InBonusGame:Boolean,
-  autoplayballsleft:Number,
+  autoplayballsleft:String,
 });
 // emits
 const emit = defineEmits([
@@ -185,9 +185,6 @@ function handleGoMouseDown() {
   }
   }
 }
-watch(() => props.autoplayballsleft, (newValue) => {
-  console.log(newValue);
-});
 function handleMinusMouseDown() {
   if (CurrentGoState.value) {
     CurrentGoState.value.classList.add("disabled");

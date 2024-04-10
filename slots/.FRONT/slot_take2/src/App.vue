@@ -130,7 +130,7 @@ function skip(){
 
 
 // AUTOPLAY HELPERS
-const autoplayballsleft = ref(null)
+const autoplayballsleft = ref<string>('0');
 
 // BET AND BALANCE FUNCTIONS
 function updateBalance(winnings : number){
@@ -140,7 +140,7 @@ function bet(Bet : number){
   if(!BonusBallDroped.value && !InBonusGame.value){
       BetAmount.value = Bet;
       if(Maincomponent_ref.value){
-        const BallType = Math.random() > 0.999 ? 1 : 0;
+        const BallType = Math.random() > 0.91 ? 1 : 0;
         const BallID = 0
         const DropLocation = Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1))
         Maincomponent_ref.value.Bet(BallType , BallID, BetAmount.value, DropLocation)
@@ -215,10 +215,13 @@ function changespeedlevel(){
 function opensettings(){
   settingsOpen.value =  !settingsOpen.value
 }
+
 let nextbetRunning = false
+let autoplayballsleft_num = 0
 function startAutoPlay(amount : number) {
   autoPlatActive.value = true;
-  autoplayballsleft.value = amount - 1
+  autoplayballsleft_num = amount
+  if(autoplayballsleft_num)  autoplayballsleft.value =  autoplayballsleft_num.toString();
   let i = 0;
   function nextBet() {
     if(nextbetRunning) return;
@@ -233,12 +236,12 @@ function startAutoPlay(amount : number) {
     }
     setTimeout(() => {
       bet(BetAmount.value);
-      autoplayballsleft.value = amount - i - 1
-      console.log(autoplayballsleft)
+      autoplayballsleft_num = amount - i - 1
+      autoplayballsleft.value = autoplayballsleft_num.toString()
       i++;
       nextbetRunning = false
       nextBet();
-    }, 1000);
+    }, 300);
   }
   function nextbet_inf(){
     if(nextbetRunning) return;
