@@ -7,8 +7,8 @@ import { data } from '@/assets/DataBonus/Data';
 import { gsap } from 'gsap';
 
 export default class Collector extends PointSymbol{
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates , quickplayon : boolean , skiped : boolean){
-        super(id,symbolContainerWidth,symbolContainerHeight,value, location,quickplayon , skiped);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates , speedlevel : number , skiped : boolean){
+        super(id,symbolContainerWidth,symbolContainerHeight,value, location,speedlevel , skiped);
     }
 
     doAction(fullinfo: gameinfo, collectThese: coordinates[], reelcontainer: ReelContainer,  symbolcontainerwidth: number, symbolcontainerheight: number): Promise<void> {
@@ -19,7 +19,7 @@ export default class Collector extends PointSymbol{
             const targetx = (this.location.reelIndex + 0.5) * symbolcontainerwidth - this.valuetext.width/2
             const targety = (this.location.symbolIndex + 0.5) * symbolcontainerheight - this.valuetext.height/2
             for (let i = 0; i < collectThese.length; i++) {
-                const animationtime = this.skiped ? data.animation_speed.special.collector.skip :(this.quickplayon?data.animation_speed.special.collector.quickplay : data.animation_speed.special.collector.normal)
+                const animationtime = (this.skiped || this.speedlevel ===3) ? data.animation_speed.special.sniper.skip : (this.speedlevel === 2?data.animation_speed.special.sniper.quickplay : data.animation_speed.special.sniper.normal)
                 const coord = collectThese[i];
                 const { reelIndex, symbolIndex } = coord;
                 const reel = reelcontainer.reels[reelIndex];
@@ -47,7 +47,7 @@ export default class Collector extends PointSymbol{
                     });
                     animationPromises.push(animationPromise);
 
-                    if (!this.quickplayon && !this.skiped) {
+                    if ((this.speedlevel !== 3) && !this.skiped) {
                         await new Promise(resolveDelay => setTimeout(resolveDelay, 200));
                     }
                 }

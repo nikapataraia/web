@@ -7,10 +7,10 @@ export default class Symbol{
     container : PIXI.Container
     texture : PIXI.Sprite;
     location : coordinates
-    quickplayon : boolean
+    speedlevel : number
     skiped : boolean
-    constructor(id : number , symbolContainerWidth: number, symbolContainerHeight: number, location : coordinates , quickplayon : boolean , skiped : boolean){
-        this.quickplayon = quickplayon
+    constructor(id : number , symbolContainerWidth: number, symbolContainerHeight: number, location : coordinates , speedlevel :number , skiped : boolean){
+        this.speedlevel = speedlevel
         this.skiped = skiped
         this.location = location
         this.id = id;

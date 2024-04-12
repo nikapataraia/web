@@ -9,10 +9,10 @@ export default class InfoContainer{
     rollinfo : RollInfo;
     winninginfo : WinningInfo;
     container : PIXI.Container;
-    constructor(startingwinning : number , appwidth : number, appheight : number,quickplayon : boolean){
+    constructor(startingwinning : number , appwidth : number, appheight : number,speedlevel : number){
         this.container = new PIXI.Container
-        this.rollinfo = new RollInfo(appwidth,appheight,quickplayon)
-        this.winninginfo = new WinningInfo(appwidth,appheight,startingwinning,quickplayon)
+        this.rollinfo = new RollInfo(appwidth,appheight,speedlevel)
+        this.winninginfo = new WinningInfo(appwidth,appheight,startingwinning,speedlevel)
 
         this.container.width = appwidth
         this.container.height = appheight
@@ -26,9 +26,9 @@ export default class InfoContainer{
     increasewinnings(total : number){
         this.winninginfo.changeWinnings(total)
     }
-    changequickplay(){
-        this.rollinfo.changequickplay()
-        this.winninginfo.changequickplay()
+    changespeedlevel(speedlevel : number){
+        this.rollinfo.changespeedlevel(speedlevel)
+        this.winninginfo.changespeedlevel(speedlevel)
     }
     changeskiped(){
         this.rollinfo.changeskiped()

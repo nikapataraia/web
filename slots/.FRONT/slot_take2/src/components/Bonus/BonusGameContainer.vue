@@ -58,9 +58,7 @@
         bonusgame.changedimension(width,height)
     }
     function changespeed(speedlevel : number){
-      if(speedlevel === 1 || speedlevel === 3){
-        bonusgame.bonusgamecontainer.changequikcplay()
-      }
+      bonusgame.changespeedlevel(speedlevel)
     }
     function skiproll(){
         bonusgame.bonusgamecontainer.changeskiped()

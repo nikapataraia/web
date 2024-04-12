@@ -7,12 +7,12 @@ export class ReelContainer {
     reels: Reel[];
     containerwidth : number
     cotaninerheight : number
-    quickplayon : boolean
+    speedlevel : number
     skiped : boolean;
 
     constructor(mapWidth: number, mapHeight: number, appWidth: number, appHeight: number, startersymbols : gameinfo) {
         this.skiped = false
-        this.quickplayon = false
+        this.speedlevel = 1
         this.container = new PIXI.Container();
         const containerWidth = appWidth * 0.7
         this.container.width = containerWidth;
@@ -43,7 +43,7 @@ export class ReelContainer {
     animatereels(newreels : gameinfo) {
         const reelPromises = this.reels.map((reel, index) => 
             new Promise<void>(resolve => setTimeout(() => {
-                resolve(reel.animatereel( this.quickplayon, ((newreels && newreels[index]) ? newreels[index] : {})));
+                resolve(reel.animatereel( this.speedlevel, ((newreels && newreels[index]) ? newreels[index] : {})));
             }, 50 * index))
         );
     
@@ -62,10 +62,10 @@ export class ReelContainer {
         });
         return points
     }
-    changequikcplay(){
-        this.quickplayon = !this.quickplayon
+    changespeedlevel(speedlevel : number){
+        this.speedlevel = speedlevel
         this.reels.forEach((reel) => {
-            reel.changequickplay()
+            reel.changespeedlevel(speedlevel)
         })
     }
 

@@ -8,16 +8,16 @@ export default class RollInfo {
     container: PIXI.Container;
     container_roll: PIXI.Container;
     rollsText: PIXI.Text;
-    quickplayon : boolean;
+    speedlevel : number;
     skiped :  boolean;
 
-    constructor(appwidth: number, appheight: number,quickplayon : boolean) {
+    constructor(appwidth: number, appheight: number,speedlevel : number) {
         this.skiped = false
         this.rollsleft = 3;
         this.container = new PIXI.Container();
         this.container_roll = new PIXI.Container();
         const containerWidth = appwidth * 0.15;
-        this.quickplayon = quickplayon
+        this.speedlevel = speedlevel
 
         const background = new PIXI.Graphics();
         background.beginFill(0xFFC0CB);
@@ -60,7 +60,7 @@ export default class RollInfo {
         });
     }
 
-    applyGlowEffect(duration = this.skiped ? 40 : (this.quickplayon ? 75 : 150)) {
+    applyGlowEffect(duration = this.skiped || this.speedlevel ===3 ? 40 : (this.speedlevel ===2 ? 75 : 150)) {
         const originalStyleJson = JSON.stringify(this.rollsText.style);
         const originalStyleCopy = JSON.parse(originalStyleJson);
     
@@ -104,8 +104,8 @@ export default class RollInfo {
         this.rollsText.y = (appheight * 0.3 - this.rollsText.height) / 2;
     }
 
-    changequickplay(){
-        this.quickplayon = !this.quickplayon
+    changespeedlevel(speedlevel : number){
+        this.speedlevel = speedlevel
     }
 
     changeskiped(){

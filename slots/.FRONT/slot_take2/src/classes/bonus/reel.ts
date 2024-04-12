@@ -4,13 +4,13 @@ import type { reelinfo } from './gamedimulation/game';
 export class Reel {
     container : PIXI.Container;
     symbols: SlotSymbolContainer[];
-    reelindex : number
-    quickplayon : boolean
+    reelindex : number;
+    speedlevel : number;
     skiped : boolean;
 
     constructor( reelWidth : number, reelHeight : number, mapHeight : number , reelx : number , reelinfo : reelinfo,  reelindex : number) {
         this.skiped = false
-        this.quickplayon = false
+        this.speedlevel = 1
         this.reelindex = reelindex
         this.container = new PIXI.Container;
         this.container.width = reelWidth
@@ -32,19 +32,19 @@ export class Reel {
         }
     }
 
-    animatereel(quickplayactive: boolean , newinfo : reelinfo): Promise<void> {
+    animatereel(speedlevel: number , newinfo : reelinfo): Promise<void> {
         const promises = this.symbols.map((symbol, index) => 
             new Promise<void>((resolve) => setTimeout(() => {
-                resolve(symbol.animateSymbolDrops(quickplayactive , (newinfo && newinfo[index] ? newinfo[index] : [0,0])));
+                resolve(symbol.animateSymbolDrops(speedlevel , (newinfo && newinfo[index] ? newinfo[index] : [0,0])));
             }, 50 * index))
         );
         return Promise.all(promises).then(() => {});
     }
 
-    changequickplay(){
-        this.quickplayon = !this.quickplayon
+    changespeedlevel(speedlevel : number){
+        this.speedlevel = speedlevel
         this.symbols.forEach((symbol) => {
-            symbol.changequickplay()
+            symbol.changespeedlevel(speedlevel)
         })
     }
 

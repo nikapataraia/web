@@ -17,7 +17,7 @@ export class BonusGameContainer{
     mapHeight : number;
     mapWidth : number
     fullgameinfo : gameinfo;
-    quickplayon : boolean;
+    speedlevel : number;
     skiped : boolean;
 
     constructor(mapWidth : number, mapHeight : number, gameWidth : number, gameHeight : number , startersymbols : gameinfo){
@@ -31,16 +31,11 @@ export class BonusGameContainer{
         this.container.width = gameWidth
         this.container.height = gameHeight
         this.container.addChild(this.reelcontainer.container)
-        this.quickplayon = false
+        this.speedlevel = 1
 
-        this.infocontainer = new InfoContainer(this.getpoints(),gameWidth,gameHeight,this.quickplayon)
+        this.infocontainer = new InfoContainer(this.getpoints(),gameWidth,gameHeight,this.speedlevel)
         this.container.addChild(this.infocontainer.container)
         this.fullgameinfo = startersymbols
-    }
-    changequikcplay(){
-        this.reelcontainer.changequikcplay()
-        this.quickplayon = !this.quickplayon
-        this.infocontainer.changequickplay()
     }
 
     animatereels(newreels: gameinfo, specialsymbolactions: DoActionInfo): Promise<void> {
@@ -108,6 +103,11 @@ export class BonusGameContainer{
         this.skiped = false
         this.reelcontainer.changeskiped_tofalse()
         this.infocontainer.changeskiped_tofalse()
+    }
+
+    changespeedlevel(speedlevel : number){
+        this.reelcontainer.changespeedlevel(speedlevel)
+        this.infocontainer.changespeedlevel(speedlevel)
     }
 
     loadinstarters(startersymbols : gameinfo){

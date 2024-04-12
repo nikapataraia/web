@@ -8,8 +8,8 @@ import { data } from '@/assets/DataBonus/Data';
 import { gsap } from 'gsap';
 
 export default class Sniper extends PointSymbol{
-    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates  , quickplayon : boolean , skiped : boolean){
-        super(id,symbolContainerWidth,symbolContainerHeight,value, location,quickplayon,skiped);
+    constructor(id: number, symbolContainerWidth: number, symbolContainerHeight: number, value : number, location : coordinates  , speedlevel : number , skiped : boolean){
+        super(id,symbolContainerWidth,symbolContainerHeight,value, location,speedlevel,skiped);
     }
 
     doAction(fullinfo: gameinfo, snipethese: coordinates[], reelcontainer: ReelContainer,  symbolcontainerwidth: number, symbolcontainerheight: number): Promise<void> {
@@ -17,7 +17,7 @@ export default class Sniper extends PointSymbol{
         return new Promise(async (resolve) => {
             const animationPromises: Promise<void>[] = [];
             for (let i = 0; i < snipethese.length; i++) {
-                const animationtime = this.skiped ? data.animation_speed.special.sniper.skip : (this.quickplayon?data.animation_speed.special.sniper.quickplay : data.animation_speed.special.sniper.normal)
+                const animationtime = (this.skiped || this.speedlevel ===3) ? data.animation_speed.special.sniper.skip : (this.speedlevel === 2?data.animation_speed.special.sniper.quickplay : data.animation_speed.special.sniper.normal)
                 const { reelIndex, symbolIndex } = snipethese[i];
                 const targetX = (reelIndex + 0.5) * symbolcontainerwidth;
                 const targetY = (symbolIndex + 0.5) * symbolcontainerheight;
@@ -67,7 +67,7 @@ export default class Sniper extends PointSymbol{
     
                 animationPromises.push(animationPromise);
                 await animationPromise;
-                if (!this.quickplayon && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
+                if ((this.speedlevel !== 1) && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
             }
             Promise.all(animationPromises).then(async () => {
                 resolve()

@@ -24,7 +24,7 @@ export default class BonusGame{
     appHeight : number;
     gamesimulation : GameSimulation | null
     currentgameinfo : gameinfo;
-    quickplayon : boolean
+    speedlevel : number
     skiped : boolean;
     getBackFromBonus : Function
 
@@ -33,7 +33,7 @@ export default class BonusGame{
         this.currentgameinfo = {}
         this.appHeight = appheight
         this.appWidth = appwidth
-        this.quickplayon = false
+        this.speedlevel = 1
         this.skiped = false
         this.getBackFromBonus = getBackFromBonus
         this.bonusgame_app = new PIXI.Application({
@@ -50,9 +50,10 @@ export default class BonusGame{
         const [simulationResult, totalPoints] = this.gamesimulation.simulate2();
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         this.changeskiped_tofalse()
+        delay(1000)
         for (let i = 0; i < simulationResult.length; i++) {
             await this.bonusgamecontainer.animatereels(simulationResult[i].gameinfo , simulationResult[i].actioninfo);
-            await (this.quickplayon ? delay(300) : delay(600));
+            await (this.speedlevel ? delay(300) : delay(600));
             this.changeskiped_tofalse()
         }
         this.getBackFromBonus(this.bonusgamecontainer.calculatetotalpoints())
@@ -68,9 +69,9 @@ export default class BonusGame{
         this.bonusgamecontainer.changedimension(scaleX,scaleY)
     }
 
-    changequikcplay(){
-        this.quickplayon = !this.quickplayon
-        this.bonusgamecontainer.reelcontainer.changequikcplay()
+    changespeedlevel(speedlevel : number){
+        this.speedlevel = speedlevel
+        this.bonusgamecontainer.changespeedlevel(speedlevel)
     }
 
     changeskiped_totrue(){
@@ -93,8 +94,6 @@ export default class BonusGame{
         this.bonusgamecontainer.reset()
         this.gamesimulation = null
         this.currentgameinfo = {}
-        if(this.quickplayon){
-            this.changequikcplay()
-        }
+        this.changespeedlevel(this.speedlevel)
         }
 }

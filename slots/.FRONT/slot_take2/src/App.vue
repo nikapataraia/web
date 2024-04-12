@@ -140,7 +140,7 @@ function bet(Bet : number){
   if(!BonusBallDroped.value && !InBonusGame.value){
       BetAmount.value = Bet;
       if(Maincomponent_ref.value){
-        const BallType = Math.random() > 0.99 ? 1 : 0;
+        const BallType = Math.random() > 0.9 ? 1 : 0;
         const BallID = 0
         const DropLocation = Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1))
         Maincomponent_ref.value.Bet(BallType , BallID, BetAmount.value, DropLocation)

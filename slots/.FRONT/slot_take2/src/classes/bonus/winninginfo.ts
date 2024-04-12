@@ -5,16 +5,16 @@ export default class WinningInfo {
     container: PIXI.Container;
     container_winning: PIXI.Container;
     winningText: PIXI.Text;
-    quickplayon : boolean;
+    speedlevel : number;
     skiped : boolean;
 
-    constructor(appwidth: number, appheight: number, winningstart: number,quickplayon : boolean) {
+    constructor(appwidth: number, appheight: number, winningstart: number,speedlevel : number) {
         this.skiped = false
         this.winning = winningstart;
         this.container = new PIXI.Container();
         this.container_winning = new PIXI.Container();
         const containerWidth = appwidth * 0.15;
-        this.quickplayon = quickplayon
+        this.speedlevel = speedlevel
 
         const background = new PIXI.Graphics();
         background.beginFill(0xFFC0CB);
@@ -51,13 +51,13 @@ export default class WinningInfo {
 
     changeWinnings(newWinning: number) {
         this.winning = newWinning;
-        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: this.skiped ? 0.1 : (this.quickplayon ? 0.25 : 0.5), ease: 'back.out' })
+        gsap.to(this.winningText.scale, { x: 1.2, y: 1.2, duration: (this.skiped || this.speedlevel ===3) ? 0.1 : (this.speedlevel===2 ? 0.25 : 0.5), ease: 'back.out' })
             .then(() => {
                 this.winningText.style.fill = '#FFD700';
                 this.winningText.text = `${this.winning}x`;
             })
             .then(() => {
-                gsap.to(this.winningText.scale, { x: 1, y: 1, duration:this.skiped ? 0.1 : (this.quickplayon ? 0.25 : 0.5), ease: 'back.in' })
+                gsap.to(this.winningText.scale, { x: 1, y: 1, duration: (this.skiped || this.speedlevel ===3) ? 0.1 : (this.speedlevel ===2 ? 0.25 : 0.5), ease: 'back.in' })
                     .then(() => {
                         this.winningText.style.fill = '#ffffff';
                         this.winningText.x = (this.container.width - this.winningText.width) / 2;
@@ -65,8 +65,8 @@ export default class WinningInfo {
             });
     }
 
-    changequickplay(){
-        this.quickplayon = !this.quickplayon
+    changespeedlevel(speedlevel : number){
+        this.speedlevel = speedlevel
     }
 
     changeskiped(){
