@@ -2,10 +2,10 @@
 {
     public class Ball
     {
-        private int BetAmount;
-        private int Finisher;
-        private int ID;
-        private int Type;
+        private int BetAmount { get; set; }
+        private int Finisher { get;  set; }
+        private int ID { get; set; }
+        private int Type { get;  set; }
         private static int id = 0;
         public Ball(int bet, int finisher, int type = 0)
         {
@@ -15,6 +15,13 @@
             Type = type;
             id++;
         }
-
+        public int getID()
+        {
+            return ID;
+        }
+        public int getBetAmount()
+        {
+            return BetAmount;
+        }
     }
 }

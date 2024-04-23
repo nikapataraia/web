@@ -2,7 +2,7 @@
     <div class="BonusGameContainer" id="BonusGameContainer" ref="BonusGameContainerRef">
     
     </div>
-    <!-- <button @click=changedimensionsLocal(400,250)>400,250</button>
+    <!-- <button @click=changedimensionsLocal(1400,250)>400,250</button>
     <button @click=changedimensionsLocal(800,500)>800,500</button>
     <button @click=changedimensionsLocal(1000,600)>1000,600</button>
     <button @click=changespeed(1)>quickplay</button>

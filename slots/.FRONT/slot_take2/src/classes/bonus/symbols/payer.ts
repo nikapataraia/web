@@ -48,7 +48,7 @@ export default class Payer extends PointSymbol {
                                 .start()
                     });
                     animationPromises.push(animationPromise);
-                    if ((this.speedlevel !== 3) && !this.skiped) {
+                    if ((this.speedlevel === 1) && !this.skiped) {
                         await new Promise(resolveDelay => setTimeout(resolveDelay, 200));
                     }
                 }

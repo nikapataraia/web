@@ -67,7 +67,7 @@ export default class Sniper extends PointSymbol{
     
                 animationPromises.push(animationPromise);
                 await animationPromise;
-                if ((this.speedlevel !== 1) && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
+                if ((this.speedlevel === 1) && !this.skiped) await new Promise(resolveDelay => setTimeout(resolveDelay, 50));
             }
             Promise.all(animationPromises).then(async () => {
                 resolve()

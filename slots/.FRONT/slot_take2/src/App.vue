@@ -53,11 +53,10 @@ import { ref,  type Ref } from 'vue';
 import MainGameContainer from './components/Main/MainGameContainer.vue';
 import BonusGameContainer from './components/Bonus/BonusGameContainer.vue'
 import BasicModal from './components/Modals/BasicModal.vue'
-import ControllsContainer from './components/Controller/ControllsContainer.vue'
 import AutoPlayModal from './components/Modals/AutoPlayModal.vue';
 import MenuModal from './components/Modals/MenuModal.vue';
 import { MainData } from './assets/DataMain/Data';
-import GameSimulation from './classes/bonus/gamedimulation/game';
+import ControllsContainer from './components/Controller/ControllsContainer.vue';
 
 // MODAL CONSTANTS
 const isModalOpen = ref(false)
@@ -140,7 +139,7 @@ function bet(Bet : number){
   if(!BonusBallDroped.value && !InBonusGame.value){
       BetAmount.value = Bet;
       if(Maincomponent_ref.value){
-        const BallType = Math.random() > 0.9 ? 1 : 0;
+        const BallType = Math.random() > 0.999 ? 1 : 0;
         const BallID = 0
         const DropLocation = Math.round(Math.random() * (MainData.Map.FinishLine1.length - 1))
         Maincomponent_ref.value.Bet(BallType , BallID, BetAmount.value, DropLocation)
